@@ -65,6 +65,9 @@ private:
     /** If this is a server, the server name. */
     irr::core::stringw m_server_name;
 
+    /** True if dumb client should be used. */
+    bool m_dumb_client;
+
     NetworkConfig();
 
 public:
@@ -126,6 +129,12 @@ public:
     // --------------------------------------------------------------------
     /** Returns if this instance is a client. */
     bool isClient() const { return !m_is_server; }
+    // --------------------------------------------------------------------
+    /** Return true if dumb clients should be used. */
+    bool useDumbClient() const { return m_dumb_client; }
+    // --------------------------------------------------------------------
+    /** Returns if this is a client and dumb client should be used. */
+    bool isDumbClient() const { return !m_is_server && m_dumb_client; }
     // --------------------------------------------------------------------
     /** Sets the name of this server. */
     void setServerName(const irr::core::stringw &name)

@@ -988,7 +988,7 @@ void World::update(float dt)
     if (m_script_engine) m_script_engine->update(dt);
     PROFILER_POP_CPU_MARKER();
 
-    if (!history->dontDoPhysics())
+    if (!history->dontDoPhysics() && !NetworkConfig::get()->isDumbClient())
     {
         m_physics->update(dt);
     }

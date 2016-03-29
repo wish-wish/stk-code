@@ -16,14 +16,28 @@ class KartUpdateProtocol : public Protocol
 {
 private:
 
+    /** Time for which the next position/quaternion is meant to be used. */
+    float m_next_time;
+
     /** Stores the last updated position for a kart. */
     std::vector<Vec3> m_next_positions;
 
     /** Stores the last updated rotation for a kart. */
     std::vector<btQuaternion> m_next_quaternions;
 
+    /** Time of the last update used. */
+    float m_previous_time;
+
+    /** Stores the previously updated position for a kart. */
+    std::vector<Vec3> m_previous_positions;
+
+    /** Stores the previously updated rotation for a kart. */
+    std::vector<btQuaternion> m_previous_quaternions;
+
     /** True if a new update for the kart positions was received. */
     bool m_was_updated;
+
+    void sendKartUpdates();
 
 public:
              KartUpdateProtocol();

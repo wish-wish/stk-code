@@ -86,7 +86,8 @@ bool ControllerEventsProtocol::notifyEventAsynchronous(Event* event)
         Log::warn("ControllerEventProtocol",
                   "The data seems corrupted. Remains %d", data.size());
     }
-    if (NetworkConfig::get()->isServer())
+    if (NetworkConfig::get()->isServer() &&
+        !NetworkConfig::get()->useDumbClient() )
     {
         // Send update to all clients except the original sender.
         STKHost::get()->sendPacketExcept(event->getPeer(), 
