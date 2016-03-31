@@ -40,7 +40,9 @@ void KartUpdateProtocol::setup()
  */
 bool KartUpdateProtocol::notifyEvent(Event* event)
 {
-    if (event->getType() != EVENT_TYPE_MESSAGE)
+    // It might be possible that we still receive messages after
+    // the game was exited, so make sure we still have a world.
+    if (event->getType() != EVENT_TYPE_MESSAGE || !World::getWorld())
         return true;
     NetworkString &ns = event->data();
     if (ns.size() < 33)
@@ -48,16 +50,31 @@ bool KartUpdateProtocol::notifyEvent(Event* event)
         Log::info("KartUpdateProtocol", "Message too short.");
         return true;
     }
-    m_previous_time = m_next_time;
-    m_next_time     = ns.getFloat();
+    // Save the previous data that was applied
+    float my_time = World::getWorld()->getTime();
+    float next_time = ns.getFloat();  // get the time from the message
+
+    // Save the current 'next' data as previous data, but only if this next
+    // data is before the current time on the client. This way we always have
+    // previous_time < my_time < next_time
+    // (short of network hickups causing next_time to be smaller than my_time,
+    // which should resolve itself once all in-transit packages have been 
+    // processed, since server time will always be ahead of client time.
+    bool save_current_as_previous = my_time > m_next_time;
+    if(save_current_as_previous )
+        m_previous_time = m_next_time;
+    m_next_time = next_time;
     while(ns.size() >= 29)
     {
         uint8_t kart_id                 = ns.getUInt8();
         Vec3 xyz                        = ns.getVec3();
         btQuaternion quat               = ns.getQuat();
-        m_previous_positions  [kart_id] = m_next_positions[kart_id];
-        m_previous_quaternions[kart_id] = m_next_quaternions[kart_id];
-        m_next_positions  [kart_id]     = xyz;
+        if(save_current_as_previous)
+        {
+            m_previous_positions[kart_id] = m_next_positions[kart_id];
+            m_previous_quaternions[kart_id] = m_next_quaternions[kart_id];
+        }
+        m_next_positions[kart_id] = xyz;
         m_next_quaternions[kart_id]     = quat;
     }   // while ns.size()>29
 
@@ -85,8 +102,8 @@ void KartUpdateProtocol::update(float dt)
     // Otherwise update 10 times a second only
     if (NetworkConfig::get()->isServer() )
     {
-        if( NetworkConfig::get()->useDumbClient() ||
-            current_time > time + 0.1               )
+//        if( NetworkConfig::get()->useDumbClient() ||
+        if (current_time > time + 0.1               )
         {
             time = current_time;
             sendKartUpdates();
@@ -106,19 +123,21 @@ void KartUpdateProtocol::update(float dt)
         {
             AbstractKart *kart = World::getWorld()->getKart(id);
             float adjust_time = World::getWorld()->getTime() - m_next_time;
-            Log::error("xyz", "%f %f %f %f  y %f %f %f",
-                World::getWorld()->getTime(), m_previous_time, m_next_time,
-                adjust_time,
-                kart->getXYZ().getY(),
-                m_previous_positions[id].getY(),
-                m_next_positions[id].getY());
 
             float dt_server = m_next_time - m_previous_time;
             float f = (World::getWorld()->getTime() - m_previous_time)
                     / (m_next_time                  - m_previous_time);
             Vec3 xyz = m_previous_positions[id]
                      +  (m_next_positions[id] - m_previous_positions[id])*f;
-
+#ifdef LOG_POSITION_AND_TIME
+            Log::error("xyz", "%f %f %f %f  y %f %f %f f %f",
+                World::getWorld()->getTime(), m_previous_time, m_next_time,
+                dt,
+                kart->getXYZ().getY(),
+                m_previous_positions[id].getY(),
+                m_next_positions[id].getY(),
+                f);
+#endif
             kart->setXYZ(xyz);
             btQuaternion q =
                 m_previous_quaternions[id].slerp(m_next_quaternions[id], f);
@@ -130,59 +149,6 @@ void KartUpdateProtocol::update(float dt)
            
 
     m_was_updated = false;
-    return;
-
-    if(m_was_updated)
-    {
-
-        for (unsigned id = 0; id < m_next_positions.size(); id++)
-        {
-            AbstractKart *kart = World::getWorld()->getKart(id);
-            if (NetworkConfig::get()->isDumbClient())
-            {
-                AbstractKart *kart = World::getWorld()->getKart(id);
-                Vec3 xyz = kart->getXYZ();
-                if(World::getWorld()->getTime() > m_next_time)
-                {
-                    StkTime::sleep((m_next_time - World::getWorld()->getTime()+2)*1000);
-                }
-                kart->setXYZ(m_previous_positions[id]);
-                kart->setRotation(m_previous_quaternions[id]);
-            }
-            else if(!kart->getController()->isLocalPlayerController() )
-            {
-                btTransform transform = kart->getBody()
-                                      ->getInterpolationWorldTransform();
-                transform.setOrigin(m_next_positions[id]);
-                transform.setRotation(m_next_quaternions[id]);
-
-                kart->getBody()->setCenterOfMassTransform(transform);
-                Log::verbose("KartUpdateProtocol", "Update kart %i pos",
-                             id);
-            }   // if not local player
-        }   // for id < num_karts
-        m_was_updated = false;  // mark that all updates were applied
-    }   // if m_was_updated
-    else if (m_next_time != m_previous_time)
-    {
-        // no update was received, interpolate
-        for (unsigned id = 0; id < m_next_positions.size(); id++)
-        {
-            AbstractKart *kart = World::getWorld()->getKart(id);
-            Vec3 xyz = m_previous_positions[id];
-            Vec3 dxyz = m_next_positions[id] - m_previous_positions[id];
-            Log::error("xyz", "%f %f %f %f   %f %f %f   %f %f %f %f  %f %f",
-                kart->getXYZ().getX(), kart->getXYZ().getY(), kart->getXYZ().getZ(),
-                dxyz.getX(), dxyz.getY(), dxyz.getZ(),
-                World::getWorld()->getTime(), m_previous_time,
-                m_next_time, dt,
-                World::getWorld()->getTime() - m_previous_time,
-                m_next_time - m_previous_time);
-            xyz += dxyz * (World::getWorld()->getTime() - m_previous_time)
-                        / (m_next_time - m_previous_time);
-            kart->setXYZ(xyz);
-        }   // for id in m_next_position
-    }   // no update was received, interpolate
 }   // update
 
 // ----------------------------------------------------------------------------
