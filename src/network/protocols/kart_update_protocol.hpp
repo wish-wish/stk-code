@@ -41,12 +41,17 @@ private:
      * a fixed frequency. */
     float m_previous_update_time;
 
+    /** When this is set, the server will sent an update to the clients even
+     *  if the normal update frequency is not reached. */
+    bool m_force_update;
+
     void sendKartUpdates();
 
 public:
              KartUpdateProtocol();
     virtual ~KartUpdateProtocol();
 
+    void forceUpdateSending();
     virtual bool notifyEvent(Event* event) OVERRIDE;
     virtual void setup() OVERRIDE;
     virtual void update(float dt) OVERRIDE;

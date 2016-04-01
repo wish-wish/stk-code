@@ -20,8 +20,6 @@ KartUpdateProtocol::~KartUpdateProtocol()
 // ----------------------------------------------------------------------------
 void KartUpdateProtocol::setup()
 {
-    m_next_time     = 0;
-    m_previous_time = -1;
     // Allocate arrays to store one position and rotation for each kart
     // (which is the update information from the server to the client).
     m_next_positions.resize(World::getWorld()->getNumKarts(),
@@ -35,9 +33,11 @@ void KartUpdateProtocol::setup()
 
     // This flag keeps track if valid data for an update is in
     // the arrays
-    m_was_updated = false;
-
+    m_was_updated          = false;
+    m_next_time            = 0;
+    m_previous_time        = -1;
     m_previous_update_time = 0;
+    m_force_update         = false;
 }   // setup
 
 // ----------------------------------------------------------------------------
@@ -109,10 +109,11 @@ void KartUpdateProtocol::update(float dt)
     if (NetworkConfig::get()->isServer() )
     {
 //        if( NetworkConfig::get()->useDumbClient() ||
-        if (current_time > m_previous_update_time + 0.1               )
+        if (current_time > m_previous_update_time + 0.1 || m_force_update)
         {
             m_previous_update_time = current_time;
             sendKartUpdates();
+            m_force_update = false;
         }   // if (current_time > time + 0.1)
         return;
     }
@@ -177,3 +178,13 @@ void KartUpdateProtocol::sendKartUpdates()
     sendMessageToPeersChangingToken(ns, /*reliable*/false);
     delete ns;
 }   // sendKartUpdates
+
+// ----------------------------------------------------------------------------
+/** This function forces this protocol to send a kart update next time update
+ *  is called. This is used to quickly update clients when  a kart state
+ *  changes, without waiting up to 1/10 of a second.
+ */
+void KartUpdateProtocol::forceUpdateSending()
+{
+    m_force_update = true;
+}   // forceUpdateSending

@@ -26,6 +26,7 @@
 #include "network/game_setup.hpp"
 #include "network/network_config.hpp"
 #include "network/protocol_manager.hpp"
+#include "network/protocols/kart_update_protocol.hpp"
 #include "network/stk_host.hpp"
 #include "network/stk_peer.hpp"
 #include "utils/log.hpp"
@@ -86,6 +87,12 @@ bool ControllerEventsProtocol::notifyEventAsynchronous(Event* event)
         Log::warn("ControllerEventProtocol",
                   "The data seems corrupted. Remains %d", data.size());
     }
+    KartUpdateProtocol *p = dynamic_cast<KartUpdateProtocol*>
+                     (ProtocolManager::getInstance()->getProtocol(PROTOCOL_KART_UPDATE));
+    // Make sure that a kart update is sent to all clients asap
+    if(p)
+        p->forceUpdateSending();
+
     if (NetworkConfig::get()->isServer() &&
         !NetworkConfig::get()->useDumbClient() )
     {
