@@ -14,10 +14,14 @@ KartUpdateProtocol::KartUpdateProtocol() : Protocol(PROTOCOL_KART_UPDATE)
     m_previous_time = -1;
     // Allocate arrays to store one position and rotation for each kart
     // (which is the update information from the server to the client).
-    m_next_positions.resize(World::getWorld()->getNumKarts());
-    m_next_quaternions.resize(World::getWorld()->getNumKarts());
-    m_previous_positions.resize(World::getWorld()->getNumKarts());
-    m_previous_quaternions.resize(World::getWorld()->getNumKarts());
+    m_next_positions.resize(World::getWorld()->getNumKarts(),
+        Vec3(0, 0, 0));
+    m_next_quaternions.resize(World::getWorld()->getNumKarts(),
+        btQuaternion(0, 0, 0, 1));
+    m_previous_positions.resize(World::getWorld()->getNumKarts(),
+        Vec3(0, 0, 0));
+    m_previous_quaternions.resize(World::getWorld()->getNumKarts(),
+        btQuaternion(0, 0, 0, 1));
 
     // This flag keeps track if valid data for an update is in
     // the arrays
