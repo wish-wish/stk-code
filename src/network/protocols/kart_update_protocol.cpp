@@ -10,6 +10,16 @@
 
 KartUpdateProtocol::KartUpdateProtocol() : Protocol(PROTOCOL_KART_UPDATE)
 {
+}   // KartUpdateProtocol
+
+// ----------------------------------------------------------------------------
+KartUpdateProtocol::~KartUpdateProtocol()
+{
+}   // ~KartUpdateProtocol
+
+// ----------------------------------------------------------------------------
+void KartUpdateProtocol::setup()
+{
     m_next_time     = 0;
     m_previous_time = -1;
     // Allocate arrays to store one position and rotation for each kart
@@ -26,16 +36,8 @@ KartUpdateProtocol::KartUpdateProtocol() : Protocol(PROTOCOL_KART_UPDATE)
     // This flag keeps track if valid data for an update is in
     // the arrays
     m_was_updated = false;
-}   // KartUpdateProtocol
 
-// ----------------------------------------------------------------------------
-KartUpdateProtocol::~KartUpdateProtocol()
-{
-}   // ~KartUpdateProtocol
-
-// ----------------------------------------------------------------------------
-void KartUpdateProtocol::setup()
-{
+    m_previous_update_time = 0;
 }   // setup
 
 // ----------------------------------------------------------------------------
@@ -100,16 +102,16 @@ void KartUpdateProtocol::update(float dt)
 {
     if (!World::getWorld())
         return;
-    static double time = 0;
+
     double current_time = StkTime::getRealTime();
     // Dumb clients need updates as often as possible.
     // Otherwise update 10 times a second only
     if (NetworkConfig::get()->isServer() )
     {
 //        if( NetworkConfig::get()->useDumbClient() ||
-        if (current_time > time + 0.1               )
+        if (current_time > m_previous_update_time + 0.1               )
         {
-            time = current_time;
+            m_previous_update_time = current_time;
             sendKartUpdates();
         }   // if (current_time > time + 0.1)
         return;

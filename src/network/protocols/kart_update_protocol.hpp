@@ -37,6 +37,10 @@ private:
     /** True if a new update for the kart positions was received. */
     bool m_was_updated;
 
+    /** Time the last kart update was sent. Used to send updates with
+     * a fixed frequency. */
+    float m_previous_update_time;
+
     void sendKartUpdates();
 
 public:
