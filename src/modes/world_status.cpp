@@ -347,8 +347,7 @@ void WorldStatus::update(const float dt)
 
         default: break;
     }
-    Log::verbose("time", "%f %f %f phase %d",
-        m_time, dt, m_time+dt, m_phase);
+
     switch (m_clock_mode)
     {
         case CLOCK_CHRONO:
