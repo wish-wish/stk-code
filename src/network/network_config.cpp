@@ -41,7 +41,7 @@ NetworkConfig::NetworkConfig()
     m_server_name   = "";
     m_password      = "";
     m_private_port  = 0;
-    m_dumb_client   = true;
+    m_dumb_client   = false;
     m_my_address.lock();
     m_my_address.getData().clear();
     m_my_address.unlock();
