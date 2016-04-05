@@ -39,8 +39,12 @@ private:
     /** Keeps the type of network connection: none (yet), LAN or WAN. */
     NetworkType m_network_type;
 
-    /** True if this host is a server, false otherwise. */
-    bool m_is_server;
+    /** Keeps track of the networking state: no network, a server instance
+     *  a dumb client (no physics), a normal client. */
+    enum  {NC_NONE, NC_SERVER, NC_CLIENT} m_client_server;
+
+    /** If dumb clients should be used. */
+    bool m_use_dumb_client;
 
     /** The password for a server (or to authenticate to a server). */
     std::string m_password;
@@ -64,9 +68,6 @@ private:
 
     /** If this is a server, the server name. */
     irr::core::stringw m_server_name;
-
-    /** True if dumb client should be used. */
-    bool m_dumb_client;
 
     NetworkConfig();
 
@@ -121,20 +122,30 @@ public:
     /** Returns the maximum number of players for this server. */
     int getMaxPlayers() const { return m_max_players; }
     // --------------------------------------------------------------------
-    /** Sets if this instance is a server or client. */
-    void setIsServer(bool b) { m_is_server = b; }
+    /** Sets if this instance is a server. */
+    void setIsServer() { m_client_server = NC_SERVER; }
+    // --------------------------------------------------------------------
+    /** Sets if this instance is a client. */
+    void setIsClient() { m_client_server = NC_CLIENT; }
     // --------------------------------------------------------------------
     /** Returns if this instance is a server. */
-    bool isServer() const { return m_is_server;  }
+    bool isServer() const { return m_client_server == NC_SERVER;  }
     // --------------------------------------------------------------------
     /** Returns if this instance is a client. */
-    bool isClient() const { return !m_is_server; }
+    bool isClient() const { return m_client_server == NC_CLIENT; }
     // --------------------------------------------------------------------
-    /** Return true if dumb clients should be used. */
-    bool useDumbClient() const { return m_dumb_client; }
+    /** Return true if this is a network game and dumb clients should
+     *  be used. */
+    bool useDumbClient() const
+    { 
+        return m_use_dumb_client;
+    }   // useDumbClient
     // --------------------------------------------------------------------
     /** Returns if this is a client and dumb client should be used. */
-    bool isDumbClient() const { return !m_is_server && m_dumb_client; }
+    bool isDumbClient() const 
+    {
+        return m_client_server == NC_CLIENT && m_use_dumb_client;
+    }   // isDumbClient
     // --------------------------------------------------------------------
     /** Sets the name of this server. */
     void setServerName(const irr::core::stringw &name)

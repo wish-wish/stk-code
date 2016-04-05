@@ -780,7 +780,7 @@ int handleCmdLine()
     if(CommandLine::has("--server", &s))
     {
         NetworkConfig::get()->setServerName(core::stringw(s.c_str()));
-        NetworkConfig::get()->setIsServer(true);
+        NetworkConfig::get()->setIsServer();
         NetworkConfig::get()->setIsWAN();
         STKHost::create();
         Log::info("main", "Creating a WAN server '%s'.", s.c_str());
@@ -788,7 +788,7 @@ int handleCmdLine()
     if (CommandLine::has("--lan-server", &s))
     {
         NetworkConfig::get()->setServerName(core::stringw(s.c_str()));
-        NetworkConfig::get()->setIsServer(true);
+        NetworkConfig::get()->setIsServer();
         NetworkConfig::get()->setIsLAN();
         STKHost::create();
         Log::info("main", "Creating a LAN server '%s'.", s.c_str());

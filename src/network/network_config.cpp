@@ -34,14 +34,14 @@ NetworkConfig *NetworkConfig::m_network_config = NULL;
  */
 NetworkConfig::NetworkConfig()
 {
-    m_network_type  = NETWORK_NONE;
-    m_is_server     = false;
-    m_max_players   = 4;
-    m_is_registered = false;
-    m_server_name   = "";
-    m_password      = "";
-    m_private_port  = 0;
-    m_dumb_client   = false;
+    m_network_type    = NETWORK_NONE;
+    m_client_server   = NC_NONE;
+    m_use_dumb_client = true;
+    m_max_players     = 4;
+    m_is_registered   = false;
+    m_server_name     = "";
+    m_password        = "";
+    m_private_port    = 0;
     m_my_address.lock();
     m_my_address.getData().clear();
     m_my_address.unlock();

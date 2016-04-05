@@ -82,14 +82,14 @@ void OnlineProfileServers::eventCallback(Widget* widget, const std::string& name
         if (selection == "create_lan_server")
         {
             NetworkConfig::get()->setIsLAN();
-            NetworkConfig::get()->setIsServer(true);
+            NetworkConfig::get()->setIsServer();
             CreateServerScreen::getInstance()->push();
             // TODO: create lan server
         }
         else if (selection == "find_lan_server")
         {
             NetworkConfig::get()->setIsLAN();
-            NetworkConfig::get()->setIsServer(false);
+            NetworkConfig::get()->setIsClient();
             ServerSelection::getInstance()->push();
         }
     }
@@ -100,13 +100,13 @@ void OnlineProfileServers::eventCallback(Widget* widget, const std::string& name
         if (selection == "find_wan_server")
         {
             NetworkConfig::get()->setIsWAN();
-            NetworkConfig::get()->setIsServer(false);
+            NetworkConfig::get()->setIsClient();
             ServerSelection::getInstance()->push();
         }
         else if (selection == "create_wan_server")
         {
             NetworkConfig::get()->setIsWAN();
-            NetworkConfig::get()->setIsServer(true);
+            NetworkConfig::get()->setIsServer();
             CreateServerScreen::getInstance()->push();
         }
         else if (selection == "quick_wan_play")
