@@ -165,7 +165,7 @@ public:
     bool        isAuthorisedToControl() const;
     const irr::core::stringw& 
                 getErrorMessage() const;
-
+    int getEnetQueueLength() const;
     // --------------------------------------------------------------------
     /** Returns true if a shutdown of the network infrastructure was
      *  requested. */

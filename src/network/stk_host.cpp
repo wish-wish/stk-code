@@ -337,7 +337,7 @@ STKHost::~STKHost()
 /** Requests that the network infrastructure is to be shut down. This function
  *  is called from a thread, but the actual shutdown needs to be done from 
  *  the main thread to avoid race conditions (e.g. ProtocolManager might still
- *  access data structures when the main thread tests if STKHost exist (which
+ *  acsces data structures when the main thread tests if STKHost exist (which
  *  it does, but ProtocolManager might be shut down already.
  */
 void STKHost::requestShutdown()
@@ -752,3 +752,8 @@ void STKHost::sendPacketExcept(STKPeer* peer, NetworkString *data,
     }
 }   // sendPacketExcept
 
+// ----------------------------------------------------------------------------
+int STKHost::getEnetQueueLength() const
+{
+    return enet_list_size(&m_network->getENetHost()->dispatchQueue);
+}   // getEnetQueueLength

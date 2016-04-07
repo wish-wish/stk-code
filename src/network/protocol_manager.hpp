@@ -147,6 +147,9 @@ public:
     virtual void      update(float dt);
     virtual Protocol* getProtocol(uint32_t id);
     virtual Protocol* getProtocol(ProtocolType type);
+    // ------------------------------------------------------------------------
+    /** Returns the length of the STK event queue. */
+    int getNumEvents() const { return m_events_to_process.getData().size(); }
 };   // class ProtocolManager
 
 #endif // PROTOCOL_MANAGER_HPP

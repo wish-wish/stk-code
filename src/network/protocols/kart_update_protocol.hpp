@@ -16,23 +16,46 @@ class KartUpdateProtocol : public Protocol
 {
 private:
 
-    /** Time for which the next position/quaternion is meant to be used. */
-    float m_next_time;
+    /** Stores a single update for a kart. */
+    class KartUpdate
+    {
+    public:
+        /** Server game time at which this update was sent. */
+        float        m_server_time;
+        /** Position of the kart at the given time. */
+        Vec3         m_xyz;
+        /** Rotation of the kart at the given time. */
+        btQuaternion m_quat;
+        // --------------------------------------------------------------------
+        /** Default constructor to initialise the data. Sets everything to 0.*/
+        KartUpdate()
+        {
+            m_server_time = -1;
+            m_xyz         = Vec3(0,0,0);
+            m_quat        = btQuaternion(0,0,0,1);
+        }   // KartUpdate
+        // --------------------------------------------------------------------
+        /** Sets all values of this update. */
+        void set(float time, const Vec3 &xyz, const btQuaternion &quat)
+        {
+            m_server_time = time;
+            m_xyz         = xyz;
+            m_quat        = quat;
+        }   // set
+    };   // struct KartUpdate
 
-    /** Stores the last updated position for a kart. */
-    std::vector<Vec3> m_next_positions;
-
-    /** Stores the last updated rotation for a kart. */
-    std::vector<btQuaternion> m_next_quaternions;
-
-    /** Time of the last update used. */
-    float m_previous_time;
-
-    /** Stores the previously updated position for a kart. */
-    std::vector<Vec3> m_previous_positions;
-
-    /** Stores the previously updated rotation for a kart. */
-    std::vector<btQuaternion> m_previous_quaternions;
+    // ========================================================================
+    /** The list of all updates n received for a kart, sorted
+     *  by time: m_all_updates[kartid][n] > m_all_updates[kartid][n-1].
+     *  For each kart, three values are stored:
+     *  0:  An update before the local game time.
+     *  1:  The smallest time at or later as the local game time.
+     *  2:  The latest server update.
+     *  Ideally the local game time should be between 1 and 2, but especially
+     *  at startup the server might be be ahead of the client.
+     *  The client karts will interpolate either between 1 and 2, or 0 and 2.
+     */
+    std::vector< std::vector<KartUpdate> > m_all_updates;
 
     /** True if a new update for the kart positions was received. */
     bool m_was_updated;
