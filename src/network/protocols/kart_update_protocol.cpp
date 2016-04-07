@@ -88,7 +88,7 @@ bool KartUpdateProtocol::notifyEvent(Event* event)
             // delays and will sort itself out shortly. This will lead
             // to extrapolation and shaking, but we can't do much about this
             // in a dumb client.
-            if(ka[1].m_server_time < my_time)
+            if(ka[2].m_server_time < my_time)
             {
                 // Save the previous latest update, which is now before local
                 // time
@@ -96,11 +96,11 @@ bool KartUpdateProtocol::notifyEvent(Event* event)
             }
             ka[2] = ka_new;
         }
-        else if (ka[1].m_server_time < my_time)
+        else if(next_time > ka[2].m_server_time)
         {
             // update 1 is behind local time, the new one is ahead, so
             // just save the latest update in 2
-            if(ka[1].m_server_time < my_time)
+            if(ka[2].m_server_time < my_time)
             {
                 // Save the previous latest update, which is now before local
                 // time
@@ -108,8 +108,14 @@ bool KartUpdateProtocol::notifyEvent(Event* event)
             }
             ka[2] = ka_new;
         }
-        else
+        else   // next_time <= ka[2]
         {
+            // The received package is older than the latest udpate from the
+            // server, so an out-of-order update. If possible use this data
+            // as 'previous' update if it is later than the current previous
+            // update and still behind the local time
+            if(next_time > ka[1].m_server_time && next_time > my_time)
+                ka[1] = ka_new;
         }
         
     }   // while ns.size()>29
@@ -179,11 +185,12 @@ void KartUpdateProtocol::update(float dt)
         if(f>1) f=1.0f;
         Vec3 xyz = prev.m_xyz +  (next.m_xyz - prev.m_xyz)*f;
 #ifdef LOG_POSITION_AND_TIME
-        Log::error("xyz", "%f %f %f %f  y %f %f %f f %f events %d enet %d",
+        Log::error("xyz", "%f %f %f %f  y %f %f %f %f f %f events %d enet %d",
             World::getWorld()->getTime(), ku[0].m_server_time,
             ku[1].m_server_time, ku[2].m_server_time,
             kart->getXYZ().getY(),
             prev.m_xyz.getY(),
+            xyz.getY(),
             next.m_xyz.getY(),
             f,
             ProtocolManager::getInstance()->getNumEvents(),

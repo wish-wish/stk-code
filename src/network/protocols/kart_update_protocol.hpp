@@ -42,7 +42,7 @@ private:
             m_xyz         = xyz;
             m_quat        = quat;
         }   // set
-    };   // struct KartUpdate
+    };   // class KartUpdate
 
     // ========================================================================
     /** The list of all updates n received for a kart, sorted
