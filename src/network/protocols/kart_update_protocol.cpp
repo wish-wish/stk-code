@@ -55,7 +55,7 @@ bool KartUpdateProtocol::notifyEvent(Event* event)
     // Save the previous data that was applied
     float my_time = World::getWorld()->getTime();
     float next_time = ns.getFloat();  // get the time from the message
-#idef LOG_UPDATED
+#ifdef LOG_UPDATED
     Log::error("update received", "%f %f %f %f %f",
         my_time, next_time,
         m_all_updates[0][0].m_server_time,
