@@ -100,10 +100,21 @@ bool KartUpdateProtocol::notifyEvent(Event* event)
         {
             // update 1 is behind local time, the new one is ahead, so
             // just save the latest update in 2
+
+            // If the current latest is before local time, move it to update 1
             if(ka[2].m_server_time < my_time)
             {
                 // Save the previous latest update, which is now before local
                 // time
+                ka[1] = ka[2];
+            }
+            else if(ka[1].m_server_time < my_time)
+            {
+                // if the update 1 time is indeed before local time, move it
+                // to update 0; and move update 2 (which atm is ahead of 
+                // local time) to update 1. The interpolation will now use
+                // upate 0 and 1
+                ka[0] = ka[1];
                 ka[1] = ka[2];
             }
             ka[2] = ka_new;
