@@ -86,15 +86,10 @@ public:
         //Goal scored phase
         GOAL_PHASE
     };
-
 protected:
     /** Elasped/remaining time in seconds. */
     double          m_time;
 
-    /** If the start race should be played, disabled in cutscenes. */
-    bool            m_play_racestart_sounds;
-
-private:
     /** Sound to play at the beginning of a race, during which a
      *  a camera intro of the track can be shown. */
     SFXBase    *m_track_intro_sound;
@@ -106,6 +101,10 @@ private:
     /** The clock mode: normal counting forwards, or countdown */ 
     ClockType       m_clock_mode;
 
+    bool            m_play_track_intro_sound;
+    bool            m_play_ready_set_go_sounds;
+
+private:
     Phase           m_phase;
 
     /**
@@ -123,20 +122,25 @@ private:
      *  (to guarantee that the client's time is not ahead of the server), This flag
      *  indicates that the notification from the server was received, and that the
      *  client can go to 'ready' phase. */
-    bool m_server_is_ready;
+    bool            m_server_is_ready;
 
+    float           m_count_up_timer;
+
+    bool            m_engines_started;
+    void            startEngines();
 public:
              WorldStatus();
     virtual ~WorldStatus();
 
-    void     reset();
-    void     update(const float dt);
-    void     setTime(const float time);
-    void     startReadySetGo();
+    virtual void reset();
+    virtual void updateTime(const float dt);
+    virtual void update(float dt);
     virtual void pause(Phase phase);
     virtual void unpause();
     virtual void enterRaceOverState();
     virtual void terminateRace();
+    void         setTime(const float time);
+    void         startReadySetGo();
 
     // ------------------------------------------------------------------------
     // Note: GO_PHASE is both: start phase and race phase
@@ -181,6 +185,10 @@ public:
     // ------------------------------------------------------------------------
     /** Called when the race actually starts. */
     virtual void onGo() {};
+
+    // ------------------------------------------------------------------------
+    /** Get the time since start regardless of which way the clock counts */
+    float getTimeSinceStart() const { return m_count_up_timer; }
 
 };   // WorldStatus
 

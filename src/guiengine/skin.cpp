@@ -24,6 +24,7 @@
 
 #include "config/user_config.hpp"
 #include "graphics/2dutils.hpp"
+#include "graphics/central_settings.hpp"
 #include "guiengine/engine.hpp"
 #include "guiengine/modaldialog.hpp"
 #include "guiengine/scalable_font.hpp"
@@ -926,7 +927,6 @@ void Skin::drawRibbonChild(const core::recti &rect, Widget* widget,
     //if (widget->m_deactivated) return;
 
     bool mark_selected = widget->isSelected(PLAYER_ID_GAME_MASTER);
-    bool always_show_selection = false;
 
     IGUIElement* focusedElem = NULL;
     if (GUIEngine::getFocusForPlayer(PLAYER_ID_GAME_MASTER) != NULL)
@@ -1006,6 +1006,7 @@ void Skin::drawRibbonChild(const core::recti &rect, Widget* widget,
 
         /* in combo ribbons, always show selection */
         RibbonWidget* parentRibbonWidget = NULL;
+        bool always_show_selection = false;
 
         if (widget->m_event_handler != NULL &&
             widget->m_event_handler->m_type == WTYPE_RIBBON)
@@ -1958,16 +1959,31 @@ void Skin::process3DPane(IGUIElement *element, const core::recti &rect,
     else if (type == WTYPE_MODEL_VIEW)
     {
         ModelViewWidget* mvw = dynamic_cast<ModelViewWidget*>(widget);
-        FrameBuffer* fb = mvw->getFrameBuffer();
-        if (fb != NULL && fb->getRTT().size() > 0)
+        
+        if (CVS->isGLSL())
         {
-            glEnable(GL_FRAMEBUFFER_SRGB);
-            draw2DImageFromRTT(fb->getRTT()[0], 512, 512,
-                rect, core::rect<s32>(0, 0, 512, 512), NULL, SColor(255, 255, 255, 255), true);
-            glDisable(GL_FRAMEBUFFER_SRGB);
+            FrameBuffer* fb = mvw->getFrameBuffer();
+            if (fb != NULL && fb->getRTT().size() > 0)
+            {
+                glEnable(GL_FRAMEBUFFER_SRGB);
+                draw2DImageFromRTT(fb->getRTT()[0], 512, 512,
+                                   rect, core::rect<s32>(0, 0, 512, 512), NULL, 
+                                   SColor(255, 255, 255, 255), true);
+                glDisable(GL_FRAMEBUFFER_SRGB);
+            }
+        }
+        else
+        {
+            video::ITexture* texture = mvw->getTexture();
+            if (texture != NULL && texture->getSize().Width > 0 
+                                && texture->getSize().Height > 0)
+            {
+                draw2DImage(texture, rect, core::rect<s32>(0, 0, 512, 512),
+                            NULL, NULL, true);
+            }
         }
     }
-    else if (type == WTYPE_ICON_BUTTON || type == WTYPE_MODEL_VIEW)
+    else if (type == WTYPE_ICON_BUTTON)
     {
         drawIconButton(rect, widget, pressed, focused);
     }

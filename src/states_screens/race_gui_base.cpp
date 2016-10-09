@@ -41,7 +41,7 @@
 #include "karts/kart_properties.hpp"
 #include "karts/kart_properties_manager.hpp"
 #include "karts/rescue_animation.hpp"
-#include "modes/follow_the_leader.hpp"
+#include "modes/linear_world.hpp"
 #include "modes/world.hpp"
 #include "tracks/track.hpp"
 #include "utils/constants.hpp"
@@ -137,10 +137,13 @@ void RaceGUIBase::reset()
     {
         const AbstractKart *kart = World::getWorld()->getKart(i);
         m_referee_pos[i] = kart->getTrans()(Referee::getStartOffset());
-        m_referee_rotation[i] = Referee::getStartRotation()
-                              + Vec3(0, kart->getHeading()*RAD_TO_DEGREE, 0);
+        Vec3 hpr;
+        btQuaternion q = btQuaternion(kart->getTrans().getBasis().getColumn(1),
+            Referee::getStartRotation().getY() * DEGREE_TO_RAD) *
+            kart->getTrans().getRotation();
+        hpr.setHPR(q);
+        m_referee_rotation[i] = hpr.toIrrHPR();
     }
-
 
     m_referee_height = 10.0f;
     m_referee->attachToSceneNode();
@@ -317,9 +320,11 @@ void RaceGUIBase::drawPowerupIcons(const AbstractKart* kart,
         n = 1;
     }
 
-    int nSize = (int)(64.0f*std::min(scaling.X, scaling.Y));
+    float scale = (float)(std::min(scaling.X, scaling.Y));
 
-    int itemSpacing = (int)(std::min(scaling.X, scaling.Y)*30);
+    int nSize = (int)(64.0f * scale);
+
+    int itemSpacing = (int)(scale * 30);
 
     int x1 = viewport.UpperLeftCorner.X  + viewport.getWidth()/2
            - (n * itemSpacing)/2;
@@ -345,8 +350,8 @@ void RaceGUIBase::drawPowerupIcons(const AbstractKart* kart,
     {
         gui::ScalableFont* font = GUIEngine::getHighresDigitFont();
         core::rect<s32> pos(x2+nSize, y1, x2+nSize+nSize, y1+nSize);
-        font->setScale(1.5f);
-        font->draw(StringUtils::toWString(many_powerups)+L"x",
+        font->setScale(scale);
+        font->draw(core::stringw(L"x")+StringUtils::toWString(many_powerups),
             pos, video::SColor(255, 255, 255, 255));
         font->setScale(1.0f);
     }
@@ -417,8 +422,8 @@ void RaceGUIBase::preRenderCallback(const Camera *camera)
     if(m_referee && camera->getKart())
     {
         unsigned int world_id = camera->getKart()->getWorldKartId();
-        Vec3 xyz = m_referee_pos[world_id];
-        xyz.setY(xyz.getY()+m_referee_height);
+        Vec3 xyz = m_referee_pos[world_id] +
+            camera->getKart()->getNormal() * m_referee_height;
         m_referee->setPosition(xyz);
         m_referee->setRotation(m_referee_rotation[world_id]);
     }
@@ -455,15 +460,7 @@ void RaceGUIBase::drawGlobalMusicDescription()
 
     gui::IGUIFont*       font = GUIEngine::getFont();
 
-    float race_time = World::getWorld()->getTime();
-    // In the modes that the clock counts backwards, convert the
-    // countdown time to time since start:
-    if(race_manager->getMinorMode()==RaceManager::MINOR_MODE_FOLLOW_LEADER)
-        race_time = ((FollowTheLeaderRace*)World::getWorld())->getClockStartTime()
-                  - race_time;
-    else if (race_manager->getMinorMode()==RaceManager::MINOR_MODE_SOCCER &&
-             race_manager->hasTimeTarget())
-        race_time = race_manager->getTimeTarget() - World::getWorld()->getTime();
+    float race_time = World::getWorld()->getTimeSinceStart();
 
     // ---- Manage pulsing effect
     // 3.0 is the duration of ready/set (TODO: don't hardcode)

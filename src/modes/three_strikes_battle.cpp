@@ -17,9 +17,7 @@
 
 #include "modes/three_strikes_battle.hpp"
 
-#include <string>
-#include <IMeshSceneNode.h>
-
+#include "main_loop.hpp"
 #include "audio/music_manager.hpp"
 #include "config/user_config.hpp"
 #include "graphics/camera.hpp"
@@ -34,6 +32,9 @@
 #include "tracks/track_object_manager.hpp"
 #include "utils/constants.hpp"
 
+#include <string>
+#include <IMeshSceneNode.h>
+
 //-----------------------------------------------------------------------------
 /** Constructor. Sets up the clock mode etc.
  */
@@ -46,6 +47,12 @@ ThreeStrikesBattle::ThreeStrikesBattle() : WorldWithRank()
     m_tire = irr_driver->getMesh(file_manager->getAsset(FileManager::MODEL,
                                  "tire.b3d") );
     irr_driver->grabAllTextures(m_tire);
+
+    m_total_rescue = 0;
+    m_frame_count = 0;
+    m_start_time = irr_driver->getRealTime();
+    m_total_hit = 0;
+
 }   // ThreeStrikesBattle
 
 //-----------------------------------------------------------------------------
@@ -85,8 +92,7 @@ void ThreeStrikesBattle::reset()
 
     for(unsigned int n=0; n<kart_amount; n++)
     {
-        m_kart_info[n].m_lives    = 3;
-        m_kart_info[n].m_on_node  = BattleGraph::UNKNOWN_POLY;
+        m_kart_info[n].m_lives = 3;
 
         // no positions in this mode
         m_karts[n]->setPosition(-1);
@@ -160,8 +166,12 @@ void ThreeStrikesBattle::kartHit(const unsigned int kart_id)
     if (isRaceOver()) return;
 
     assert(kart_id < m_karts.size());
-    // make kart lose a life
-    m_kart_info[kart_id].m_lives--;
+    // make kart lose a life, ignore if in profiling mode
+    if (!UserConfigParams::m_arena_ai_stats)
+        m_kart_info[kart_id].m_lives--;
+
+    if (UserConfigParams::m_arena_ai_stats)
+        m_total_hit++;
 
     // record event
     BattleEvent evt;
@@ -296,7 +306,7 @@ void ThreeStrikesBattle::update(float dt)
     WorldWithRank::updateTrack(dt);
 
     if (m_track->hasNavMesh())
-        updateKartNodes();
+        updateSectorForKarts();
 
     // insert blown away tire(s) now if was requested
     while (m_insert_tire > 0)
@@ -369,6 +379,9 @@ void ThreeStrikesBattle::update(float dt)
 
         m_tires.push_back(tire_obj);
     }   // while
+    if (UserConfigParams::m_arena_ai_stats)
+        m_frame_count++;
+
 }   // update
 
 //-----------------------------------------------------------------------------
@@ -429,6 +442,9 @@ void ThreeStrikesBattle::updateKartRanks()
  */
 bool ThreeStrikesBattle::isRaceOver()
 {
+    if (UserConfigParams::m_arena_ai_stats)
+        return (irr_driver->getRealTime()-m_start_time)*0.001f > 20.0f;
+
     // for tests : never over when we have a single player there :)
     if (race_manager->getNumberOfKarts()==1 &&
         getCurrentNumKarts()==1 &&
@@ -439,33 +455,6 @@ bool ThreeStrikesBattle::isRaceOver()
 
     return getCurrentNumKarts()==1 || getCurrentNumPlayers()==0;
 }   // isRaceOver
-
-//-----------------------------------------------------------------------------
-/** Updates the m_on_node value of each kart to localize it
- *  on the navigation mesh.
- */
-void ThreeStrikesBattle::updateKartNodes()
-{
-    if (isRaceOver()) return;
-
-    const unsigned int n = getNumKarts();
-    for (unsigned int i = 0; i < n; i++)
-    {
-        if (m_karts[i]->isEliminated()) continue;
-
-        m_kart_info[i].m_on_node = BattleGraph::get()
-            ->pointToNode(m_kart_info[i].m_on_node,
-                          m_karts[i]->getXYZ(), false/*ignore_vertical*/);
-    }
-}
-
-//-----------------------------------------------------------------------------
-/** Get the which node the kart located in navigation mesh.
- */
-int ThreeStrikesBattle::getKartNode(unsigned int kart_id) const
-{
-    return m_kart_info[kart_id].m_on_node;
-}   // getKartNode
 
 //-----------------------------------------------------------------------------
 /** Called when the race finishes, i.e. after playing (if necessary) an
@@ -515,3 +504,20 @@ void ThreeStrikesBattle::getKartsDisplayInfo(
     }
 }   // getKartsDisplayInfo
 
+//-----------------------------------------------------------------------------
+void ThreeStrikesBattle::enterRaceOverState()
+{
+    WorldWithRank::enterRaceOverState();
+
+    if (UserConfigParams::m_arena_ai_stats)
+    {
+        float runtime = (irr_driver->getRealTime()-m_start_time)*0.001f;
+        Log::verbose("Battle AI profiling", "Number of frames: %d, Average FPS: %f",
+            m_frame_count, (float)m_frame_count/runtime);
+        Log::verbose("Battle AI profiling", "Total rescue: %d , hits %d in %f seconds",
+            m_total_rescue, m_total_hit, runtime);
+        delete this;
+        main_loop->abort();
+    }
+
+}   // enterRaceOverState

@@ -61,7 +61,8 @@ LocalPlayerController::LocalPlayerController(AbstractKart *kart,
 
     // Keep a pointer to the camera to remove the need to search for
     // the right camera once per frame later.
-    m_camera       = Camera::createCamera(kart);
+    Camera *camera = Camera::createCamera(kart);
+    m_camera_index = camera->getIndex();
     m_bzzt_sound   = SFXManager::get()->createSoundSource("bzzt");
     m_wee_sound    = SFXManager::get()->createSoundSource("wee");
     m_ugh_sound    = SFXManager::get()->createSoundSource("ugh");
@@ -146,7 +147,8 @@ void LocalPlayerController::steer(float dt, int steer_val)
     
     if(UserConfigParams::m_gamepad_debug)
     {
-        Log::debug("LocalPlayerController", "  set to: %f\n", m_controls->m_steer);
+        Log::debug("LocalPlayerController", "  set to: %f\n",
+                   m_controls->getSteer());
     }
 }   // steer
 
@@ -166,17 +168,18 @@ void LocalPlayerController::update(float dt)
 
     // look backward when the player requests or
     // if automatic reverse camera is active
-    if (m_camera->getMode() != Camera::CM_FINAL)
+    Camera *camera = Camera::getCamera(m_camera_index);
+    if (camera->getType() != Camera::CM_TYPE_END)
     {
-        if (m_controls->m_look_back || (UserConfigParams::m_reverse_look_threshold > 0 &&
+        if (m_controls->getLookBack() || (UserConfigParams::m_reverse_look_threshold > 0 &&
             m_kart->getSpeed() < -UserConfigParams::m_reverse_look_threshold))
         {
-            m_camera->setMode(Camera::CM_REVERSE);
+            camera->setMode(Camera::CM_REVERSE);
         }
         else
         {
-            if (m_camera->getMode() == Camera::CM_REVERSE)
-                m_camera->setMode(Camera::CM_NORMAL);
+            if (camera->getMode() == Camera::CM_REVERSE)
+                camera->setMode(Camera::CM_NORMAL);
         }
     }
 
@@ -242,8 +245,7 @@ void LocalPlayerController::setPosition(int p)
 void LocalPlayerController::finishedRace(float time)
 {
     // This will implicitely trigger setting the first end camera to be active
-    m_camera->setMode(Camera::CM_FINAL);
-
+    Camera::changeCamera(m_camera_index, Camera::CM_TYPE_END);
 }   // finishedRace
 
 //-----------------------------------------------------------------------------
@@ -263,7 +265,7 @@ void LocalPlayerController::handleZipper(bool play_sound)
     }
 
     // Apply the motion blur according to the speed of the kart
-    irr_driver->getPostProcessing()->giveBoost(m_camera->getIndex());
+    irr_driver->getPostProcessing()->giveBoost(m_camera_index);
 
 }   // handleZipper
 

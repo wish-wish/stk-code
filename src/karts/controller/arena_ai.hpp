@@ -21,14 +21,13 @@
 
 #include "karts/controller/ai_base_controller.hpp"
 #include "race/race_manager.hpp"
-#include "utils/random_generator.hpp"
 
 #undef AI_DEBUG
 #ifdef AI_DEBUG
 #include "graphics/irr_driver.hpp"
 #endif
 
-class Vec3;
+class ArenaGraph;
 
 namespace irr
 {
@@ -42,13 +41,13 @@ namespace irr
 class ArenaAI : public AIBaseController
 {
 protected:
+    ArenaGraph* m_graph;
+
     /** Pointer to the closest kart around this kart. */
     AbstractKart *m_closest_kart;
 
     int m_closest_kart_node;
     Vec3 m_closest_kart_point;
-
-    posData m_closest_kart_pos_data;
 
     /** Holds the current difficulty. */
     RaceManager::Difficulty m_cur_difficulty;
@@ -56,20 +55,23 @@ protected:
     /** For debugging purpose: a sphere indicating where the AI
      *  is targeting at. */
     irr::scene::ISceneNode *m_debug_sphere;
+    irr::scene::ISceneNode *m_debug_sphere_next;
 
-    /** The node(poly) at which the target point lies in. */
+    /** The node(quad) at which the target point lies in. */
     int m_target_node;
 
     /** The target point. */
     Vec3 m_target_point;
 
-    void         collectItemInArena(Vec3*, int*) const;
+    bool m_mini_skid;
+
+    void  collectItemInArena(Vec3*, int*) const;
 private:
     /** Used by handleArenaUTurn, it tells whether to do left or right
      *  turning when steering is overridden. */
     bool m_adjusting_side;
 
-    posData m_cur_kart_pos_data;
+    Vec3 m_target_point_lc;
 
    /** Indicates that the kart is currently stuck, and m_time_since_reversing is
      * counting down. */
@@ -81,15 +83,7 @@ private:
 
     /** Holds the unique node ai has driven through, useful to tell if AI is
      *  stuck by determine the size of this set. */
-    std::set <int> m_on_node;
-
-    /** Holds the corner points computed using the funnel algorithm that the AI
-     *  will eventaully move through. See stringPull(). */
-    std::vector<Vec3> m_path_corners;
-
-    /** Holds the set of portals that the kart will cross when moving through
-     *  polygon channel. See findPortals(). */
-    std::vector<std::pair<Vec3,Vec3> > m_portals;
+    std::set<int> m_on_node;
 
     /** Time an item has been collected and not used. */
     float m_time_since_last_shot;
@@ -103,27 +97,43 @@ private:
     /** This is a timer that counts down when the kart is doing u-turn. */
     float m_time_since_uturn;
 
-    void         checkIfStuck(const float dt);
-    float        determineTurnRadius(std::vector<Vec3>& points);
-    void         findPortals(int start, int end);
-    void         handleArenaAcceleration(const float dt);
-    void         handleArenaBanana();
-    void         handleArenaBraking();
-    void         handleArenaItems(const float dt);
-    void         handleArenaSteering(const float dt);
-    void         handleArenaUTurn(const float dt);
-    bool         handleArenaUnstuck(const float dt);
-    void         stringPull(const Vec3&, const Vec3&);
-    virtual int  getCurrentNode() const = 0;
-    virtual bool isWaiting() const = 0;
-    virtual void findClosestKart(bool use_difficulty) = 0;
-    virtual void findTarget() = 0;
+    /** This is a timer that counts when the kart start going off road. */
+    float m_time_since_off_road;
+
+    float m_turn_radius;
+
+    float m_steering_angle;
+
+    Vec3 m_current_forward_point;
+
+    int m_current_forward_node;
+
+    void          configSpeed();
+    void          configSteering();
+    void          checkIfStuck(const float dt);
+    void          determinePath(int forward, std::vector<int>* path);
+    void          doSkiddingTest();
+    void          doUTurn(const float dt);
+    bool          gettingUnstuck(const float dt);
+    bool          updateAimingPosition(Vec3* target_point);
+    void          useItems(const float dt);
+    virtual bool  canSkid(float steer_fraction) OVERRIDE
+                                     { return m_mini_skid; }
+    virtual void  findClosestKart(bool use_difficulty) = 0;
+    virtual void  findTarget() = 0;
+    virtual bool  forceBraking() { return false; }
+    virtual int   getCurrentNode() const = 0;
+    virtual float getKartDistance(const AbstractKart* kart) const = 0;
+    virtual bool  ignorePathFinding() { return false; }
+    virtual bool  isWaiting() const = 0;
+    virtual bool  isKartOnRoad() const = 0;
+    virtual void  resetAfterStop() {};
 public:
                  ArenaAI(AbstractKart *kart);
     virtual     ~ArenaAI() {};
-    virtual void update      (float delta);
-    virtual void reset       ();
-    virtual void newLap(int lap) {};
+    virtual void update (float delta) OVERRIDE;
+    virtual void reset  () OVERRIDE;
+    virtual void newLap (int lap) OVERRIDE {}
 };
 
 #endif

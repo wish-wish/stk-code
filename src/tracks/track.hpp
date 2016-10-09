@@ -26,47 +26,40 @@
   * objects.
   */
 
+#include <SColor.h>
 #include <string>
 #include <vector>
 
 namespace irr
 {
-    namespace video { class ITexture; class SColor;       }
-    namespace scene { class IMesh; class ILightSceneNode; }
+    namespace video { class ITexture;       }
+    namespace scene { class IMesh; class ILightSceneNode; class ISceneNode; }
 }
 using namespace irr;
 class ModelDefinitionLoader;
 
 #include "LinearMath/btTransform.h"
 
-#include "graphics/material.hpp"
-#include "items/item.hpp"
-#include "scriptengine/script_engine.hpp"
-#include "tracks/quad_graph.hpp"
-#include "tracks/battle_graph.hpp"
 #include "utils/aligned_array.hpp"
 #include "utils/translation.hpp"
 #include "utils/vec3.hpp"
 #include "utils/ptr_vector.hpp"
 
+class AbstractKart;
 class AnimationManager;
 class BezierCurve;
 class CheckManager;
+class FrameBuffer;
 class MovingTexture;
 class MusicInformation;
 class ParticleEmitter;
 class ParticleKind;
 class PhysicalObject;
+class TrackObject;
 class TrackObjectManager;
 class TriangleMesh;
 class World;
 class XMLNode;
-class TrackObject;
-
-namespace Scripting
-{
-    class ScriptEngine;
-}
 
 const int HEIGHT_MAP_RESOLUTION = 256;
 
@@ -380,8 +373,9 @@ private:
     int m_actual_number_of_laps;
 
     void loadTrackInfo();
-    void loadQuadGraph(unsigned int mode_id, const bool reverse);
-    void loadBattleGraph();
+    void loadDriveGraph(unsigned int mode_id, const bool reverse);
+    void loadArenaGraph(const XMLNode &node);
+    btQuaternion getArenaStartRotation(const Vec3& xyz, float heading);
     void convertTrackToBullet(scene::ISceneNode *node);
     bool loadMainTrack(const XMLNode &node);
     void loadMinimap();
@@ -396,6 +390,11 @@ public:
     bool reverseAvailable() const { return m_reverse_available; }
     void handleAnimatedTextures(scene::ISceneNode *node, const XMLNode &xml);
 
+    /** Flag to avoid loading navmeshes (useful to speedup debugging: e.g.
+     *  the temple navmesh distance matric computation takes around 12
+     *  minutes(!) in debug mode to be computed. */
+    static bool        m_dont_load_navmesh;
+
     static const float NOHIT;
 
                        Track             (const std::string &filename);
@@ -404,7 +403,6 @@ public:
     void               removeCachedData  ();
     void               startMusic        () const;
 
-    bool               setTerrainHeight(Vec3 *pos) const;
     void               createPhysicsModel(unsigned int main_track_count);
     void               update(float dt);
     void               reset();
@@ -469,8 +467,7 @@ public:
     int                getVersion        () const {return m_version;          }
     // ------------------------------------------------------------------------
     /** Returns the length of the main driveline. */
-    float              getTrackLength    () const
-                                     {return QuadGraph::get()->getLapLength();}
+    float              getTrackLength    () const;
     // ------------------------------------------------------------------------
     /** Returns a unique identifier for this track (the directory name). */
     const std::string& getIdent          () const {return m_ident;            }
@@ -507,8 +504,7 @@ public:
      *  in the direction of the default way on the track.
      *  \param n Number of the quad for which the angle is asked.
      */
-    float              getAngle(int n) const
-                            { return QuadGraph::get()->getAngleToNext(n, 0);  }
+    float              getAngle(int n) const;
     // ------------------------------------------------------------------------
     /** Returns the 2d coordinates of a point when drawn on the mini map
      *  texture.

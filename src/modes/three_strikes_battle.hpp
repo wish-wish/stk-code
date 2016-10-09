@@ -31,7 +31,8 @@
 class PhysicalObject;
 
 /**
- * \brief An implementation of World, to provide the 3 strikes battle game mode
+ *  \brief An implementation of WorldWithRank, to provide the 3 strikes battle
+ *  game mode
  * \ingroup modes
  */
 class ThreeStrikesBattle : public WorldWithRank
@@ -40,7 +41,6 @@ private:
     struct BattleInfo
     {
         int  m_lives;
-        int  m_on_node;
     };
 
     /** This vector contains an 'BattleInfo' struct for every kart in the race.
@@ -71,8 +71,11 @@ private:
 
     PtrVector<TrackObject, REF> m_tires;
 
-    /** Function to update the locations of all karts on the polygon map */
-    void updateKartNodes();
+    /** Profiling usage */
+    int m_total_rescue;
+    int m_frame_count;
+    int m_start_time;
+    int m_total_hit;
 
 public:
 
@@ -87,31 +90,31 @@ public:
     ThreeStrikesBattle();
     virtual ~ThreeStrikesBattle();
 
-    virtual void init();
+    virtual void init() OVERRIDE;
 
     // clock events
-    virtual bool isRaceOver();
-    virtual void terminateRace();
+    virtual bool isRaceOver() OVERRIDE;
+    virtual void terminateRace() OVERRIDE;
 
     // overriding World methods
-    virtual void reset();
+    virtual void reset() OVERRIDE;
 
     //virtual void getDefaultCollectibles(int& collectible_type, int& amount);
-    virtual bool useFastMusicNearEnd() const { return false; }
+    virtual bool useFastMusicNearEnd() const OVERRIDE { return false; }
     virtual void getKartsDisplayInfo(
-                          std::vector<RaceGUIBase::KartIconDisplayInfo> *info);
-    virtual bool raceHasLaps(){ return false; }
+                 std::vector<RaceGUIBase::KartIconDisplayInfo> *info) OVERRIDE;
+    virtual bool raceHasLaps() OVERRIDE { return false; }
 
-    virtual const std::string& getIdent() const;
+    virtual const std::string& getIdent() const OVERRIDE;
 
-    virtual void kartHit(const unsigned int kart_id);
-    virtual void update(float dt);
+    virtual void kartHit(const unsigned int kart_id) OVERRIDE;
+    virtual void update(float dt) OVERRIDE;
 
-    virtual void kartAdded(AbstractKart* kart, scene::ISceneNode* node);
-
-    int getKartNode(unsigned int kart_id) const;
+    virtual void kartAdded(AbstractKart* kart, scene::ISceneNode* node) OVERRIDE;
+    virtual void enterRaceOverState() OVERRIDE;
 
     void updateKartRanks();
+    void increaseRescueCount() { m_total_rescue++; }
 };   // ThreeStrikesBattles
 
 

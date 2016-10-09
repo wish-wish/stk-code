@@ -93,7 +93,7 @@ namespace Scripting
         FILE *f = fopen(script_path.c_str(), "rb");
         if (f == NULL)
         {
-            Log::debug("Scripting", "File does not exist : {0}", script_path.c_str());
+            Log::debug("Scripting", "File does not exist : %s", script_path.c_str());
             return "";
         }
 
@@ -378,7 +378,7 @@ namespace Scripting
                 Log::error("Scripting", "The script ended with an exception.");
 
                 // Write some information about the script exception
-                asIScriptFunction *func = ctx->GetExceptionFunction();
+                //asIScriptFunction *func = ctx->GetExceptionFunction();
                 //std::cout << "func: " << func->GetDeclaration() << std::endl;
                 //std::cout << "modl: " << func->GetModuleName() << std::endl;
                 //std::cout << "sect: " << func->GetScriptSectionName() << std::endl;
@@ -520,7 +520,6 @@ namespace Scripting
     {
         if (m_callback_delegate != NULL)
         {
-            asIScriptEngine* engine = World::getWorld()->getScriptEngine()->getEngine();
             m_callback_delegate->Release();
         }
     }
