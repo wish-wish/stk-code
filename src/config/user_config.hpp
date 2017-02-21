@@ -916,6 +916,10 @@ namespace UserConfigParams
             PARAM_DEFAULT( BoolUserConfigParam(false, "artist_debug_mode",
                                "Whether to enable track debugging features") );
 
+    PARAM_PREFIX BoolUserConfigParam        m_hide_gui
+        PARAM_DEFAULT(BoolUserConfigParam(false, "debug_hide_gui",
+            "Whether to hide the GUI (artist debug mode)"));
+
     PARAM_PREFIX BoolUserConfigParam        m_everything_unlocked
             PARAM_DEFAULT( BoolUserConfigParam(false, "everything_unlocked",
                                "Enable all karts and tracks") );
