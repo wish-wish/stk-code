@@ -8,6 +8,8 @@ endif()
 
 project(angelscript)
 
+#add_definitions(-DUNICODE -D_UNICODE)
+
 option(BUILD_SHARED_LIBS "Build shared library" OFF)
 
 if(APPLE)
@@ -138,6 +140,7 @@ else()
     set(BUILD_SHARED_LIBS TRUE)
 endif()
 
+#add_definitions(-DUNICODE -D_UNICODE)
 add_library(${ANGELSCRIPT_LIBRARY_NAME} ${ANGELSCRIPT_SOURCE} ${ANGELSCRIPT_HEADERS})
 #set(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/../../lib)
 target_link_libraries(${ANGELSCRIPT_LIBRARY_NAME} ${CMAKE_THREAD_LIBS_INIT})

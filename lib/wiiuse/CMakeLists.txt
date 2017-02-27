@@ -40,8 +40,10 @@ endif()
 
 if(WIN32)
     add_definitions("/DWIIUSE_STATIC")
+    #add_definitions(-DUNICODE -D_UNICODE)
     add_library(wiiuse STATIC ${WIIUSE_SOURCES})
 else()
+    #add_definitions(-DUNICODE -D_UNICODE)
     add_library(wiiuse ${WIIUSE_SOURCES})
 endif()
 
@@ -67,6 +69,7 @@ if(MSVC)
          mark_as_advanced(WIIUSE_WINDDK_ROOT)
          include_directories(${WIIUSE_VS_INCLUDE_DIR} ${WIIUSE_WINDDK_ROOT}/inc/api)
     endif()
+    #add_definitions(-DUNICODE -D_UNICODE)
     add_library(setupapi.lib STATIC IMPORTED)
     add_library(hid.lib STATIC IMPORTED)
     set_target_properties(setupapi.lib PROPERTIES 

@@ -12,6 +12,7 @@ find_package(OpenGL REQUIRED)
 include_directories(${OPENGL_INCLUDE_DIR})
 
 add_definitions(-DGLEW_STATIC)
+#add_definitions(-DUNICODE -D_UNICODE)
 
 add_library(glew STATIC
     include/GL/glew.h  include/GL/glxew.h  include/GL/wglew.h

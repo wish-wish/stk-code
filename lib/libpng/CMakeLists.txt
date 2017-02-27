@@ -149,6 +149,7 @@ endif()
 include_directories(${CMAKE_CURRENT_SOURCE_DIR} ${ZLIB_INCLUDE_DIR})
 
 if(PNG_SHARED)
+  #add_definitions(-DUNICODE -D_UNICODE)
   add_library(${PNG_LIB_NAME} SHARED ${libpng_sources})
   if(MSVC)
     # msvc does not append 'lib' - do it here to have consistent name
@@ -161,6 +162,7 @@ endif()
 if(PNG_STATIC)
 # does not work without changing name
   set(PNG_LIB_NAME_STATIC ${PNG_LIB_NAME}_static)
+  #add_definitions(-DUNICODE -D_UNICODE)
   add_library(${PNG_LIB_NAME_STATIC} STATIC ${libpng_sources})
   if(MSVC)
     # msvc does not append 'lib' - do it here to have consistent name

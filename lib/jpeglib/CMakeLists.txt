@@ -53,4 +53,6 @@ SET(JPEG_SRCS
  jquant2.c
  jutils.c)
 
+#add_definitions(-DUNICODE -D_UNICODE)
+
 add_library(jpeglib STATIC ${JPEG_SRCS})

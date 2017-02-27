@@ -382,7 +382,7 @@ bool CGUISTKListBox::OnEvent(const SEvent& event)
                     }
 
                     if (Selecting &&
-                        fabs(event.MouseInput.Y - MousePosY) > ItemHeight/3)
+                        fabs((double)event.MouseInput.Y - MousePosY) > ItemHeight/3)
                     {
                         Moving = true;
                         Selecting = false;
