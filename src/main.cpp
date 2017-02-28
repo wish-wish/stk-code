@@ -502,8 +502,7 @@ void setupRaceStart()
 
     if (!kart_properties_manager->getKart(UserConfigParams::m_default_kart))
     {
-        logwarn("main", "Kart '%s' is unknown so will use the "
-            "default kart.",
+        logwarn("main", "Kart '%s' is unknown so will use the default kart.",
             UserConfigParams::m_default_kart.c_str());
         race_manager->setPlayerKart(0,
                            UserConfigParams::m_default_kart.getDefaultValue());
@@ -749,13 +748,11 @@ int handleCmdLinePreliminary()
                     (int)UserConfigParams::m_height );
             }
             else
-                logwarn("main", "Resolution %s has been blacklisted, so "
-                "it is not available!", res.c_str());
+                logwarn("main", "Resolution %s has been blacklisted, so it is not available!", res.c_str());
         }
         else
         {
-            logfatal("main", "Error: --screensize argument must be "
-                "given as WIDTHxHEIGHT");
+            logfatal("main", "Error: --screensize argument must be given as WIDTHxHEIGHT");
         }
     }
 
@@ -770,8 +767,7 @@ int handleCmdLinePreliminary()
                    == UserConfigParams::m_blacklist_res.end())
             UserConfigParams::m_fullscreen = true;
         else
-            logwarn("main", "Resolution %s has been blacklisted, so it "
-            "is not available!", res.c_str());
+            logwarn("main", "Resolution %s has been blacklisted, so it is not available!", res.c_str());
     }
 
     if(CommandLine::has("--windowed") || CommandLine::has("-w"))
@@ -1061,8 +1057,7 @@ int handleCmdLine()
         {
             const KartProperties *km =
                 kart_properties_manager->getKartById(i);
-            loginfo("main", "%s:\t%swidth: %f length: %f height: %f "
-                      "mesh-buffer count %d",
+            loginfo("main", "%s:\t%swidth: %f length: %f height: %f mesh-buffer count %d",
                       km->getIdent().c_str(),
                       (km->getIdent().size()<7) ? "\t" : "",
                       km->getMasterKartModel().getWidth(),

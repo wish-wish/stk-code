@@ -92,7 +92,7 @@ void DriveGraph::load(const std::string &quad_file_name,
     XMLNode *quad = file_manager->createXMLTree(quad_file_name);
     if (!quad || quad->getName() != "quads")
     {
-        logerror("DriveGraph : Quad xml '%s' not found.", filename.c_str());
+        logerror("DriveGraph ","Quad xml '%s' not found.", filename.c_str());
         delete quad;
         return;
     }
@@ -103,7 +103,7 @@ void DriveGraph::load(const std::string &quad_file_name,
         const XMLNode *xml_node = quad->getNode(i);
         if (xml_node->getName() != "quad")
         {
-            logwarn("DriveGraph: Unsupported node type '%s' found in '%s' - ignored.",
+            logwarn("DriveGraph:"," Unsupported node type '%s' found in '%s' - ignored.",
                 xml_node->getName().c_str(), filename.c_str());
             continue;
         }

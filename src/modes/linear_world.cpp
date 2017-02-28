@@ -224,15 +224,14 @@ void LinearWorld::update(float dt)
         {
             for(unsigned int j=0; j<kart_amount; j++)
             {
-                logverbose("[LinearWorld]", "kart id=%u, position=%d, finished=%d, laps=%d, "
-                       "distanceDownTrack=%f overallDistance=%f %s",
+                logverbose("[LinearWorld]", "kart id=%u, position=%d, finished=%d, laps=%d, distanceDownTrack=%f overallDistance=%f %s",
                     j, m_karts[j]->getPosition(),
                     m_karts[j]->hasFinishedRace(),
                     m_kart_info[j].m_race_lap,
                     getDistanceDownTrackForKart(m_karts[j]->getWorldKartId()),
                     m_kart_info[j].m_overall_distance,
                     (m_karts[j]->getPosition() == m_karts[i]->getPosition()
-                     ? "<--- !!!" : "")                                      );
+                     ? TEXT("<--- !!!") : TEXT(""))                                      );
             }
         }
         pos_used[m_karts[i]->getPosition()]=i;
@@ -725,8 +724,7 @@ void LinearWorld::updateRacePosition()
             logdebug("[LinearWorld]", "Info used to decide ranking :");
             for (unsigned int d=0; d<kart_amount; d++)
             {
-                logdebug("[LinearWorld]", "Kart %s has finished (%d), is at lap (%u),"
-                            "is at distance (%u), is eliminated(%d)",
+                logdebug("[LinearWorld]", "Kart %s has finished (%d), is at lap (%u),is at distance (%u), is eliminated(%d)",
                             m_karts[d]->getIdent().c_str(),
                             m_karts[d]->hasFinishedRace(),
                             getLapForKart(d),

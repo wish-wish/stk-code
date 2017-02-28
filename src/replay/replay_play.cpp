@@ -114,8 +114,8 @@ bool ReplayPlay::addReplayFile(const std::string& fn, bool custom_replay)
     unsigned int version;
     if (sscanf(s,"version: %u", &version) != 1)
     {
-        logwarn("Replay", "No Version information "
-                  "found in replay file (bogus replay file).");
+        logwarn("Replay", "No Version information \
+                  found in replay file (bogus replay file).");
         fclose(fd);
         return false;
     }
@@ -258,8 +258,8 @@ void ReplayPlay::readKartData(FILE *fd, char *next_line)
 
     unsigned int size;
     if(sscanf(next_line,"size: %u",&size)!=1)
-        logfatal("Replay", "Number of records not found in replay file "
-            "for kart %d.", kart_num);
+        logfatal("Replay", "Number of records not found in replay file \
+            for kart %d.", kart_num);
 
     for(unsigned int i=0; i<size; i++)
     {

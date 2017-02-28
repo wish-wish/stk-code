@@ -268,8 +268,8 @@ void RaceManager::computeRandomKartList()
 {
     int n = m_num_karts - (int)m_player_karts.size();
     if(UserConfigParams::logMisc())
-        loginfo("RaceManager", "AI karts count = %d for m_num_karts = %d and "
-            "m_player_karts.size() = %d", n, m_num_karts, m_player_karts.size());
+        loginfo("RaceManager", "AI karts count = %d for m_num_karts = %d and \
+            m_player_karts.size() = %d", n, m_num_karts, m_player_karts.size());
 
     // If less kart selected than there are player karts, adjust the number of
     // karts to the minimum
@@ -345,8 +345,8 @@ void RaceManager::startNew(bool from_overworld)
             {
                 if (m_saved_gp == NULL)
                 {
-                    logerror("Race Manager", "Can not continue Grand Prix '%s'"
-                                               "because it could not be loaded",
+                    logerror("Race Manager", "Can not continue Grand Prix '%s'\
+                                               because it could not be loaded",
                                                m_grand_prix.getId().c_str());
                     m_continue_saved_gp = false; // simple and working
                 }
@@ -818,8 +818,8 @@ void RaceManager::exitRace(bool delete_world)
             }
             else
             {
-                logerror("RaceManager", "There are no winners and no losers."
-                           "This should have never happend\n");
+                logerror("RaceManager", "There are no winners and no losers.\
+                           This should have never happend\n");
                 std::vector<std::string> karts;
                 karts.push_back(UserConfigParams::m_default_kart);
                 scene->setKarts(karts);

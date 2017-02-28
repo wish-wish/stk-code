@@ -32,6 +32,10 @@
 #  include <windows.h>
 #endif
 
+#if defined(_MSC_VER)
+#include "tchar.h"
+#endif
+
 #if !defined(TEXT)
 #define TEXT(STR) STR
 #endif

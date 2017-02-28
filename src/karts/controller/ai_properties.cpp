@@ -101,8 +101,7 @@ void AIProperties::load(const XMLNode *ai_node)
 void AIProperties::checkAllSet(const std::string &filename) const
 {
 #define CHECK_NEG(  a,str_a) if(a<=UNDEFINED) {                     \
-        logfatal("AIProperties","Missing default value for"       \
-                    " '%s' in '%s' 'for AI '%s'.",                \
+        logfatal("AIProperties","Missing default value for '%s' in '%s' 'for AI '%s'.",                \
                     str_a, filename.c_str(), m_ident.c_str());      \
     }
     CHECK_NEG(m_max_item_angle,            "max-item-angle"            );

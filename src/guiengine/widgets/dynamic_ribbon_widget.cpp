@@ -286,8 +286,7 @@ void DynamicRibbonWidget::add()
             const int max_rows = atoi(m_properties[PROP_MAX_ROWS].c_str());
             if (max_rows < 1)
             {
-                logwarn("DynamicRibbonWidget", "The 'max_rows' property must be an integer greater than zero; "
-                    "Ignoring current value '%s'", m_properties[PROP_MAX_ROWS].c_str());
+                logwarn("DynamicRibbonWidget", "The 'max_rows' property must be an integer greater than zero; Ignoring current value '%s'", m_properties[PROP_MAX_ROWS].c_str());
             }
             else
             {

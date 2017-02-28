@@ -181,7 +181,7 @@ void* NewsManager::downloadNews(void *obj)
                 error_message = StringUtils::insertValues(error_message, curl_error);
                 addons_manager->setErrorState();
                 me->setErrorMessage(error_message);
-                logerror("news", core::stringc(error_message).c_str());
+				logerror("N", "news", core::stringc(error_message).c_str());
             }   // hadDownloadError
         }   // hadDownloadError
 
@@ -433,8 +433,7 @@ bool NewsManager::conditionFulfilled(const std::string &cond)
         std::vector<std::string> cond = StringUtils::split(cond_list[i],' ');
         if(cond.size()!=3)
         {
-            logwarn("NewsManager", "Invalid condition '%s' - assumed to "
-                                     "be true.", cond_list[i].c_str());
+            logwarn("NewsManager", "Invalid condition '%s' - assumed to be true.", cond_list[i].c_str());
             continue;
         }
         // Check for stkversion comparisons
@@ -458,8 +457,7 @@ bool NewsManager::conditionFulfilled(const std::string &cond)
                 if(stk_version<=news_version) return false;
                 continue;
             }
-            logwarn("NewsManager", "Invalid comparison in condition '%s' - "
-                                     "assumed true.", cond_list[i].c_str());
+            logwarn("NewsManager", "Invalid comparison in condition '%s' - assumed true.", cond_list[i].c_str());
         }
         // Check for addons not installed
         // ==============================

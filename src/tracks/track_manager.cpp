@@ -194,8 +194,8 @@ bool TrackManager::loadTrack(const std::string& dirname)
     if (track->getVersion()<stk_config->m_min_track_version ||
         track->getVersion()>stk_config->m_max_track_version)
     {
-        logwarn("TrackManager", "Track '%s' is not supported "
-                        "by this binary, ignored. (Track is version %i, this "
+		logwarn("TrackManager", "Track '%s' is not supported ",
+                        "by this binary, ignored. (Track is version %i, this ",
                         "executable supports from %i to %i).",
                   track->getIdent().c_str(), track->getVersion(),
                   stk_config->m_min_track_version,

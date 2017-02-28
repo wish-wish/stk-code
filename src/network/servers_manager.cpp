@@ -72,8 +72,8 @@ void ServersManager::cleanUpServers()
     {
         // m_joinsed_server is a pointer into the m_server structure,
         // we can not modify this data structure while this pointer exists.
-        logwarn("ServersManager", "Server cleanUp while being already "
-                                    "connected to a server.");
+        logwarn("ServersManager", "Server cleanUp while being already \
+                                    connected to a server.");
         return;
     }
 
@@ -226,8 +226,8 @@ Online::XMLRequest* ServersManager::getRefreshRequest(bool request_now)
     {
         // m_joinsed_server is a pointer into the m_server structure,
         // we can not modify this data structure while this pointer exists.
-        logwarn("ServersManager", "Server refresh while being already "
-                                    "connected to a server.");
+        logwarn("ServersManager", "Server refresh while being already \
+                                    connected to a server.");
         return NULL;
     }
 

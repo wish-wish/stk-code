@@ -132,7 +132,7 @@ void ReplayRecorder::update(float dt)
                 char buffer[100];
                 sprintf(buffer, "Can't store more events for kart %s.",
                         kart->getIdent().c_str());
-                logwarn("ReplayRecorder", buffer);
+                logwarn("r","ReplayRecorder", buffer);
                 m_incorrect_replay = single_player;
             }
             continue;
@@ -184,8 +184,8 @@ void ReplayRecorder::save()
     }
 
 #ifdef DEBUG
-    logdebug("ReplayRecorder", "%d frames, %d removed because of"
-        "frequency compression", m_count, m_count_skipped_time);
+    logdebug("ReplayRecorder", "%d frames, %d removed because of\
+        frequency compression", m_count, m_count_skipped_time);
 #endif
     const World *world           = World::getWorld();
     const unsigned int num_karts = world->getNumKarts();
@@ -210,8 +210,8 @@ void ReplayRecorder::save()
     FILE *fd = openReplayFile(/*writeable*/true);
     if (!fd)
     {
-        logerror("ReplayRecorder", "Can't open '%s' for writing - "
-            "can't save replay data.", getReplayFilename().c_str());
+        logerror("ReplayRecorder", "Can't open '%s' for writing - \
+            can't save replay data.", getReplayFilename().c_str());
         return;
     }
 

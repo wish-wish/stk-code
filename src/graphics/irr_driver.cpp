@@ -447,8 +447,7 @@ void IrrDriver::initDevice()
         for (int bits=32; bits>15; bits -=8)
         {
             if(UserConfigParams::logMisc())
-                logverbose("irr_driver", "Trying to create device with "
-                             "%i bits\n", bits);
+                logverbose("irr_driver", "Trying to create device with %i bits\n", bits);
 
 #if defined(USE_GLES2)
             params.DriverType    = video::EDT_OGLES2;
@@ -543,8 +542,7 @@ void IrrDriver::initDevice()
     if (!ProfileWorld::isNoGraphics() &&
         GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_FORCE_LEGACY_DEVICE))
     {
-        logwarn("irr_driver", "Driver doesn't support shader-based pipeline. "
-                                "Re-creating device to workaround the issue.");
+        logwarn("irr_driver", "Driver doesn't support shader-based pipeline. Re-creating device to workaround the issue.");
 
         params.ForceLegacyDevice = true;
         recreate_device = true;
@@ -559,7 +557,7 @@ void IrrDriver::initDevice()
 #ifndef SERVER_ONLY
     else if (CVS->needsSRGBCapableVisualWorkaround())
     {
-        logwarn("irr_driver", "Created visual is not sRGB-capable. "
+        logwarn("irr_driver", "Created visual is not sRGB-capable. ",
                                 "Re-creating device to workaround the issue.");
 
         params.WithAlphaChannel = true;
@@ -1723,8 +1721,7 @@ void IrrDriver::displayFPS()
     if ((UserConfigParams::m_artist_debug_mode)&&(CVS->isGLSL()))
     {
         fps_string = StringUtils::insertValues
-                    (L"FPS: %d/%d/%d  - PolyCount: %d Solid, "
-                      "%d Shadows - LightDist : %d, Total skinning joints: %d",
+                    (TEXT("FPS: %d/%d/%d  - PolyCount: %d Solid, %d Shadows - LightDist : %d, Total skinning joints: %d"),
                     min, fps, max, m_renderer->getPolyCount(SOLID_NORMAL_AND_DEPTH_PASS),
                     m_renderer->getPolyCount(SHADOW_PASS), m_last_light_bucket_distance,
                     m_skinning_joint);

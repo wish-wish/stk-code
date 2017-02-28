@@ -647,8 +647,8 @@ void RaceResultGUI::backToLobby()
             }
             catch (std::exception& e)
             {
-                logerror("RaceResultGUI", "Exception caught when "
-                    "trying to load music: %s", e.what());
+                logerror("RaceResultGUI", "Exception caught when \
+                    trying to load music: %s", e.what());
             }
         }
     }   // onUpdate

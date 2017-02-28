@@ -53,8 +53,7 @@ void Referee::init()
     }
     if(node->getName()!="referee")
     {
-        logfatal("referee", "The file referee.xml does not contain a referee"
-               "node, aborting.");
+        logfatal("referee", "The file referee.xml does not contain a referee node, aborting.");
     }
     std::string model_filename;
     node->get("model", &model_filename);

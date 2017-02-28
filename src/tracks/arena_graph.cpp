@@ -107,8 +107,8 @@ void ArenaGraph::loadNavmesh(const std::string &navmesh)
                 const XMLNode *xml_node_node = xml_node->getNode(i);
                 if (!(xml_node_node->getName() == "vertex"))
                 {
-                    logerror("ArenaGraph", "Unsupported type '%s' found"
-                        "in '%s' - ignored.",
+                    logerror("ArenaGraph", "Unsupported type '%s' found\
+                        in '%s' - ignored.",
                         xml_node_node->getName().c_str(), navmesh.c_str());
                     continue;
                 }
@@ -130,8 +130,8 @@ void ArenaGraph::loadNavmesh(const std::string &navmesh)
                 const XMLNode *xml_node_node = xml_node->getNode(i);
                 if (xml_node_node->getName() != "face")
                 {
-                    logerror("ArenaGraph", "Unsupported type '%s'"
-                        " found in '%s' - ignored.",
+                    logerror("ArenaGraph", "Unsupported type '%s'\
+                         found in '%s' - ignored.",
                         xml_node_node->getName().c_str(), navmesh.c_str());
                     continue;
                 }
@@ -143,8 +143,8 @@ void ArenaGraph::loadNavmesh(const std::string &navmesh)
                 xml_node_node->get("adjacents", &adjacent_quad_index);
                 if (quad_index.size() != 4)
                 {
-                    logerror("ArenaGraph", "A Node in navmesh is not made"
-                        " of quad, will only use the first 4 vertices");
+                    logerror("ArenaGraph", "A Node in navmesh is not made\
+                         of quad, will only use the first 4 vertices");
                 }
 
                 createQuad(all_vertices[quad_index[0]],

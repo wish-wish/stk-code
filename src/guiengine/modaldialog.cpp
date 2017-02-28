@@ -129,8 +129,7 @@ void ModalDialog::doInit()
     if (modalWindow != NULL)
     {
         delete modalWindow;
-        logwarn("GUIEngine", "Showing a modal dialog while the previous one "
-                  "is still open. Destroying the previous dialog.");
+        logwarn("GUIEngine", "Showing a modal dialog while the previous one is still open. Destroying the previous dialog.");
     }
     modalWindow = this;
 

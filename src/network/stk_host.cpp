@@ -254,8 +254,8 @@ STKHost::STKHost(uint32_t server_id, uint32_t host_id)
                             /*max_in_bandwidth*/0, /*max_out_bandwidth*/0, &ea);
     if (!m_network)
     {
-        logfatal ("STKHost", "An error occurred while trying to create "
-                               "an ENet client host.");
+        logfatal ("STKHost", "An error occurred while trying to create \
+                               an ENet client host.");
     }
 
     Protocol *connect = new ConnectToServer(server_id, host_id);
@@ -284,8 +284,8 @@ STKHost::STKHost(const irr::core::stringw &server_name)
                            /*max_out_bandwidth*/ 0, &addr);
     if (!m_network)
     {
-        logfatal("STKHost", "An error occurred while trying to create an "
-                              "ENet server host.");
+        logfatal("STKHost", "An error occurred while trying to create an \
+                              ENet server host.");
     }
 
     startListening();
@@ -556,8 +556,8 @@ void* STKHost::mainLoop(void* self)
             STKPeer* peer = stk_event->getPeer();
             if (stk_event->getType() == EVENT_TYPE_CONNECTED)
             {
-                loginfo("STKHost", "A client has just connected. There are "
-                          "now %lu peers.", myself->m_peers.size());
+                loginfo("STKHost", "A client has just connected. There are \
+                          now %lu peers.", myself->m_peers.size());
                 logdebug("STKHost", "Addresses are : %lx, %lx",
                            stk_event->getPeer(), peer);
             }   // EVENT_TYPE_CONNECTED
@@ -752,8 +752,8 @@ void STKHost::removePeer(const STKPeer* peer)
     }   // for i < m_peers.size()
 
     if (!removed)
-        logwarn("NetworkManager", "The peer that has been disconnected was "
-                                    "not registered by the Network Manager.");
+        logwarn("NetworkManager", "The peer that has been disconnected was \
+                                    not registered by the Network Manager.");
 
     loginfo("NetworkManager",
               "Somebody is now disconnected. There are now %lu peers.",

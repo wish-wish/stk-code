@@ -143,8 +143,7 @@ GLuint ShaderFilesManager::loadShader(const std::string &file, unsigned type)
                 std::size_t pos = line.find("\"");
                 if (pos == std::string::npos)
                 {
-                    logerror("ShaderFilesManager", "Invalid #stk_include"
-                        " line: '%s'.", line.c_str());
+                    logerror("ShaderFilesManager", "Invalid #stk_include  line: '%s'.", line.c_str());
                     continue;
                 }
 
@@ -154,8 +153,7 @@ GLuint ShaderFilesManager::loadShader(const std::string &file, unsigned type)
                 pos = filename.find("\"");
                 if (pos == std::string::npos)
                 {
-                    logerror("ShaderFilesManager", "Invalid #stk_include"
-                        " line: '%s'.", line.c_str());
+                    logerror("ShaderFilesManager", "Invalid #stk_include line: '%s'.", line.c_str());
                     continue;
                 }
 
@@ -165,8 +163,7 @@ GLuint ShaderFilesManager::loadShader(const std::string &file, unsigned type)
                 std::ifstream include_stream(file_manager->getShader(filename), std::ios::in);
                 if (!include_stream.is_open())
                 {
-                    logerror("ShaderFilesManager", "Couldn't open included"
-                        " shader: '%s'.", filename.c_str());
+                    logerror("ShaderFilesManager", "Couldn't open included shader: '%s'.", filename.c_str());
                     continue;
                 }
 
@@ -210,7 +207,7 @@ GLuint ShaderFilesManager::loadShader(const std::string &file, unsigned type)
         char *error_message = new char[info_length];
         error_message[0] = 0;
         glGetShaderInfoLog(id, info_length, NULL, error_message);
-        logerror("ShaderFilesManager", error_message);
+        logerror("s","ShaderFilesManager", error_message);
         delete[] error_message;
     }
     glGetError();

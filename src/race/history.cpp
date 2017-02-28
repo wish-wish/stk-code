@@ -168,8 +168,8 @@ void History::Save()
     if(!fd)
     {
         loginfo("History", "Can't open history.dat file for writing - can't save history.");
-        loginfo("History", "Make sure history.dat in the current directory "
-                             "or the config directory is writable.");
+        loginfo("History", "Make sure history.dat in the current directory \
+                             or the config directory is writable.");
         return;
     }
 

@@ -382,8 +382,8 @@ void ClientLobby::newPlayer(Event* event)
     if(STKHost::get()->getGameSetup()->isLocalMaster(player_id))
     {
         logerror("ClientLobby",
-                   "The server notified me that I'm a new player in the "
-                   "room (not normal).");
+                   "The server notified me that I'm a new player in the \
+                   room (not normal).");
     }
     else if (m_game_setup->getProfile(player_id) == NULL)
     {

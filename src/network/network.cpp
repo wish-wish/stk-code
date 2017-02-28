@@ -54,8 +54,7 @@ Network::Network(int peer_count, int channel_limit,
     m_host = enet_host_create(address, peer_count, channel_limit, 0, 0);
     if (!m_host)
     {
-        logfatal("Network", "An error occurred while trying to create an "
-                   "ENet client host.");
+        logfatal("Network", "An error occurred while trying to create an ENet client host.");
     }
 }   // Network
 

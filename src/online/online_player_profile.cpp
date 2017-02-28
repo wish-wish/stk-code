@@ -301,9 +301,9 @@ namespace Online
         if (!success)
         {
             logwarn("OnlinePlayerProfile::signOut",
-                      "There were some connection issues while logging out. "
-                      "Report a bug if this caused issues.");
-            logwarn("OnlinePlayerProfile::signOut", core::stringc(info.c_str()).c_str());
+                      "There were some connection issues while logging out. \
+                      Report a bug if this caused issues.");
+			logwarn("OnlinePlayerProfile::signOut", "%s", core::stringc(info.c_str()).c_str());
             if (user_screen)
                 user_screen->logoutError(info);
         }

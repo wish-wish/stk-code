@@ -265,8 +265,8 @@ Material* ParticleKind::getMaterial() const
     }
     else
     {
-        logwarn("ParticleKind", "Particle image '%s' does not appear in the list of "
-                  "currently known materials.", m_material_file.c_str());
+        logwarn("ParticleKind", "Particle image '%s' does not appear in the list of \
+                  currently known materials.", m_material_file.c_str());
         return NULL;
     }
 }

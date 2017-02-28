@@ -203,8 +203,7 @@ FileManager::FileManager()
 
     if (!m_file_system->existFile((root_dir + version).c_str()))
     {
-        logerror("FileManager", "Could not file '%s'in any "
-                   "standard location (esp. ../data).", version.c_str());
+        logerror("FileManager", "Could not file '%s'in any standard location (esp. ../data).", version.c_str());
         logerror("FileManager", 
                    "Last location checked '%s'.", root_dir.c_str());
         logfatal("FileManager", 
@@ -365,8 +364,7 @@ FileManager::~FileManager()
         if(current - mystat.st_ctime <24*3600)
         {
             if(UserConfigParams::logAddons())
-                logverbose("[FileManager]", "'%s' is less than 24h old "
-                             "and will not be deleted.",
+                logverbose("[FileManager]", "'%s' is less than 24h old and will not be deleted.",
                              full_path.c_str());
             continue;
         }
@@ -832,8 +830,7 @@ void FileManager::checkAndCreateConfigDir()
             m_user_config_dir  = getenv("APPDATA");
             if (!checkAndCreateDirectory(m_user_config_dir))
             {
-                logerror("[FileManager]", "Can't create config dir '%s"
-                            ", falling back to '.'.", m_user_config_dir.c_str());
+                logerror("[FileManager]", "Can't create config dir '%s, falling back to '.'.", m_user_config_dir.c_str());
                 m_user_config_dir = ".";
             }
         }
@@ -903,8 +900,7 @@ void FileManager::checkAndCreateConfigDir()
     m_user_config_dir +="0.8.2/";
     if(!checkAndCreateDirectoryP(m_user_config_dir))
     {
-        logwarn("FileManager", "Can not  create config dir '%s', "
-                  "falling back to '.'.", m_user_config_dir.c_str());
+        logwarn("FileManager", "Can not  create config dir '%s', falling back to '.'.", m_user_config_dir.c_str());
         m_user_config_dir = "./";
     }
     return;
@@ -930,8 +926,7 @@ void FileManager::checkAndCreateAddonsDir()
 
     if(!checkAndCreateDirectory(m_addons_dir))
     {
-        logerror("FileManager", "Can not create add-ons dir '%s', "
-                   "falling back to '.'.", m_addons_dir.c_str());
+        logerror("FileManager", "Can not create add-ons dir '%s', falling back to '.'.", m_addons_dir.c_str());
         m_addons_dir = "./";
     }
 
@@ -966,8 +961,7 @@ void FileManager::checkAndCreateScreenshotDir()
 
     if(!checkAndCreateDirectory(m_screenshot_dir))
     {
-        logerror("FileManager", "Can not create screenshot directory '%s', "
-                   "falling back to '.'.", m_screenshot_dir.c_str());
+        logerror("FileManager", "Can not create screenshot directory '%s', falling back to '.'.", m_screenshot_dir.c_str());
         m_screenshot_dir = ".";
     }
 
@@ -992,8 +986,7 @@ void FileManager::checkAndCreateReplayDir()
 
     if(!checkAndCreateDirectory(m_replay_dir))
     {
-        logerror("FileManager", "Can not create replay directory '%s', "
-                   "falling back to '.'.", m_replay_dir.c_str());
+        logerror("FileManager", "Can not create replay directory '%s', falling back to '.'.", m_replay_dir.c_str());
         m_replay_dir = ".";
     }
 
@@ -1017,8 +1010,7 @@ void FileManager::checkAndCreateCachedTexturesDir()
 
     if (!checkAndCreateDirectory(m_cached_textures_dir))
     {
-        logerror("FileManager", "Can not create cached textures directory '%s', "
-            "falling back to '.'.", m_cached_textures_dir.c_str());
+        logerror("FileManager", "Can not create cached textures directory '%s', falling back to '.'.", m_cached_textures_dir.c_str());
         m_cached_textures_dir = ".";
     }
 
@@ -1043,8 +1035,7 @@ void FileManager::checkAndCreateGPDir()
 
     if(!checkAndCreateDirectory(m_gp_dir))
     {
-        logerror("FileManager", "Can not create user-defined grand prix directory '%s', "
-                   "falling back to '.'.", m_gp_dir.c_str());
+        logerror("FileManager", "Can not create user-defined grand prix directory '%s', falling back to '.'.", m_gp_dir.c_str());
         m_gp_dir = ".";
     }
 
@@ -1176,8 +1167,7 @@ void FileManager::redirectOutput()
     }
 
     //Enable logging of stdout and stderr to logfile
-    logverbose("main", "Error messages and other text output will "
-                         "be logged to %s.", logoutfile.c_str());
+    logverbose("main", "Error messages and other text output will be logged to %s.", logoutfile.c_str());
     Log::openOutputFiles(logoutfile);
 }   // redirectOutput
 

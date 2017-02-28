@@ -221,10 +221,9 @@ void ProfileWorld::enterRaceOverState()
 
     // Print race statistics for each individual kart
     float min_t=999999.9f, max_t=0.0, av_t=0.0;
-    logverbose("profile", "name start_position end_position time average_speed top_speed "
-           "skid_time rescue_time rescue_count brake_count "
-           "explosion_time explosion_count bonus_count banana_count "
-           "small_nitro_count large_nitro_count bubblegum_count");
+    logverbose("profile", "name start_position end_position time average_speed top_speed skid_time rescue_time rescue_count brake_count \
+           explosion_time explosion_count bonus_count banana_count \
+           small_nitro_count large_nitro_count bubblegum_count");
 
     std::set<std::string> all_groups;
 
@@ -252,7 +251,7 @@ void ProfileWorld::enterRaceOverState()
         ss << kart->getBonusCount() << " " << kart->getBananaCount() << " ";
         ss << kart->getSmallNitroCount() << " " << kart->getLargeNitroCount() << " ";
         ss << kart->getBubblegumCount() << " " << kart->getOffTrackCount() << " ";
-        logverbose("profile", ss.str().c_str());
+		logverbose("profile", "%s", ss.str().c_str());
     }
 
     // Print group statistics of all karts
@@ -272,7 +271,7 @@ void ProfileWorld::enterRaceOverState()
     logverbose("profile", "");
     ss << "name" << std::setw(max_len-4) << " "
        << "Strt End  Time    AvSp  Top   Skid  Resc Rsc Brake Expl Exp Itm Ban SNitLNit Bub Off Energy";
-    logverbose("profile", ss.str().c_str());
+	logverbose("profile", "%s", ss.str().c_str());
     for(std::set<std::string>::iterator it = all_groups.begin();
         it !=all_groups.end(); it++)
     {
@@ -330,7 +329,7 @@ void ProfileWorld::enterRaceOverState()
             energy          += kart->getEnergy();
         }    // for i < m_karts.size
 
-        logverbose("profile", std::string(max_len+90, '-').c_str());
+		logverbose("[profile]","profile", std::string(max_len + 90, '-').c_str());
         ss.clear();
         ss.str("");
         ss << *it << std::string(max_len-it->size(),' ');

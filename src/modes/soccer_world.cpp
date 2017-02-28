@@ -620,8 +620,8 @@ void SoccerWorld::enterRaceOverState()
 
     if (UserConfigParams::m_arena_ai_stats)
     {
-        logverbose("Soccer AI profiling", "Total frames elapsed for a team"
-            " to win with 30 goals: %d", m_frame_count);
+        logverbose("Soccer AI profiling", "Total frames elapsed for a team\
+             to win with 30 goals: %d", m_frame_count);
 
         // Goal time statistics
         std::sort(m_goal_frame.begin(), m_goal_frame.end());
@@ -648,8 +648,8 @@ void SoccerWorld::enterRaceOverState()
             median = m_goal_frame[m_goal_frame.size() / 2];
         }
 
-        logverbose("Soccer AI profiling", "Frames elapsed for each goal:"
-            " min: %d max: %d mean: %d median: %d standard deviation: %d",
+        logverbose("Soccer AI profiling", "Frames elapsed for each goal:\
+             min: %d max: %d mean: %d median: %d standard deviation: %d",
             m_goal_frame.front(), m_goal_frame.back(), mean, median, stdev);
 
         // Goal calculation
@@ -673,8 +673,8 @@ void SoccerWorld::enterRaceOverState()
         int blue_goal = ((int(m_blue_scorers.size()) - red_own_goal) >= 0 ?
             m_blue_scorers.size() - red_own_goal : 0);
 
-        logverbose("Soccer AI profiling", "Red goal: %d, Red own goal: %d,"
-            "Blue goal: %d, Blue own goal: %d", red_goal, red_own_goal,
+        logverbose("Soccer AI profiling", "Red goal: %d, Red own goal: %d,\
+            Blue goal: %d, Blue own goal: %d", red_goal, red_own_goal,
             blue_goal, blue_own_goal);
 
         if (getScore(SOCCER_TEAM_BLUE) >= m_goal_target)

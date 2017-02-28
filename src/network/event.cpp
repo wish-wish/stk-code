@@ -68,7 +68,7 @@ Event::Event(ENetEvent* event)
         logerror("Event", "HostID %d Token %d message token %d",
             m_peer->getHostId(), m_peer->getClientServerToken(),
             m_data->getToken());
-        logerror("Event", m_data->getLogMessage().c_str());
+        logerror("Event","%s", m_data->getLogMessage().c_str());
     }
 }   // Event(ENetEvent)
 

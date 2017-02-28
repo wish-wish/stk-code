@@ -532,8 +532,8 @@ void RaceGUIOverworld::drawGlobalMiniMap()
 
                 if (gp == NULL)
                 {
-                    logerror("RaceGUIOverworld", "Cannot find GP <%s>, "
-                               "referenced from challenge <%s>",
+                    logerror("RaceGUIOverworld", "Cannot find GP <%s>, \
+                               referenced from challenge <%s>",
                                challenge->getGPId().c_str(),
                                challenges[n].m_challenge_id.c_str());
                     break;
@@ -556,8 +556,8 @@ void RaceGUIOverworld::drawGlobalMiniMap()
                 Track* track = track_manager->getTrack(challenge->getTrackId());
                 if (track == NULL)
                 {
-                    logerror("RaceGUIOverworld", "Cannot find track <%s>, "
-                               "referenced from challenge <%s>",
+                    logerror("RaceGUIOverworld", "Cannot find track <%s>, \
+                               referenced from challenge <%s>",
                                challenge->getTrackId().c_str(),
                                challenges[n].m_challenge_id.c_str());
                     break;

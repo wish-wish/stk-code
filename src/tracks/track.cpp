@@ -597,7 +597,7 @@ void Track::loadTrackInfo()
         m_has_navmesh = true;
     else if ( (m_is_arena || m_is_soccer) && !m_dont_load_navmesh)
     {
-        logwarn("Track", "NavMesh is not found for arena %s, "
+        logwarn("Track", "NavMesh is not found for arena %s, ",
                   "disable AI for it.\n", m_name.c_str());
     }
     if (m_is_soccer)
@@ -742,7 +742,7 @@ void Track::loadDriveGraph(unsigned int mode_id, const bool reverse)
                 m_filename.c_str());
         if (race_manager->getNumberOfKarts() > 1)
         {
-            logfatal("track", "I can handle the lack of driveline in single"
+            logfatal("track", "I can handle the lack of driveline in single",
                 "kart mode, but not with AIs\n");
         }
     }
@@ -1575,8 +1575,7 @@ void Track::loadTrackModel(bool reverse_track, unsigned int mode_id)
     assert(m_all_cached_meshes.size()==0);
     if(UserConfigParams::logMemory())
     {
-        logdebug("[memory] Before loading '%s': mesh cache %d "
-                   "texture cache %d\n",
+		logdebug("[memory]"," Before loading '%s': mesh cache %d texture cache %d\n",
             getIdent().c_str(),
             irr_driver->getSceneManager()->getMeshCache()->getMeshCount(),
             irr_driver->getVideoDriver()->getTextureCount());
@@ -1879,13 +1878,13 @@ void Track::loadTrackModel(bool reverse_track, unsigned int mode_id)
     {
         logwarn("track", "No check lines found in track '%s'.",
                   m_ident.c_str());
-        logwarn("track", "Lap counting will not work, and start "
+        logwarn("track", "Lap counting will not work, and start ",
                   "positions might be incorrect.");
     }
 
     if (UserConfigParams::logMemory())
     {
-        logdebug("track", "[memory] After loading  '%s': mesh cache %d "
+        logdebug("track", "[memory] After loading  '%s': mesh cache %d ",
                    "texture cache %d\n", getIdent().c_str(),
                 irr_driver->getSceneManager()->getMeshCache()->getMeshCount(),
                 irr_driver->getVideoDriver()->getTextureCount());
@@ -2056,7 +2055,7 @@ void Track::loadObjects(const XMLNode* root, const std::string& path, ModelDefin
         }
         else
         {
-            logwarn("track", "While loading track '%s', element '%s' was "
+            logwarn("track", "While loading track '%s', element '%s' was ",
                       "met but is unknown.",
                       m_ident.c_str(), node->getName().c_str());
         }

@@ -270,8 +270,7 @@ void RubberBall::init(const XMLNode &node, scene::IMesh *rubberball)
         logwarn("powerup", "No squash-slowdown specified for rubber ball.");
     if(!node.get("min-interpolation-distance",
                  &m_st_min_interpolation_distance))
-        logwarn("powerup", "No min-interpolation-distance specified "
-                             "for rubber ball.");
+        logwarn("powerup", "No min-interpolation-distance specified for rubber ball.");
     if(!node.get("target-distance", &m_st_target_distance))
         logwarn("powerup",
                   "No target-distance specified for rubber ball.");
@@ -288,8 +287,7 @@ void RubberBall::init(const XMLNode &node, scene::IMesh *rubberball)
                   "No fast-ping-distance specified for rubber ball.");
     if(m_st_fast_ping_distance < m_st_target_distance)
         logwarn("powerup",
-                   "Ping-distance is smaller than target distance.\n"
-                   "That should not happen, but is ignored for now.");
+                   "Ping-distance is smaller than target distance.\n That should not happen, but is ignored for now.");
     if(!node.get("early-target-factor", &m_st_early_target_factor))
         logwarn("powerup",
                   "No early-target-factor specified for rubber ball.");

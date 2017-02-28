@@ -255,8 +255,8 @@ void GrandPrixData::reload()
     if (root.get() == NULL)
     {
         logerror("GrandPrixData",
-                   "Error while trying to read xml Grand Prix from file '%s'. "
-                   "Is the file readable for supertuxkart?",
+                   "Error while trying to read xml Grand Prix from file '%s'. \
+                   Is the file readable for supertuxkart?",
                    m_filename.c_str());
         throw std::runtime_error("File couldn't be read");
     }
@@ -264,8 +264,8 @@ void GrandPrixData::reload()
     if (root->getName() != "supertuxkart_grand_prix")
     {
         logerror("GrandPrixData",
-                   "Error while trying to read Grand Prix file '%s': "
-                   "Root node has the wrong name %s", m_filename.c_str(),
+                   "Error while trying to read Grand Prix file '%s': \
+                   Root node has the wrong name %s", m_filename.c_str(),
                    root->getName().c_str());
         throw std::runtime_error("Wrong root node name");
     }
@@ -273,8 +273,8 @@ void GrandPrixData::reload()
     if (!root->get("name", &m_name))
     {
          logerror("GrandPrixData",
-                    "Error while trying to read grandprix file '%s': "
-                    "Missing 'name' attribute", m_filename.c_str());
+                    "Error while trying to read grandprix file '%s': \
+                    Missing 'name' attribute", m_filename.c_str());
         throw std::runtime_error("Missing name attribute");
     }
 
@@ -293,7 +293,7 @@ void GrandPrixData::reload()
 
         if (node->getName() != "track")
         {
-            logerror("GrandPrixData"
+            logerror("GrandPrixData",
                        "Unknown node in Grand Prix XML file '%s': %s",
                        m_filename.c_str(), node->getName().c_str());
             throw std::runtime_error("Unknown node in the XML file");
@@ -304,8 +304,7 @@ void GrandPrixData::reload()
         if (!node->get("id", &track_id))
         {
             logerror("GrandPrixData",
-                       "The id attribute is missing in the %d. track entry of "
-                       "the Grand Prix file '%s'.", i, m_filename.c_str());
+                       "The id attribute is missing in the %d. track entry of the Grand Prix file '%s'.", i, m_filename.c_str());
             throw std::runtime_error("Missing track id");
         }
 
@@ -314,8 +313,8 @@ void GrandPrixData::reload()
         if (t == NULL)
         {
             logerror("GrandPrixData",
-                       "The Grand Prix file '%s' contains a track '%s' that "
-                       "does not exist", m_filename.c_str(), track_id.c_str());
+                       "The Grand Prix file '%s' contains a track '%s' that \
+                       does not exist", m_filename.c_str(), track_id.c_str());
             throw std::runtime_error("Unknown track");
         }
 
@@ -324,16 +323,16 @@ void GrandPrixData::reload()
         if (!node->get("laps", &number_of_laps))
         {
             logerror("GrandPrixData",
-                       "The laps attribute is missing in the %d. track entry "
-                       "of the Grand Prix file '%s'.", i, m_filename.c_str());
+                       "The laps attribute is missing in the %d. track entry \
+                       of the Grand Prix file '%s'.", i, m_filename.c_str());
             throw std::runtime_error("Missing track id");
         }
 
         if (number_of_laps < 1 && !UserConfigParams::m_artist_debug_mode)
         {
             logerror("GrandPrixData",
-                       "Track '%s' in the Grand Prix file '%s' should be raced "
-                       "with %d laps, which isn't possible.", track_id.c_str(),
+                       "Track '%s' in the Grand Prix file '%s' should be raced \
+                       with %d laps, which isn't possible.", track_id.c_str(),
                        m_filename.c_str());
             throw std::runtime_error("Lap count lower than 1");
         }
@@ -405,8 +404,8 @@ bool GrandPrixData::checkConsistency(bool log_error) const
             if (log_error)
             {
                 logerror("GrandPrixData",
-                           "The grand prix '%ls' won't be available because "
-                           "the track '%s' does not exist!", m_name.c_str(),
+                           "The grand prix '%ls' won't be available because \
+                           the track '%s' does not exist!", m_name.c_str(),
                            m_tracks[i].c_str());
             }
             return false;

@@ -222,8 +222,7 @@ void PowerupManager::loadWeights(const XMLNode &root,
 
     if(!node || s=="" || s_multi=="")
     {
-        logerror("[PowerupManager]", "No weights found for class '%s'"
-                    " - probabilities will be incorrect.",
+        logerror("[PowerupManager]", "No weights found for class '%s' - probabilities will be incorrect.",
                     class_name.c_str());
         return;
     }

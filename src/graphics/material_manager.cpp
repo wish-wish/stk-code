@@ -300,7 +300,7 @@ bool MaterialManager::pushTempMaterial(const XMLNode *root,
         catch(std::exception& e)
         {
             // The message contains a '%s' for the filename
-            logwarn("MaterialManager", e.what(), filename.c_str());
+            logwarn("m","MaterialManager", e.what(), filename.c_str());
         }
     }   // for i<xml->getNumNodes)(
     return true;

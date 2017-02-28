@@ -278,7 +278,7 @@ protected:
     template<typename ...Types>
     void printFileList(GLint shader_type, const char *filepath, Types ... args)
     {
-        logerror("shader", filepath);
+        logerror("S","shader", filepath);
         printFileList(args...);
     }   // printFileList
 
@@ -362,7 +362,7 @@ public:
             glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &info_length);
             char *error_message = new char[info_length];
             glGetProgramInfoLog(m_program, info_length, NULL, error_message);
-            logerror("Shader", error_message);
+            logerror("s","Shader", error_message);
             delete[] error_message;
         }
     }   // loadProgram

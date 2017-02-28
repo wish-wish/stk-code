@@ -388,7 +388,7 @@ Material::Material(const XMLNode *node, bool deprecated)
         }
         else
         {
-            logwarn("material", "Unknown node type '%s' for texture "
+            logwarn("material", "Unknown node type '%s' for texture ",
                       "'%s' - ignored.",
                       child_node->getName().c_str(), m_texname.c_str());
         }
@@ -562,8 +562,7 @@ void Material::initCustomSFX(const XMLNode *sfx)
 
     if (filename.empty())
     {
-        logwarn("material", "Sfx node has no 'filename' "
-                  "attribute, sound effect will be ignored.");
+        logwarn("material", "Sfx node has no 'filename' attribute, sound effect will be ignored.");
         return;
     }
 
@@ -616,7 +615,7 @@ void Material::initParticlesEffect(const XMLNode *node)
     node->get("base", &base);
     if (base.size() < 1)
     {
-        logwarn("Material::initParticlesEffect"
+        logwarn("Material::initParticlesEffect",
                   "Invalid particle settings for material '%s'\n",
                   m_texname.c_str());
         return;
@@ -649,8 +648,8 @@ void Material::initParticlesEffect(const XMLNode *node)
 
     if (count == 0)
     {
-        logwarn("material", "initParticlesEffect: Particles "
-                  "'%s' for material '%s' are declared but not used "
+        logwarn("material", "initParticlesEffect: Particles ",
+                  "'%s' for material '%s' are declared but not used ",
                   "(no emission condition set).",
                   base.c_str(), m_texname.c_str());
     }
@@ -667,7 +666,7 @@ void Material::initParticlesEffect(const XMLNode *node)
         }
         else
         {
-            logwarn("material", "initParticlesEffect: Unknown "
+            logwarn("material", "initParticlesEffect: Unknown ",
                             "condition '%s' for material '%s'",
                     conditions[c].c_str(), m_texname.c_str());
         }

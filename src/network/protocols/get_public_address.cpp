@@ -52,12 +52,12 @@ void GetPublicAddress::setMyIPAddress(const std::string &s)
     std::vector<std::string> l = StringUtils::split(s, ':');
     if (l.size() != 2)
     {
-        logfatal("Invalid IP address '%s'.", s.c_str());
+        logfatal("g","Invalid IP address '%s'.", s.c_str());
     }
     std::vector<std::string> ip = StringUtils::split(l[0], '.');
     if (ip.size() != 4)
     {
-        logfatal("Invalid IP address '%s'.", s.c_str());
+        logfatal("g","Invalid IP address '%s'.", s.c_str());
     }
     uint32_t u = 0;
     for (unsigned int i = 0; i < 4; i++)

@@ -1033,8 +1033,7 @@ namespace GUIEngine
         }
         catch (std::runtime_error& /*err*/)
         {
-            logerror("Engine::init", "Cannot load skin specified in user config. "
-                "Falling back to defaults.");
+            logerror("Engine::init", "Cannot load skin specified in user config. Falling back to defaults.");
             UserConfigParams::m_skin_file.revertToDefaults();
 
             try
@@ -1338,8 +1337,7 @@ namespace GUIEngine
         }
         else
         {
-            logwarn("Engine::addLoadingIcon", "Given "
-                "NULL icon");
+            logwarn("Engine::addLoadingIcon", "Given NULL icon");
         }
     } // addLoadingIcon
 

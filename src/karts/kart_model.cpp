@@ -562,8 +562,7 @@ bool KartModel::loadModels(const KartProperties &kart_properties)
     m_mesh                 = irr_driver->getAnimatedMesh(full_path);
     if(!m_mesh)
     {
-        logerror("Kart_Model", "Problems loading mesh '%s' - kart '%s' will"
-                   "not be available.",
+        logerror("Kart_Model", "Problems loading mesh '%s' - kart '%s' will not be available.",
                    full_path.c_str(), kart_properties.getIdent().c_str());
         return false;
     }
@@ -710,8 +709,7 @@ void KartModel::loadNitroEmitterInfo(const XMLNode &node,
         // stk_config file is read (which has no model information).
         if(m_model_filename!="")
         {
-            logerror("Kart_Model", "Missing nitro emitter information for model"
-                       "'%s'.", m_model_filename.c_str());
+            logerror("Kart_Model", "Missing nitro emitter information for model '%s'.", m_model_filename.c_str());
             logerror("Kart_Model", "This can be ignored, but the nitro particles will not work");
         }
         return;

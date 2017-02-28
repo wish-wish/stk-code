@@ -441,7 +441,7 @@ namespace StringUtils
                     {
                         if (insertValID >= all_vals.size())
                         {
-                            logwarn("StringUtils"), "insertValues: Invalid number of arguments in '%s'\n",
+                            logwarn("StringUtils", "insertValues: Invalid number of arguments in '%s'\n",
                                       irr::core::stringc(s.c_str()).c_str());
                             new_string += "??";
                             new_string += sv[i].subString(2, sv[i].size()-2);

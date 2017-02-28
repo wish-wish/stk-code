@@ -184,8 +184,7 @@ void MusicInformation::startMusic()
 
     if(StringUtils::getExtension(m_fast_filename)!="ogg")
     {
-        logwarn(
-                "Music file %s format not recognized, fast music is ignored",
+        logwarn("start","Music file %s format not recognized, fast music is ignored",
                 m_fast_filename.c_str());
         return;
     }

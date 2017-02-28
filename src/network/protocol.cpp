@@ -69,7 +69,7 @@ bool Protocol::checkDataSize(Event* event, unsigned int minimum_size)
     if (data.size() < minimum_size)
     {
         logwarn("Protocol", "Receiving a badly formated message:");
-        logwarn("Protocol", data.getLogMessage().c_str());
+		logwarn("Protocol", "%s", data.getLogMessage().c_str());
         return false;
     }
     return true;

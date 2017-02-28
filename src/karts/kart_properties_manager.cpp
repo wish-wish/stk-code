@@ -258,8 +258,7 @@ bool KartPropertiesManager::loadKart(const std::string &dir)
     if (kart_properties->getVersion() < stk_config->m_min_kart_version ||
         kart_properties->getVersion() > stk_config->m_max_kart_version)
     {
-        logwarn("[KartPropertiesManager]", "Warning: kart '%s' is not "
-                  "supported by this binary, ignored.",
+        logwarn("[KartPropertiesManager]", "Warning: kart '%s' is not supported by this binary, ignored.",
                   kart_properties->getIdent().c_str());
         delete kart_properties;
         return false;
@@ -516,8 +515,7 @@ void KartPropertiesManager::getRandomKartList(int count,
             catch (std::runtime_error& ex)
             {
                 (void)ex;
-                logerror("[KartPropertiesManager]", "getRandomKartList : "
-                    "WARNING, can't find kart '%s'",
+                logerror("[KartPropertiesManager]", "getRandomKartList : WARNING, can't find kart '%s'",
                     (*existing_karts)[i].getKartName().c_str());
             }
         }
@@ -532,8 +530,7 @@ void KartPropertiesManager::getRandomKartList(int count,
         catch (std::runtime_error &ex)
         {
             (void)ex;
-            logerror("[KartPropertiesManager]", "getRandomKartList : WARNING, "
-                "can't find kart '%s'",(*ai_list)[i].c_str());
+            logerror("[KartPropertiesManager]", "getRandomKartList : WARNING, can't find kart '%s'",(*ai_list)[i].c_str());
         }
     }
 

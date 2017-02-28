@@ -115,8 +115,7 @@ void RibbonWidget::add()
         if (m_active_children[i].m_type != WTYPE_ICON_BUTTON &&
             m_active_children[i].m_type != WTYPE_BUTTON)
         {
-            logwarn("RiggonWidget", "Ribbon widgets can only have "
-                            "(icon)button widgets as children");
+            logwarn("RiggonWidget", "Ribbon widgets can only have (icon)button widgets as children");
             continue;
         }
 

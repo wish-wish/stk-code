@@ -65,7 +65,7 @@ void SpinnerWidget::add()
     {
         if (!StringUtils::parseString<int>(min_s, &m_min))
         {
-            logwarn("invalid value for spinner widget minimum value : %s", min_s.c_str());
+            logwarn("add","invalid value for spinner widget minimum value : %s", min_s.c_str());
         }
     }
 
@@ -73,7 +73,7 @@ void SpinnerWidget::add()
     {
         if (!StringUtils::parseString<int>(max_s, &m_max))
         {
-            logwarn("invalid value for spinner widget maximum value : %s", max_s.c_str());
+            logwarn("add","invalid value for spinner widget maximum value : %s", max_s.c_str());
         }
     }
 

@@ -133,8 +133,8 @@ bool WorldWithRank::setKartPosition(unsigned int kart_id,
                             m_position_index[j], j);
             }
         }
-        logwarn("WorldWithRank]", "Kart %u is being given position %u,"
-                    "but this position is already taken",
+        logwarn("WorldWithRank]", "Kart %u is being given position %u,\
+                    but this position is already taken",
                     kart_id, position);
         return false;
     }

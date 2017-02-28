@@ -123,8 +123,7 @@ void AbstractKart::setKartAnimation(AbstractKartAnimation *ka)
         if(ka) logdebug("Abstract_Kart", "Setting kart animation to '%s'.",
                           ka->getName().c_str());
         else   logdebug("Abstract_Kart", "Setting kart animation to NULL.");
-        if(m_kart_animation) loginfo("Abstract_Kart", "Current kart"
-                                       "animation is '%s'.",
+        if(m_kart_animation) loginfo("Abstract_Kart", "Current kart animation is '%s'.",
                                         m_kart_animation->getName().c_str());
         else   logdebug("Abstract_Kart", "Current kart animation is NULL.");
     }

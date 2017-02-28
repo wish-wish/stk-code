@@ -373,8 +373,8 @@ void PhysicalObject::init(const PhysicalObject::Settings& settings)
                     break;
                 }
             default:
-                logwarn("PhysicalObject", "Unknown object type, "
-                                        "cannot create exact collision body!");
+                logwarn("PhysicalObject", "Unknown object type, \
+                                        cannot create exact collision body!");
                 return;
         }   // switch node->getType()
 

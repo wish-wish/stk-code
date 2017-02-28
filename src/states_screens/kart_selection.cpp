@@ -444,21 +444,21 @@ bool KartSelectionScreen::joinPlayer(InputDevice* device)
     DynamicRibbonWidget* w = getWidget<DynamicRibbonWidget>("karts");
     if (w == NULL)
     {
-        logerror("KartSelectionScreen", "joinPlayer(): Called outside of "
-                  "kart selection screen.");
+        logerror("KartSelectionScreen", "joinPlayer(): Called outside of \
+                  kart selection screen.");
         return false;
     }
     else if (device == NULL)
     {
-        logerror("KartSelectionScreen", "joinPlayer(): Received null "
-                  "device pointer");
+        logerror("KartSelectionScreen", "joinPlayer(): Received null \
+                  device pointer");
         return false;
     }
 
     if (StateManager::get()->activePlayerCount() >= MAX_PLAYER_COUNT)
     {
-        logerror("KartSelectionScreen", "Maximum number of players "
-                  "reached");
+        logerror("KartSelectionScreen", "Maximum number of players \
+                  reached");
         SFXManager::get()->quickSound( "anvil" );
         return false;
     }
@@ -560,10 +560,10 @@ bool KartSelectionScreen::playerQuit(StateManager::ActivePlayer* player)
     DynamicRibbonWidget* w = getWidget<DynamicRibbonWidget>("karts");
     if (w == NULL)
     {
-        logerror("KartSelectionScreen", "playerQuit() called "
-                  "outside of kart selection screen, "
-                  "or the XML file for this screen was changed without "
-                  "adapting the code accordingly");
+        logerror("KartSelectionScreen", "playerQuit() called \
+                  outside of kart selection screen, \
+                  or the XML file for this screen was changed without \
+                  adapting the code accordingly");
         return false;
     }
 
@@ -599,8 +599,8 @@ bool KartSelectionScreen::playerQuit(StateManager::ActivePlayer* player)
     }
     if (player_id == -1)
     {
-        logwarn("KartSelectionScreen", "playerQuit cannot find "
-                  "passed player");
+        logwarn("KartSelectionScreen", "playerQuit cannot find \
+                  passed player");
         return false;
     }
     if(UserConfigParams::logGUI())
@@ -655,8 +655,8 @@ bool KartSelectionScreen::playerQuit(StateManager::ActivePlayer* player)
             const bool success = w->setSelection(selectedKart, n, true);
             if (!success)
             {
-                logwarn("KartSelectionScreen", "Failed to select kart %s"
-                          " for player %u, what's going on??", selectedKart.c_str(),n);
+                logwarn("KartSelectionScreen", "Failed to select kart %s\
+                           for player %u, what's going on??", selectedKart.c_str(),n);
             }
         }
     }
@@ -755,8 +755,8 @@ void KartSelectionScreen::playerConfirm(const int player_id)
                 !will_need_duplicates)
         {
             if (UserConfigParams::logGUI())
-                logwarn("KartSelectionScreen", "You can't select this identity "
-                       "or kart, someone already took it!!");
+                logwarn("KartSelectionScreen", "You can't select this identity \
+                       or kart, someone already took it!!");
 
             SFXManager::get()->quickSound( "anvil" );
             return;
@@ -917,8 +917,8 @@ void KartSelectionScreen::updateKartWidgetModel(int widget_id,
             ->setText( selectionText.c_str(), false );
         }
         else
-            logwarn("KartSelectionScreen", "could not "
-                      "find a kart named '%s'",
+            logwarn("KartSelectionScreen", "could not \
+                      find a kart named '%s'",
                       selection.c_str());
     }
 }
@@ -1021,8 +1021,8 @@ void KartSelectionScreen::eventCallback(Widget* widget,
                     // if we get here, it means one player "lost" his kart in
                     // the tab switch
                     if (UserConfigParams::logGUI())
-                        loginfo("KartSelectionScreen", "Player %u"
-                                  " lost their selection when switching tabs!!!",n);
+                        loginfo("KartSelectionScreen", "Player %u\
+                                   lost their selection when switching tabs!!!",n);
 
                     // Select a random kart in this case
                     const int count = (int) w->getItems().size();
@@ -1044,8 +1044,8 @@ void KartSelectionScreen::eventCallback(Widget* widget,
                     }
                     else
                     {
-                        logwarn("KartSelectionScreen",  " 0 items "
-                                  "in the ribbon");
+                        logwarn("KartSelectionScreen",  " 0 items \
+                                  in the ribbon");
                     }
                 }
             }

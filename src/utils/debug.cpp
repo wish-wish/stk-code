@@ -532,8 +532,8 @@ bool handleContextMenuAction(s32 cmd_id)
         for (unsigned int i = 0; i<world->getNumKarts(); i++)
         {
             AbstractKart *kart = world->getKart(i);
-            logwarn(kart->getIdent().c_str(),
-                "<start position=\"%d\" x=\"%f\" y=\"%f\" z=\"%f\" h=\"%f\"/>",
+            logwarn("D",
+				"%s<start position=\"%d\" x=\"%f\" y=\"%f\" z=\"%f\" h=\"%f\"/>", kart->getIdent().c_str(),
                 i, kart->getXYZ().getX(), kart->getXYZ().getY(),
                 kart->getXYZ().getZ(), kart->getHeading()*RAD_TO_DEGREE
                 );
@@ -690,9 +690,7 @@ bool handleContextMenuAction(s32 cmd_id)
         break;
         case DEBUG_TEXTURE_CONSOLE:
         new GeneralTextFieldDialog(
-            L"Enter the texture filename(s) (separate names by ;)"
-            " to be reloaded (empty to reload all)\n"
-            "Press tus; for texture usage stats (shown in console)", []
+            TEXT("Enter the texture filename(s) (separate names by ;) to be reloaded (empty to reload all)\nPress tus; for texture usage stats (shown in console)"), []
             (const irr::core::stringw& text) {},
             [] (GUIEngine::LabelWidget* lw, GUIEngine::TextBoxWidget* tb)->bool
             {

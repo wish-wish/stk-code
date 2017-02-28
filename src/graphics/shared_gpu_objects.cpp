@@ -185,8 +185,7 @@ void SharedGPUObjects::initSkinningUBO()
     glGetIntegerv(GL_MAX_UNIFORM_BLOCK_SIZE, &max_size);
     max_size = std::min(max_size, 65536);
     m_max_mat4_size = max_size / 16 / sizeof(float);
-    loginfo("SharedGPUObjects", "Hardware skinning supported, max joints"
-        " support: %d", m_max_mat4_size);
+    loginfo("SharedGPUObjects", "Hardware skinning supported, max joints  support: %d", m_max_mat4_size);
     glBufferData(GL_UNIFORM_BUFFER, max_size, 0, GL_STREAM_DRAW);
     // Reserve a identity matrix for non moving mesh in animated model used by
     // vertex shader calculation

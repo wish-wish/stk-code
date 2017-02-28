@@ -91,8 +91,8 @@ void OptionsScreenUI::loadedFromFile()
 
     if (m_skins.size() == 0)
     {
-        logwarn("OptionsScreenUI", "Could not find a single skin, make sure that "
-                                     "the data files are correctly installed");
+        logwarn("OptionsScreenUI", "Could not find a single skin, make sure that \
+                                     the data files are correctly installed");
         skinSelector->setActive(false);
         return;
     }

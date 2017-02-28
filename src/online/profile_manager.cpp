@@ -281,8 +281,8 @@ void ProfileManager::deleteFromPersistent(const uint32_t id)
     else
     {
         logwarn("ProfileManager",
-                  "Tried to remove profile with id %d from persistent while "
-                  "not present", id);
+                  "Tried to remove profile with id %d from persistent while \
+                  not present", id);
     }
 }   // deleteFromPersistent
 
@@ -317,8 +317,8 @@ void ProfileManager::moveToCache(const uint32_t id)
     else
     {
         logwarn("ProfileManager",
-                  "Tried to move profile with id %d from persistent to "
-                  "cache while not present", id);
+                  "Tried to move profile with id %d from persistent to \
+                  cache while not present", id);
     }
 }   // moveToCache
 

@@ -59,8 +59,8 @@ void CheckGoal::update(float dt)
         {
             if (UserConfigParams::m_check_debug)
             {
-                loginfo("CheckGoal", "Goal check structure"
-                          "%d triggered for ball.", m_index);
+                loginfo("CheckGoal", "Goal check structure\
+                          %d triggered for ball.", m_index);
             }
             trigger(0);
         }

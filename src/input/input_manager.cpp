@@ -751,8 +751,7 @@ void InputManager::dispatchInput(Input::InputType type, int deviceID,
 
             if (pk == NULL)
             {
-                logerror("InputManager::dispatchInput", "Trying to process "
-                    "action for an unknown player");
+                logerror("InputManager::dispatchInput", "Trying to process action for an unknown player");
                 return;
             }
 
