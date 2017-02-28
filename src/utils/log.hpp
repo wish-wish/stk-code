@@ -133,12 +133,6 @@ public:
 #define logerror(a,b,...) Log::error(TEXT(a),TEXT(b),##__VA_ARGS__)
 #define logfatal(a,b,...) Log::fatal(TEXT(a),TEXT(b),##__VA_ARGS__)
 
-#define logverboseA(a,b,...) Log::verbose(TEXT(a),b,##__VA_ARGS__)
-#define logdebugA(a,b,...) Log::debug(TEXT(a),b,##__VA_ARGS__)
-#define loginfoA(a,b,...) Log::info(TEXT(a),b,##__VA_ARGS__)
-#define logwarnA(a,b,...) Log::warn(TEXT(a),b,##__VA_ARGS__)
-#define logerrorA(a,b,...) Log::error(TEXT(a),b,##__VA_ARGS__)
-#define logfatalA(a,b,...) Log::fatal(TEXT(a),b,##__VA_ARGS__)
 
 std::string ws2s(std::wstring ws);
 std::wstring s2ws(std::string s);

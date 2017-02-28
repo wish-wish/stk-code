@@ -2,7 +2,13 @@
 project(SuperTuxKart)
 set(PROJECT_VERSION "0.9.1")
 
-#add_definitions(-DUNICODE -D_UNICODE)
+if(MSVC)
+    option(STK_MSVC_UNICODE "Support for wiimote input devices" OFF)
+    if(STK_MSVC_UNICODE)
+        add_definitions(-DUNICODE -D_UNICODE)
+        add_definitions(-D_IRR_WCHAR_FILESYSTEM)
+    endif()
+endif()
 
 cmake_minimum_required(VERSION 2.8.4)
 if(NOT (CMAKE_MAJOR_VERSION VERSION_LESS 3))

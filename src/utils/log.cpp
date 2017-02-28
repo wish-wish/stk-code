@@ -198,8 +198,8 @@ void Log::printMessage(int level, const irr::fschar_t *component, const irr::fsc
 #endif
 
 #if defined(WIN32) && defined(UNICODE)
-	static const irr::fschar_t *names[] = { __TEXT("debug"), __TEXT("verbose  "), __TEXT("info   "),
-		__TEXT("warn   "), __TEXT("error  "), __TEXT("fatal  ") };
+	static const irr::fschar_t *names[] = { TEXT("debug"), TEXT("verbose  "), TEXT("info   "),
+		TEXT("warn   "), TEXT("error  "), TEXT("fatal  ") };
 #else
 	static const irr::fschar_t *names[] = {"debug", "verbose  ", "info   ",
                                   "warn   ", "error  ", "fatal  "};

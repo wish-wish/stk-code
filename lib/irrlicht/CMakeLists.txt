@@ -36,9 +36,12 @@ if(UNIX OR MINGW)
 endif()
 
 if(MSVC)
-  #add_definitions(-DUNICODE -D_UNICODE)
-  #add_definitions(-D_IRR_WCHAR_FILESYSTEM)
-  
+
+  if(STK_MSVC_UNICODE)
+    add_definitions(-DUNICODE -D_UNICODE)
+    #add_definitions(-D_IRR_WCHAR_FILESYSTEM)
+  endif()
+
   add_definitions(/D_IRR_STATIC_LIB_)
   add_definitions(/D_CRT_SECURE_NO_WARNINGS) # Shut up about unsafe stuff
 elseif(MINGW)
