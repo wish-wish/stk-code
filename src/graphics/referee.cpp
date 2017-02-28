@@ -99,7 +99,7 @@ void Referee::init()
         video::ITexture* t=irrMaterial.getTexture(0);
         if(!t) continue;
 
-        std::string name=StringUtils::getBasename(t->getName()
+        irr::core::stringc name=StringUtils::getBaseName(t->getName()
                                                   .getInternalName().c_str());
         if (name == "traffic_light.png")
         {

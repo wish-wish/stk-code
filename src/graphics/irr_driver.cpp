@@ -1721,7 +1721,7 @@ void IrrDriver::displayFPS()
     if ((UserConfigParams::m_artist_debug_mode)&&(CVS->isGLSL()))
     {
         fps_string = StringUtils::insertValues
-                    (TEXT("FPS: %d/%d/%d  - PolyCount: %d Solid, %d Shadows - LightDist : %d, Total skinning joints: %d"),
+                    (_("FPS: %d/%d/%d  - PolyCount: %d Solid, %d Shadows - LightDist : %d, Total skinning joints: %d"),
                     min, fps, max, m_renderer->getPolyCount(SOLID_NORMAL_AND_DEPTH_PASS),
                     m_renderer->getPolyCount(SHADOW_PASS), m_last_light_bucket_distance,
                     m_skinning_joint);

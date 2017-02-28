@@ -54,7 +54,7 @@ s32 IFileSystem_copyFileToFile(IWriteFile* dst, IReadFile* src)
  *  \param to The destination directory.
  *  \return True if successful.
  */
-bool extract_zip(const path &from, const path &to)
+bool extract_zip(const std::string &from, const std::string &to)
 {
     //Add the zip to the file system
     IFileSystem *file_system = irr_driver->getDevice()->getFileSystem();
@@ -79,7 +79,7 @@ bool extract_zip(const path &from, const path &to)
 		loginfo("addons", "Unzipping file '%s'.", current_file.c_str());
         if(zip_file_list->isDirectory(i)) continue;
         if(current_file[0]=='.') continue;
-        const path base = StringUtils::getBasename(current_file);
+        core::stringc base = StringUtils::getBaseName(current_file);
 
         IReadFile* src_file =
             zip_archive->createAndOpenFile(current_file.c_str());
@@ -89,13 +89,19 @@ bool extract_zip(const path &from, const path &to)
             error = true;
             continue;
         }
-
+#if defined(UNICODE)
+		io::path tofile = (to + "/" + base.c_str()).c_str();
+		io::path curr = (to + "/" + ws2s(current_file.c_str()).c_str()).c_str();
+#else
+		io::path tofile((to + "/" + std::string(base.c_str())).c_str());
+		io::path curr((to + "/" + std::string(current_file.c_str())).c_str());
+#endif
         IWriteFile* dst_file =
-            file_system->createAndWriteFile((to+"/"+base).c_str());
+			file_system->createAndWriteFile(tofile.c_str());
         if(dst_file == NULL)
         {
             logwarn("addons", "Couldn't create the file '%s'. The directory might not exist. This is ignored, but the addon might not work.",
-                      (to+"/"+current_file).c_str());
+				curr.c_str());
             error = true;
             continue;
         }

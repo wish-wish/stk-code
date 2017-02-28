@@ -465,6 +465,9 @@ bool AddonsManager::anyAddonsInstalled() const
     return false;
 }   // anyAddonsInstalled
 
+
+
+
 // ----------------------------------------------------------------------------
 /** Installs or updates (i.e. = install on top of an existing installation) an
  *  addon. It checks for the directories and then unzips the file (which must
@@ -480,8 +483,8 @@ bool AddonsManager::install(const Addon &addon)
     std::string base_name = StringUtils::getBasename(addon.getZipFileName());
     std::string from      = file_manager->getAddonsFile("tmp/"+base_name);
     std::string to        = addon.getDataDir();
-
-    bool success = extract_zip(from, to);
+	
+	bool success = extract_zip(from, to);
     if (!success)
     {
         // TODO: show a message in the interface

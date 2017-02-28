@@ -72,7 +72,11 @@ Material::Material(const XMLNode *node, bool deprecated)
     if (relativePath.size() == 0)
         logwarn("Material", "Cannot determine texture full path : <%s>", m_texname.c_str());
     else
-        m_full_path = file_manager->getFileSystem()->getAbsolutePath(relativePath.c_str()).c_str();
+#if defined(UNICODE)
+        m_full_path = ws2s(file_manager->getFileSystem()->getAbsolutePath(relativePath.c_str()).c_str()).c_str();
+#else
+		m_full_path = file_manager->getFileSystem()->getAbsolutePath(relativePath.c_str()).c_str();
+#endif
     init();
 
     bool b = false;
@@ -428,8 +432,13 @@ Material::Material(const std::string& fname, bool is_full_path,
     else
     {
         m_texname = fname;
-        m_full_path = file_manager->getFileSystem()->getAbsolutePath(
-            file_manager->searchTexture(m_texname).c_str()).c_str();
+#if defined(UNICODE)
+        m_full_path = ws2s(file_manager->getFileSystem()->getAbsolutePath(
+            file_manager->searchTexture(m_texname).c_str()).c_str()).c_str();
+#else
+		m_full_path = file_manager->getFileSystem()->getAbsolutePath(
+			file_manager->searchTexture(m_texname).c_str()).c_str();
+#endif
     }
 
     m_complain_if_not_found = complain_if_not_found;

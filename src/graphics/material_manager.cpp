@@ -98,7 +98,7 @@ Material* MaterialManager::getMaterialFor(video::ITexture* t)
     }
     else
     {
-        core::stringc image(StringUtils::getBasename(img_path.c_str()).c_str());
+		core::stringc image(StringUtils::getBaseName(img_path.c_str()).c_str());
         image.make_lower();
 
         for (int i = (int)m_materials.size() - 1; i >= 0; i--)

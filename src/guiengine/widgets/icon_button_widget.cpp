@@ -338,11 +338,15 @@ video::ITexture* IconButtonWidget::getDeactivatedTexture(video::ITexture* textur
     if (stk_tex->isMeshTexture() && CVS->isTextureCompressionEnabled())
         return stk_tex;
 
-    std::string name = stk_tex->getName().getPtr();
-    name += "_disabled";
+    const irr::fschar_t* name = stk_tex->getName().getPtr();
+#if defined(UNICODE)
+	std::string n = ws2s(name)+"_disabled";
+#else
+	std::string n = std::string(name) + "_disabled";
+#endif
     STKTexManager* stkm = STKTexManager::getInstance();
     STKTexture* disabled_stk_tex = static_cast<STKTexture*>(stkm->getTexture
-        (name, false/*srgb*/, false/*premul_alpha*/, false/*set_material*/,
+		(n, false/*srgb*/, false/*premul_alpha*/, false/*set_material*/,
         false/*mesh_tex*/, false /*no_upload*/, false/*single_channel*/,
         false/*create_if_unfound*/));
     if (disabled_stk_tex == NULL)
@@ -367,7 +371,7 @@ video::ITexture* IconButtonWidget::getDeactivatedTexture(video::ITexture* textur
                 image->setPixel(x, y, c);
             }
         }
-        return stkm->addTexture(new STKTexture(image, name));
+		return stkm->addTexture(new STKTexture(image, n));
     }
     return disabled_stk_tex;
 #else

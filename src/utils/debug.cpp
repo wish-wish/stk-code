@@ -690,7 +690,8 @@ bool handleContextMenuAction(s32 cmd_id)
         break;
         case DEBUG_TEXTURE_CONSOLE:
         new GeneralTextFieldDialog(
-            TEXT("Enter the texture filename(s) (separate names by ;) to be reloaded (empty to reload all)\nPress tus; for texture usage stats (shown in console)"), []
+            L"Enter the texture filename(s) (separate names by ;) to be reloaded (empty to reload all)\nPress tus; for texture usage stats (shown in console)"
+			, []
             (const irr::core::stringw& text) {},
             [] (GUIEngine::LabelWidget* lw, GUIEngine::TextBoxWidget* tb)->bool
             {

@@ -1168,7 +1168,13 @@ void FileManager::redirectOutput()
 
     //Enable logging of stdout and stderr to logfile
     logverbose("main", "Error messages and other text output will be logged to %s.", logoutfile.c_str());
-    Log::openOutputFiles(logoutfile);
+#if defined(UNICODE)
+	std::wstring wfile=s2ws(logoutfile).c_str();
+	Log::openOutputFiles((const irr::fschar_t*&)wfile);
+#else
+	Log::openOutputFiles((const irr::fschar_t*&)logoutfile);
+#endif
+    
 }   // redirectOutput
 
 //-----------------------------------------------------------------------------
@@ -1264,8 +1270,13 @@ void FileManager::listFiles(std::set<std::string>& result,
 
     for(int n=0; n<(int)files->getFileCount(); n++)
     {
-        result.insert(make_full_path ? dir+"/"+ files->getFileName(n).c_str()
-                                     : files->getFileName(n).c_str()         );
+#if defined(UNICODE)
+		result.insert(make_full_path ? dir+"/"+ ws2s(files->getFileName(n).c_str()).c_str()
+			: ws2s(files->getFileName(n).c_str()).c_str()        );
+#else
+		result.insert(make_full_path ? dir + "/" + files->getFileName(n).c_str()
+			: files->getFileName(n).c_str());
+#endif
     }
 
     m_file_system->changeWorkingDirectoryTo( previous_cwd );
@@ -1348,7 +1359,11 @@ bool FileManager::removeDirectory(const std::string &name) const
     }
     
 #if defined(WIN32)
+#if defined(UNICODE)
+	return RemoveDirectory(s2ws(name).c_str())==TRUE;
+#else
     return RemoveDirectory(name.c_str())==TRUE;
+#endif
 #else
     return remove(name.c_str())==0;
 #endif

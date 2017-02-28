@@ -25,6 +25,6 @@ using namespace irr::io;
   * Extract a zip.
   * \ingroup addonsgroup
   */
-bool extract_zip(const path &from, const path &to);
+bool extract_zip(const std::string &from, const std::string &to);
 
 #endif

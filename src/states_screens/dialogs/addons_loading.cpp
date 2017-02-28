@@ -298,8 +298,8 @@ void AddonsLoading::onUpdate(float delta)
                           IconButtonWidget::ICON_PATH_TYPE_ABSOLUTE  );
         // Check if there was an error displaying the icon. If so, the icon
         // file is (likely) corrupt, and the file needs to be downloaded again.
-        std::string s = m_icon->getTexture()->getName().getPath().c_str();
-        if(StringUtils::getBasename(s)!=StringUtils::getBasename(icon))
+        io::path s = m_icon->getTexture()->getName().getPath();
+		if (StringUtils::getBasename(icon).compare(StringUtils::getBaseName(s).c_str())!=0)
         {
             m_addon.deleteInvalidIconFile();
         }

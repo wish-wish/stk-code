@@ -140,4 +140,7 @@ public:
 #define logerrorA(a,b,...) Log::error(TEXT(a),b,##__VA_ARGS__)
 #define logfatalA(a,b,...) Log::fatal(TEXT(a),b,##__VA_ARGS__)
 
+std::string ws2s(std::wstring ws);
+std::wstring s2ws(std::string s);
+
 #endif

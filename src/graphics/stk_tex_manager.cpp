@@ -41,8 +41,13 @@ STKTexture* STKTexManager::findTextureInFileSystem(const std::string& filename,
         logerror("STKTexManager", "Failed to load %s.", filename.c_str());
         return NULL;
     }
-    *full_path =
-        file_manager->getFileSystem()->getAbsolutePath(relative_path).c_str();
+#if defined(UNICODE)
+    *full_path = 
+		ws2s(file_manager->getFileSystem()->getAbsolutePath(relative_path).c_str()).c_str();
+#else
+	*full_path =
+		file_manager->getFileSystem()->getAbsolutePath(relative_path).c_str();
+#endif
     for (auto p : m_all_textures)
     {
         if (p.second == NULL)
@@ -83,15 +88,18 @@ video::ITexture* STKTexManager::getTexture(const std::string& path, bool srgb,
             single_channel);
         if (new_texture->getOpenGLTextureName() == 0 && !no_upload)
         {
-            const char* name = new_texture->getName().getPtr();
+            const irr::fschar_t* name = new_texture->getName().getPtr();
             if (!m_texture_error_message.empty())
             {
                 logerror("STKTexManager", "%s",
                     m_texture_error_message.c_str());
             }
-            logerror("STKTexManager", "Texture %s not found or invalid.",
-                name);
-            m_all_textures[name] = NULL;
+            logerror("STKTexManager", "Texture %s not found or invalid.",name);
+#if defined(UNICODE)
+            m_all_textures[ws2s(name).c_str()] = NULL;
+#else
+			m_all_textures[name] = NULL;
+#endif
             delete new_texture;
             return NULL;
         }
@@ -105,7 +113,11 @@ video::ITexture* STKTexManager::getTexture(const std::string& path, bool srgb,
 // ----------------------------------------------------------------------------
 video::ITexture* STKTexManager::addTexture(STKTexture* texture)
 {
-    m_all_textures[texture->getName().getPtr()] = texture;
+#if defined(UNICODE)
+    m_all_textures[ws2s(texture->getName().getPtr()).c_str()] = texture;
+#else
+	m_all_textures[texture->getName().getPtr()] = texture;
+#endif
     return texture;
 }   // addTexture
 
@@ -127,7 +139,11 @@ void STKTexManager::removeTexture(STKTexture* texture, bool remove_all)
             }
 #ifdef DEBUG
             if (remove_all && p->second->getReferenceCount() != 1)
+#if defined(UNICODE)
+				undeleted_texture.push_back(ws2s(p->second->getName().getPtr()));
+#else
                 undeleted_texture.push_back(p->second->getName().getPtr());
+#endif
 #endif
             p->second->drop();
             p = m_all_textures.erase(p);
@@ -211,7 +227,11 @@ core::stringw STKTexManager::reloadTexture(const irr::core::stringw& name)
     }
 
     core::stringw list = name;
+#if defined(UNICODE)||defined(_MSC_VER)
+	list.make_lower().replace(0x005C, 0x002F);
+#else
     list.make_lower().replace(L'\u005C', L'\u002F');
+#endif
     std::vector<std::string> names =
         StringUtils::split(StringUtils::wideToUtf8(list), ';');
     for (const std::string& fname : names)
@@ -220,8 +240,14 @@ core::stringw STKTexManager::reloadTexture(const irr::core::stringw& name)
         {
             if (p.second == NULL || !p.second->isMeshTexture())
                 continue;
-            std::string tex_path =
-                StringUtils::toLowerCase(p.second->getName().getPtr());
+			const irr::fschar_t* n = p.second->getName().getPtr();
+#if defined(UNICODE)
+			std::string tex_path =
+                StringUtils::toLowerCase(ws2s(n));
+#else
+			std::string tex_path =
+				StringUtils::toLowerCase(n);
+#endif
             std::string tex_name = StringUtils::getBasename(tex_path);
             if (fname == tex_name || fname == tex_path)
             {

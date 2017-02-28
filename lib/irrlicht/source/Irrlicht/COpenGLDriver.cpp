@@ -193,7 +193,7 @@ static HGLRC getMeAGLContext(HDC HDc, bool force_legacy_context)
 bool COpenGLDriver::initDriver(CIrrDeviceWin32* device)
 {
 	// Create a window to test antialiasing support
-	const fschar_t* ClassName = __TEXT("GLCIrrDeviceWin32");
+	const fschar_t* ClassName = TEXT("GLCIrrDeviceWin32");
 	HINSTANCE lhInstance = GetModuleHandle(0);
 
 	// Register Class
@@ -231,7 +231,7 @@ bool COpenGLDriver::initDriver(CIrrDeviceWin32* device)
 	const s32 windowLeft = (GetSystemMetrics(SM_CXSCREEN) - realWidth) / 2;
 	const s32 windowTop = (GetSystemMetrics(SM_CYSCREEN) - realHeight) / 2;
 
-	HWND temporary_wnd=CreateWindow(ClassName, __TEXT(""), style, windowLeft,
+	HWND temporary_wnd = CreateWindow(ClassName, TEXT(""), style, windowLeft,
 			windowTop, realWidth, realHeight, NULL, NULL, lhInstance, NULL);
 
 	if (!temporary_wnd)

@@ -941,8 +941,11 @@ void Track::convertTrackToBullet(scene::ISceneNode *node)
         TriangleMesh *tmesh = m_track_mesh;
         if(t)
         {
-            std::string image = t->getName().getPtr();
-
+#if defined(UNICODE)
+            std::string image = ws2s(t->getName().getPtr());
+#else
+			std::string image = t->getName().getPtr();
+#endif
             // the third boolean argument is false because at this point we're
             // dealing physics, so it's useless to warn about missing textures,
             // we'd just get duplicate/useless warnings
@@ -1187,9 +1190,9 @@ bool Track::loadMainTrack(const XMLNode &root)
     {
         const XMLNode *n=track_node->getNode(i);
         // Animated textures have already been handled
-        if(n->getName()=="animated-texture") continue;
+        if(n->getName().compare("animated-texture")==0) continue;
         // Only "object" entries are allowed now inside of the model tag
-        if(n->getName()!="static-object")
+        if(n->getName().compare("static-object")==0)
         {
             logerror("track",
                 "Incorrect tag '%s' inside <model> of scene file - ignored\n",
@@ -1345,7 +1348,7 @@ bool Track::loadMainTrack(const XMLNode &root)
             }
             else
             {
-                if(interaction=="physics-only")
+                if(interaction.compare("physics-only")==0)
                     m_static_physics_only_nodes.push_back(scene_node);
                 else
                     m_all_nodes.push_back( scene_node );
@@ -1405,9 +1408,13 @@ void Track::handleAnimatedTextures(scene::ISceneNode *node, const XMLNode &xml)
             {
                 video::ITexture* t=irrMaterial.getTexture(j);
                 if(!t) continue;
+#if defined(UNICODE)
                 std::string texture_name =
-                    StringUtils::getBasename(t->getName().getPtr());
-
+                    StringUtils::getBasename(ws2s(t->getName().getPtr()));
+#else
+				std::string texture_name =
+					StringUtils::getBasename(t->getName().getPtr());
+#endif
                 // to lower case, for case-insensitive comparison
                 texture_name = StringUtils::toLowerCase(texture_name);
 
@@ -1586,7 +1593,11 @@ void Track::loadTrackModel(bool reverse_track, unsigned int mode_id)
         for(unsigned int i=0; i<cache->getMeshCount(); i++)
         {
             const io::SNamedPath &name=cache->getMeshName(i);
-            m_old_mesh_buffers.push_back(name.getInternalName().c_str());
+#if defined(UNICODE)
+            m_old_mesh_buffers.push_back(ws2s(name.getInternalName().c_str()).c_str());
+#else
+			m_old_mesh_buffers.push_back(name.getInternalName().c_str());
+#endif
         }
 
         m_old_textures.clear();
@@ -1857,9 +1868,9 @@ void Track::loadTrackModel(bool reverse_track, unsigned int mode_id)
         {
             const XMLNode *node = root->getNode(i);
             const std::string &name = node->getName();
-            if (name=="banana"      || name=="item"      ||
-                name=="small-nitro" || name=="big-nitro" ||
-                name=="easter-egg"                           )
+            if (name.compare("banana")==0      || name.compare("item")==0      ||
+                name.compare("small-nitro")==0 || name.compare("big-nitro")==0 ||
+                name.compare("easter-egg")==0  )
             {
                 itemCommand(node);
             }

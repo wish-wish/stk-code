@@ -44,6 +44,36 @@
 #define __TEXT(STR) STR
 #endif
 
+std::string ws2s(std::wstring ws)
+{
+	const wchar_t* Source = ws.c_str();
+	size_t size = 2 * ws.size() + 1;
+	char* Dest = new char[size];
+	memset(Dest, 0, size);
+	size_t len = 0;
+	wcstombs(Dest, Source, size);
+	//wcstombs_s(&len, Dest, size, Source, size);  
+	std::string result = Dest;
+	delete[] Dest;
+
+	return result;
+}
+
+std::wstring s2ws(std::string s)
+{
+	const char* Source = s.c_str();
+	size_t size = s.size() + 1;
+	wchar_t* Dest = new wchar_t[size];
+	wmemset(Dest, 0, size);
+	size_t len = 0;
+	mbstowcs(Dest, Source, size);
+	//mbstowcs_s(&len, Dest, size, Source, size);  
+	std::wstring result = Dest;
+	delete[] Dest;
+
+	return result;
+}
+
 Log::LogLevel Log::m_min_log_level = Log::LL_VERBOSE;
 bool          Log::m_no_colors     = false;
 FILE*         Log::m_file_stdout   = NULL;

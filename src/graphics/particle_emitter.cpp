@@ -501,8 +501,11 @@ void ParticleEmitter::setParticleType(const ParticleKind* type)
         assert(tex != NULL);
         const io::SNamedPath& name = tex->getName();
         const io::path& tpath = name.getPath();
-
-        std::string debug_name = std::string("particles(") + tpath.c_str() + ")";
+#if defined(UNICODE)
+        std::string debug_name = std::string("particles(") + ws2s(tpath.c_str()) + ")";
+#else
+		std::string debug_name = std::string("particles(") + tpath.c_str() + ")";
+#endif
         m_node->setName(debug_name.c_str());
     }
 #endif

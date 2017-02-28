@@ -85,15 +85,20 @@ namespace StringUtils
         return filename;
     }   // getBasename
 
-	irr::io::path getBasename(const irr::io::path& filename)
+	irr::core::stringc getBaseName(const irr::io::path& filename)
 	{
 		for (int i = int(filename.size()) - 1; i >= 0; --i)
 		{
 			if (filename[i] == '/' || filename[i] == '\\')
 			{
 				//TODO:convert it
+#if defined(UNICODE)
 				const irr::fschar_t *base_name = wcsrchr(filename.c_str(), TEXT('\\'));
-				return base_name;
+				return  ws2s(base_name).c_str();
+#else
+				return filename.subString(i + 1, filename.size() - i);
+#endif
+				//return filename.subString(i+1,filename.size()-i);
 			}
 		}
 		return filename;

@@ -1390,9 +1390,10 @@ typedef string<c8> stringc;
 //! Typedef for wide character strings
 typedef string<wchar_t> stringw;
 
-
 } // end namespace core
 } // end namespace irr
+
+
 
 #endif
 

@@ -114,11 +114,16 @@ void STKTexture::reload(bool no_upload, uint8_t* preload_data,
 #if !defined(USE_GLES2)
     if (!no_upload && m_mesh_texture && CVS->isTextureCompressionEnabled())
     {
-        std::string orig_file = NamedPath.getPtr();
-
-        std::string basename = StringUtils::getBasename(orig_file);
+        const irr::fschar_t* orig_file = NamedPath.getPtr();
+#if defined(UNICODE)
+		std::string ofile = ws2s(orig_file);
+#else
+		std::string ofile = orig_file;
+#endif
+        core::stringc basename = StringUtils::getBaseName(orig_file);
+		std::string bname(basename.c_str());
         std::string container_id;
-        if (file_manager->searchTextureContainerId(container_id, basename))
+		if (file_manager->searchTextureContainerId(container_id, bname))
         {
             std::string cache_subdir = "hd/";
             if ((UserConfigParams::m_high_definition_textures & 0x01) == 0x01)
@@ -133,14 +138,14 @@ void STKTexture::reload(bool no_upload, uint8_t* preload_data,
 
             std::string cache_dir = file_manager->getCachedTexturesDir() +
                 cache_subdir + container_id;
-            compressed_texture = cache_dir + "/" + basename + ".stktz";
+            compressed_texture = cache_dir + "/" + bname + ".stktz";
 
             if ((!file_manager->fileExists(compressed_texture) ||
-                file_manager->fileIsNewer(compressed_texture, orig_file)) &&
+                file_manager->fileIsNewer(compressed_texture, ofile)) &&
                 loadCompressedTexture(compressed_texture))
             {
                 logdebug("STKTexture", "Compressed %s for texture %s",
-                    compressed_texture.c_str(), orig_file.c_str());
+					compressed_texture.c_str(), ofile.c_str());
                 return;
             }
 
@@ -149,7 +154,7 @@ void STKTexture::reload(bool no_upload, uint8_t* preload_data,
         else
         {
             logwarn("STKTexture", "Cannot find container_id for texture %s",
-                orig_file.c_str());
+				ofile.c_str());
         }
     }
 #endif
