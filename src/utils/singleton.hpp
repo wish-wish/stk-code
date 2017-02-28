@@ -39,7 +39,7 @@ class AbstractSingleton
         /*! \brief Destructor */
         virtual ~AbstractSingleton()
         {
-            Log::info("Singleton", "Destroyed singleton.");
+            loginfo("Singleton", "Destroyed singleton.");
         }
 
     public:
@@ -57,7 +57,7 @@ class AbstractSingleton
 
             S* result = (dynamic_cast<S*> (m_singleton));
             if (result == NULL)
-                Log::debug("Singleton", "THE SINGLETON HAS NOT BEEN REALOCATED, IT IS NOT OF THE REQUESTED TYPE.");
+                logdebug("Singleton", "THE SINGLETON HAS NOT BEEN REALOCATED, IT IS NOT OF THE REQUESTED TYPE.");
             return result;
         }
         /*! \brief Used to get the instance. */
@@ -91,7 +91,7 @@ protected:
     /*! \brief Destructor */
     virtual ~Singleton()
     {
-        Log::info("Singleton", "Destroyed singleton.");
+        loginfo("Singleton", "Destroyed singleton.");
     }
 
 public:

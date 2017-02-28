@@ -37,7 +37,7 @@ CheckCannon::CheckCannon(const XMLNode &node,  unsigned int index)
 {
     core::vector3df p1, p2;
     if(!node.get("target-p1", &p1) || !node.get("target-p2", &p2))
-        Log::fatal("CheckCannon", "No target line specified.");
+        logfatal("CheckCannon", "No target line specified.");
     m_target.setLine(p1, p2);
     m_curve = new Ipo(*(node.getNode("curve")),
                       /*fps*/25,

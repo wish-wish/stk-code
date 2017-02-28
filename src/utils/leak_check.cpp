@@ -24,6 +24,7 @@
 #include "utils/string_utils.hpp"
 #include "utils/synchronised.hpp"
 
+
 #ifdef DEBUG
 
 /** Define this to get the backtrace of the leaks (slows down execution a little) */
@@ -83,12 +84,12 @@ namespace MemoryLeaks
         // Ignore the first 3 entries
         for (unsigned int i = 3; i < calls.size(); ++i)
         {
-            Log::error("LeakCheck", "    %s", calls[i].c_str());
+            logerror("LeakCheck", "    %s", calls[i].c_str());
         }
 #  elif defined(__APPLE__)
         for (int i = 0; i < m_stack_size; ++i)
         {
-            Log::error("LeakCheck", "    %s\n", m_stack[i]);
+            logerror("LeakCheck", "    %s\n", m_stack[i]);
         }
 #  elif defined(WIN32)
         std::vector<std::string> calls = StringUtils::split(m_stack, '\n');
@@ -96,7 +97,7 @@ namespace MemoryLeaks
         // AllocatedObject(),LeakCheck()
         for (unsigned int i = 4; i < calls.size(); ++i)
         {
-            Log::error("LeakCheck", "    %s", calls[i].c_str());
+            logerror("LeakCheck", "    %s", calls[i].c_str());
         }
 #  endif
 #else
@@ -129,20 +130,19 @@ namespace MemoryLeaks
      *  about those objects. */
     void checkForLeaks()
     {
-        Log::debug("LeackCheck", "checking for leaks... ");
+        logdebug("LeackCheck", "checking for leaks... ");
         g_all_objects.lock();
         if (g_all_objects.getData().size()>0)
         {
-            Log::error("LeackCheck", "leaks detected!!");
-            Log::error("LeackCheck", "\n\n* * * * WARNING * * * * WARNING * * * * "
-                       "MEMORY LEAK! * * * *");
-            Log::error("LeackCheck", "%d watched objects leaking.",
+            logerror("LeackCheck", "leaks detected!!");
+            logerror("LeackCheck", "\n\n* * * * WARNING * * * * WARNING * * * * MEMORY LEAK! * * * *");
+            logerror("LeackCheck", "%d watched objects leaking.",
                        g_all_objects.getData().size());
 
         }
         else
         {
-            Log::debug("LeackCheck", "ok (no watched class left leaking)");
+            logdebug("LeackCheck", "ok (no watched class left leaking)");
         }
 
         std::set<AllocatedObject*>::iterator it;

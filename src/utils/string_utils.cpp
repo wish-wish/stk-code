@@ -85,6 +85,20 @@ namespace StringUtils
         return filename;
     }   // getBasename
 
+	irr::io::path getBasename(const irr::io::path& filename)
+	{
+		for (int i = int(filename.size()) - 1; i >= 0; --i)
+		{
+			if (filename[i] == '/' || filename[i] == '\\')
+			{
+				//TODO:convert it
+				const irr::fschar_t *base_name = wcsrchr(filename.c_str(), TEXT('\\'));
+				return base_name;
+			}
+		}
+		return filename;
+	}
+
     //-------------------------------------------------------------------------
     /** Removes the extension, i.e. everything after the last ".".
      */
@@ -197,14 +211,14 @@ namespace StringUtils
         }
         catch (std::exception& e)
         {
-            Log::error("StringUtils",
+            logerror("StringUtils",
                        "Error in split(std::string) : %s @ line %i : %s.",
                      __FILE__, __LINE__, e.what());
-            Log::error("StringUtils", "Splitting '%s'.", s.c_str());
+            logerror("StringUtils", "Splitting '%s'.", s.c_str());
 
             for (int n=0; n<(int)result.size(); n++)
             {
-                Log::error("StringUtils", "Split : %s", result[n].c_str());
+                logerror("StringUtils", "Split : %s", result[n].c_str());
             }
 
             assert(false); // in debug mode, trigger debugger
@@ -258,7 +272,7 @@ namespace StringUtils
         catch (std::exception& e)
         {
             (void)e;  // avoid warning about unused variable
-            Log::fatal("StringUtils",
+            logfatal("StringUtils",
                        "Fatal error in split(stringw) : %s @ line %i : '%s'.",
                        __FILE__, __LINE__, e.what());
             exit(1);
@@ -326,7 +340,7 @@ namespace StringUtils
         catch (std::exception& e)
         {
             (void)e;  // avoid warning about unused variable
-            Log::fatal("StringUtils",
+            logfatal("StringUtils",
                 "Fatal error in splitPath : %s @ line %i: '%s'.",
                         __FILE__, __LINE__, path.c_str());
             exit(1);
@@ -357,9 +371,8 @@ namespace StringUtils
                     {
                         if (insertValID >= all_vals.size())
                         {
-                            Log::warn("StringUtils",
-                                      "insertValues: "
-                                      "Invalid number of arguments in '%s'.",
+                            logwarn("StringUtils",
+                                      "insertValues: Invalid number of arguments in '%s'.",
                                       s.c_str());
                             new_string += "??" + sv[i].substr(2);
                         }
@@ -375,9 +388,8 @@ namespace StringUtils
                         const unsigned int index = sv[i][1] - '0';
                         if (index >= all_vals.size())
                         {
-                            Log::warn("StringUtils", "insertValues: "
-                                      " Invalid argument index in '%s' "
-                                      "for %i.", s.c_str(), index);
+                            logwarn("StringUtils", "insertValues:  Invalid argument index in '%s' for %i."
+								, s.c_str(), index);
                             new_string += "??" + sv[i].substr(2);
                         }
                         else
@@ -396,9 +408,9 @@ namespace StringUtils
         catch (std::exception& e)
         {
             (void)e;  // avoid warning about unused variable
-            Log::fatal("StringUtils",
-                       "Fatal error in insertValues(std::string) : %s @ "
-                       "line %i: '%s'", __FILE__, __LINE__, s.c_str());
+            logfatal("StringUtils",
+                       "Fatal error in insertValues(std::string) : %s @ line %i: '%s'"
+					   , __FILE__, __LINE__, s.c_str());
             exit(1);
         }
     }
@@ -429,8 +441,7 @@ namespace StringUtils
                     {
                         if (insertValID >= all_vals.size())
                         {
-                            Log::warn("StringUtils", "insertValues: "
-                                      "Invalid number of arguments in '%s'\n",
+                            logwarn("StringUtils"), "insertValues: Invalid number of arguments in '%s'\n",
                                       irr::core::stringc(s.c_str()).c_str());
                             new_string += "??";
                             new_string += sv[i].subString(2, sv[i].size()-2);
@@ -459,8 +470,7 @@ namespace StringUtils
                                  - '0' + delta;
                         if (index >= all_vals.size())
                         {
-                            Log::warn("StringUtils", "insertValues: "
-                                      "Invalid argument ID in '%s' : %i\n",
+                            logwarn("StringUtils", "insertValues: Invalid argument ID in '%s' : %i\n",
                                       irr::core::stringc(s.c_str()).c_str(),
                                       index);
                             new_string += "??";
@@ -482,7 +492,7 @@ namespace StringUtils
         catch (std::exception& e)
         {
             (void)e;  // avoid warning about unused variable
-            Log::fatal("StringUtils",
+            logfatal("StringUtils",
                        "Fatal error in insertValues(stringw) : %s @ line %i.",
                        __FILE__, __LINE__);
             exit(1);
@@ -644,8 +654,7 @@ namespace StringUtils
                         }
                         else
                         {
-                            Log::warn("StringUtils", "non-numeric HTML "
-                                      "entity not supported in '%s'.",
+                            logwarn("StringUtils", "non-numeric HTML entity not supported in '%s'.",
                                       input.c_str());
                         }
                         state = NORMAL;
@@ -775,7 +784,7 @@ namespace StringUtils
                     +         release_candidate;
 
         if(version <= 0)
-            Log::error("StringUtils", "Invalid version string '%s'.", s.c_str());
+            logerror("StringUtils", "Invalid version string '%s'.", s.c_str());
         return version;
     }   // versionToInt
 

@@ -71,7 +71,7 @@ bool ProgressBarAndroid::compileShaders()
     glGetShaderiv(m_vertex_shader, GL_COMPILE_STATUS, &success);
     if (!success)
     {
-        Log::error("ProgressBarAndroid", "Failed to compile vertex shader.");
+        logerror("ProgressBarAndroid", "Failed to compile vertex shader.");
         return false;
     }
 
@@ -82,7 +82,7 @@ bool ProgressBarAndroid::compileShaders()
     glGetShaderiv(m_fragment_shader, GL_COMPILE_STATUS, &success);
     if (!success)
     {
-        Log::error("ProgressBarAndroid", "Failed to compile fragment shader.");
+        logerror("ProgressBarAndroid", "Failed to compile fragment shader.");
         return false;
     }
 
@@ -95,21 +95,21 @@ bool ProgressBarAndroid::compileShaders()
     glGetProgramiv(m_program, GL_LINK_STATUS, &success);
     if (!success)
     {
-        Log::error("ProgressBarAndroid", "Failed to link program.");
+        logerror("ProgressBarAndroid", "Failed to link program.");
         return false;
     }
 
     m_position = glGetAttribLocation(m_program, "position");
     if (m_position == -1)
     {
-        Log::error("ProgressBarAndroid", "Failed to get attrib location.");
+        logerror("ProgressBarAndroid", "Failed to get attrib location.");
         return false;
     }
 
     m_progress = glGetUniformLocation(m_program, "progress");
     if (m_progress == -1)
     {
-        Log::error("ProgressBarAndroid", "Failed to get uniform location.");
+        logerror("ProgressBarAndroid", "Failed to get uniform location.");
         return false;
     }
 

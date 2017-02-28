@@ -56,7 +56,7 @@ CheckStructure::CheckStructure(const XMLNode &node, unsigned int index)
     else if(node.getName()=="goal")
         m_check_type = CT_GOAL;
     else
-        Log::warn("CheckStructure", "Unknown check structure '%s' - ignored.", kind.c_str());
+        logwarn("CheckStructure", "Unknown check structure '%s' - ignored.", kind.c_str());
 
     node.get("same-group", &m_same_group);
     // Make sure that the index of this check structure is included in
@@ -108,7 +108,7 @@ void CheckStructure::update(float dt)
         if(m_is_active[i] && isTriggered(m_previous_position[i], xyz, i))
         {
             if(UserConfigParams::m_check_debug)
-                Log::info("CheckStructure", "Check structure %d triggered for kart %s.",
+                loginfo("CheckStructure", "Check structure %d triggered for kart %s.",
                           m_index, world->getKart(i)->getIdent().c_str());
             trigger(i);
         }
@@ -144,7 +144,7 @@ void CheckStructure::changeStatus(const std::vector<int> &indices,
             cs->m_is_active[kart_index] = false;
             if(UserConfigParams::m_check_debug)
             {
-                Log::info("CheckStructure", "Deactivating %d for %s.",
+                loginfo("CheckStructure", "Deactivating %d for %s.",
                           indices[i],
                           World::getWorld()->getKart(kart_index)->getIdent().c_str());
             }
@@ -153,7 +153,7 @@ void CheckStructure::changeStatus(const std::vector<int> &indices,
             cs->m_is_active[kart_index] = true;
             if(UserConfigParams::m_check_debug)
             {
-                Log::info("CheckStructure", "Activating %d for %s.",
+                loginfo("CheckStructure", "Activating %d for %s.",
                           indices[i],
                           World::getWorld()->getKart(kart_index)->getIdent().c_str());
             }
@@ -166,7 +166,7 @@ void CheckStructure::changeStatus(const std::vector<int> &indices,
                 // non-POD type 'struct std::_Bit_reference' through '...';
                 // call will abort at runtime"). So we use this somewhat
                 // unusual but portable construct.
-                Log::info("CheckStructure", "Toggling %d for %s from %d.",
+                loginfo("CheckStructure", "Toggling %d for %s from %d.",
                           indices[i],
                           World::getWorld()->getKart(kart_index)->getIdent().c_str(),
                           cs->m_is_active[kart_index]==true);
@@ -206,7 +206,7 @@ void CheckStructure::trigger(unsigned int kart_index)
         World::getWorld()->newLap(kart_index);
         if(UserConfigParams::m_check_debug)
         {
-            Log::info("CheckStructure", "%s new lap %d triggered",
+            loginfo("CheckStructure", "%s new lap %d triggered",
                       World::getWorld()->getKart(kart_index)->getIdent().c_str(),
                       m_index);
         }

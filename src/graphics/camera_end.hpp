@@ -67,7 +67,7 @@ private:
                 m_type = EC_AHEAD_OF_KART;
             else
             {
-                Log::warn("Camera", "Invalid camera type '%s' - camera is ignored.",
+                logwarn("Camera", "Invalid camera type '%s' - camera is ignored.",
                           s.c_str());
                 return false;
             }

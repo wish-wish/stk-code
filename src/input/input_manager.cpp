@@ -285,7 +285,7 @@ void InputManager::handleStaticAction(int key, int value)
                 float t;
                 StringUtils::fromString(s,t);
                 RewindManager::get()->rewindTo(t);
-                Log::info("Rewind", "Rewinding from %f to %f",
+                loginfo("Rewind", "Rewinding from %f to %f",
                           world->getTime(), t);
             }
             break;
@@ -423,7 +423,7 @@ void InputManager::inputSensing(Input::InputType type, int deviceID,
                                 int value)
 {
 #if INPUT_MODE_DEBUG
-    Log::info("InputManager::inputSensing", "Start sensing input");
+    loginfo("InputManager::inputSensing", "Start sensing input");
 #endif
 
     // don't store if we're trying to do something like bindings keyboard
@@ -435,7 +435,7 @@ void InputManager::inputSensing(Input::InputType type, int deviceID,
         return;
 
 #if INPUT_MODE_DEBUG
-    Log::info("InputManager::inputSensing", store_new ? "storing it" : "ignoring it");
+    loginfo("InputManager::inputSensing", store_new ? "storing it" : "ignoring it");
 #endif
 
 
@@ -715,7 +715,7 @@ void InputManager::dispatchInput(Input::InputType type, int deviceID,
                     InputDevice *device = NULL;
                     if (type == Input::IT_KEYBOARD)
                     {
-                        //Log::info("InputManager", "New Player Joining with Key %d", button);
+                        //loginfo("InputManager", "New Player Joining with Key %d", button);
                         device = m_device_manager->getKeyboardFromBtnID(button);
                     }
                     else if (type == Input::IT_STICKBUTTON ||
@@ -751,7 +751,7 @@ void InputManager::dispatchInput(Input::InputType type, int deviceID,
 
             if (pk == NULL)
             {
-                Log::error("InputManager::dispatchInput", "Trying to process "
+                logerror("InputManager::dispatchInput", "Trying to process "
                     "action for an unknown player");
                 return;
             }
@@ -847,7 +847,7 @@ void InputManager::dispatchInput(Input::InputType type, int deviceID,
 void InputManager::setMasterPlayerOnly(bool enabled)
 {
 #if INPUT_MODE_DEBUG
-    Log::info("InputManager::setMasterPlayerOnly", enabled ? "enabled" : "disabled");
+    loginfo("InputManager::setMasterPlayerOnly", enabled ? "enabled" : "disabled");
 #endif
     m_master_player_only = enabled;
 }
@@ -887,7 +887,7 @@ EventPropagation InputManager::input(const SEvent& event)
 
             if (UserConfigParams::m_gamepad_debug)
             {
-                Log::info("InputManager",
+                loginfo("InputManager",
                           "axis motion: gamepad_id=%d axis=%d value=%d",
                           event.JoystickEvent.Joystick, axis_id, value);
             }
@@ -935,7 +935,7 @@ EventPropagation InputManager::input(const SEvent& event)
             {
                 if (UserConfigParams::m_gamepad_debug)
                 {
-                    Log::info("InputManager", "button %i, status=%i",
+                    loginfo("InputManager", "button %i, status=%i",
                               i, isButtonPressed);
                 }
 
@@ -1247,7 +1247,7 @@ void InputManager::setMode(InputDriverMode new_mode)
     {
         case MENU:
 #if INPUT_MODE_DEBUG
-            Log::info("InputManager::setMode", "MENU");
+            loginfo("InputManager::setMode", "MENU");
 #endif
             switch (m_mode)
             {
@@ -1309,7 +1309,7 @@ void InputManager::setMode(InputDriverMode new_mode)
             break;
         case INGAME:
 #if INPUT_MODE_DEBUG
-            Log::info("InputManager::setMode", "INGAME");
+            loginfo("InputManager::setMode", "INGAME");
 #endif
             // We must be in menu mode now in order to switch.
             assert (m_mode == MENU);
@@ -1328,7 +1328,7 @@ void InputManager::setMode(InputDriverMode new_mode)
         case INPUT_SENSE_KEYBOARD:
         case INPUT_SENSE_GAMEPAD:
 #if INPUT_MODE_DEBUG
-            Log::info("InputManager::setMode", "INPUT_SENSE_*");
+            loginfo("InputManager::setMode", "INPUT_SENSE_*");
 #endif
             // We must be in menu mode now in order to switch.
             assert (m_mode == MENU);
@@ -1342,7 +1342,7 @@ void InputManager::setMode(InputDriverMode new_mode)
             /*
         case LOWLEVEL:
 #if INPUT_MODE_DEBUG
-            Log::info("InputManager::setMode", "LOWLEVEL");
+            loginfo("InputManager::setMode", "LOWLEVEL");
 #endif
             // We must be in menu mode now in order to switch.
             assert (m_mode == MENU);

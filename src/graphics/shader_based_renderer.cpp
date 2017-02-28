@@ -618,23 +618,23 @@ ShaderBasedRenderer::ShaderBasedRenderer()
     m_skybox                = NULL;
     m_spherical_harmonics   = new SphericalHarmonics(irr_driver->getAmbientLight().toSColor());
     m_nb_static_glowing     = 0;
-    Log::info("ShaderBasedRenderer", "Preloading shaders...");
+    loginfo("ShaderBasedRenderer", "Preloading shaders...");
     preloadShaderFiles();
 
     if (CVS->isAZDOEnabled())
     {
         m_geometry_passes = new GeometryPasses<MultidrawPolicy>();
-        Log::info("ShaderBasedRenderer", "Geometry will be rendered with multidraw policy.");
+        loginfo("ShaderBasedRenderer", "Geometry will be rendered with multidraw policy.");
     }
     else if (CVS->supportsIndirectInstancingRendering())
     {
         m_geometry_passes = new GeometryPasses<IndirectDrawPolicy>();
-        Log::info("ShaderBasedRenderer", "Geometry will be rendered with indirect draw policy.");
+        loginfo("ShaderBasedRenderer", "Geometry will be rendered with indirect draw policy.");
     }
     else
     {
         m_geometry_passes = new GeometryPasses<GL3DrawPolicy>();
-        Log::info("ShaderBasedRenderer", "Geometry will be rendered with GL3 policy.");
+        loginfo("ShaderBasedRenderer", "Geometry will be rendered with GL3 policy.");
     }
 
     m_post_processing = new PostProcessing(irr_driver->getVideoDriver());    

@@ -206,7 +206,7 @@ LightNode* findNearestLight()
 
     Camera* camera = Camera::getActiveCamera();
     if (camera == NULL) {
-        Log::error("[Debug Menu]", "No camera found.");
+        logerror("[Debug Menu]", "No camera found.");
         return NULL;
     }
 
@@ -243,7 +243,7 @@ bool handleContextMenuAction(s32 cmd_id)
     {
     case DEBUG_GRAPHICS_RELOAD_SHADERS:
 #ifndef SERVER_ONLY
-        Log::info("Debug", "Reloading shaders...");
+        loginfo("Debug", "Reloading shaders...");
         ShaderFilesManager::getInstance()->clean();
         ShaderBase::updateShaders();
 #endif
@@ -532,7 +532,7 @@ bool handleContextMenuAction(s32 cmd_id)
         for (unsigned int i = 0; i<world->getNumKarts(); i++)
         {
             AbstractKart *kart = world->getKart(i);
-            Log::warn(kart->getIdent().c_str(),
+            logwarn(kart->getIdent().c_str(),
                 "<start position=\"%d\" x=\"%f\" y=\"%f\" z=\"%f\" h=\"%f\"/>",
                 i, kart->getXYZ().getX(), kart->getXYZ().getY(),
                 kart->getXYZ().getZ(), kart->getHeading()*RAD_TO_DEGREE
@@ -647,7 +647,7 @@ bool handleContextMenuAction(s32 cmd_id)
                     Scripting::ScriptEngine::getInstance();
                 if (engine == NULL)
                 {
-                    Log::warn("Debug", "No scripting engine loaded!");
+                    logwarn("Debug", "No scripting engine loaded!");
                     return true;
                 }
                 engine->evalScript(StringUtils::wideToUtf8(tb->getText()));
@@ -663,7 +663,7 @@ bool handleContextMenuAction(s32 cmd_id)
             {
                 if (World::getWorld())
                 {
-                    Log::warn("Debug", "Please run cutscene in main menu");
+                    logwarn("Debug", "Please run cutscene in main menu");
                     return;
                 }
                 if (text.empty()) return;
@@ -674,7 +674,7 @@ bool handleContextMenuAction(s32 cmd_id)
                     Track* t = track_manager->getTrack(track);
                     if (t == NULL)
                     {
-                        Log::warn("Debug", "Cutscene %s not found!",
+                        logwarn("Debug", "Cutscene %s not found!",
                             track.c_str());
                         return;
                     }

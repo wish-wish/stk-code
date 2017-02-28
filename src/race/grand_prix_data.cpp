@@ -254,7 +254,7 @@ void GrandPrixData::reload()
     std::unique_ptr<XMLNode> root(file_manager->createXMLTree(m_filename));
     if (root.get() == NULL)
     {
-        Log::error("GrandPrixData",
+        logerror("GrandPrixData",
                    "Error while trying to read xml Grand Prix from file '%s'. "
                    "Is the file readable for supertuxkart?",
                    m_filename.c_str());
@@ -263,7 +263,7 @@ void GrandPrixData::reload()
 
     if (root->getName() != "supertuxkart_grand_prix")
     {
-        Log::error("GrandPrixData",
+        logerror("GrandPrixData",
                    "Error while trying to read Grand Prix file '%s': "
                    "Root node has the wrong name %s", m_filename.c_str(),
                    root->getName().c_str());
@@ -272,7 +272,7 @@ void GrandPrixData::reload()
 
     if (!root->get("name", &m_name))
     {
-         Log::error("GrandPrixData",
+         logerror("GrandPrixData",
                     "Error while trying to read grandprix file '%s': "
                     "Missing 'name' attribute", m_filename.c_str());
         throw std::runtime_error("Missing name attribute");
@@ -281,7 +281,7 @@ void GrandPrixData::reload()
     const int amount = root->getNumNodes();
     if (amount == 0)
     {
-         Log::warn("GrandPrixData",
+         logwarn("GrandPrixData",
                    "Grandprix file '%s': There is no track defined",
                    m_filename.c_str());
     }
@@ -293,7 +293,7 @@ void GrandPrixData::reload()
 
         if (node->getName() != "track")
         {
-            Log::error("GrandPrixData"
+            logerror("GrandPrixData"
                        "Unknown node in Grand Prix XML file '%s': %s",
                        m_filename.c_str(), node->getName().c_str());
             throw std::runtime_error("Unknown node in the XML file");
@@ -303,7 +303,7 @@ void GrandPrixData::reload()
         std::string track_id;
         if (!node->get("id", &track_id))
         {
-            Log::error("GrandPrixData",
+            logerror("GrandPrixData",
                        "The id attribute is missing in the %d. track entry of "
                        "the Grand Prix file '%s'.", i, m_filename.c_str());
             throw std::runtime_error("Missing track id");
@@ -313,7 +313,7 @@ void GrandPrixData::reload()
         Track* t = track_manager->getTrack(track_id);
         if (t == NULL)
         {
-            Log::error("GrandPrixData",
+            logerror("GrandPrixData",
                        "The Grand Prix file '%s' contains a track '%s' that "
                        "does not exist", m_filename.c_str(), track_id.c_str());
             throw std::runtime_error("Unknown track");
@@ -323,7 +323,7 @@ void GrandPrixData::reload()
         int number_of_laps;
         if (!node->get("laps", &number_of_laps))
         {
-            Log::error("GrandPrixData",
+            logerror("GrandPrixData",
                        "The laps attribute is missing in the %d. track entry "
                        "of the Grand Prix file '%s'.", i, m_filename.c_str());
             throw std::runtime_error("Missing track id");
@@ -331,7 +331,7 @@ void GrandPrixData::reload()
 
         if (number_of_laps < 1 && !UserConfigParams::m_artist_debug_mode)
         {
-            Log::error("GrandPrixData",
+            logerror("GrandPrixData",
                        "Track '%s' in the Grand Prix file '%s' should be raced "
                        "with %d laps, which isn't possible.", track_id.c_str(),
                        m_filename.c_str());
@@ -385,7 +385,7 @@ bool GrandPrixData::writeToFile()
     }
     catch (std::runtime_error& e)
     {
-        Log::error("GrandPrixData",
+        logerror("GrandPrixData",
                    "Failed to write grand prix to '%s'; cause: %s",
                    m_filename.c_str(), e.what());
         return false;
@@ -404,7 +404,7 @@ bool GrandPrixData::checkConsistency(bool log_error) const
         {
             if (log_error)
             {
-                Log::error("GrandPrixData",
+                logerror("GrandPrixData",
                            "The grand prix '%ls' won't be available because "
                            "the track '%s' does not exist!", m_name.c_str(),
                            m_tracks[i].c_str());

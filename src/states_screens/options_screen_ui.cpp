@@ -91,7 +91,7 @@ void OptionsScreenUI::loadedFromFile()
 
     if (m_skins.size() == 0)
     {
-        Log::warn("OptionsScreenUI", "Could not find a single skin, make sure that "
+        logwarn("OptionsScreenUI", "Could not find a single skin, make sure that "
                                      "the data files are correctly installed");
         skinSelector->setActive(false);
         return;
@@ -178,7 +178,7 @@ void OptionsScreenUI::init()
     }
     if (!currSkinFound)
     {
-        Log::warn("OptionsScreenUI",
+        logwarn("OptionsScreenUI",
                   "Couldn't find current skin in the list of skins!");
         skinSelector->setValue(0);
         GUIEngine::reloadSkin();

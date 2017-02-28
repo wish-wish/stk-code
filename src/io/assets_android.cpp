@@ -78,18 +78,18 @@ void AssetsAndroid::init()
     // Check if STK data is available somewhere
     for (std::string path : paths)
     {
-        Log::info("AssetsAndroid", "Check data files in: %s", path.c_str());
+        loginfo("AssetsAndroid", "Check data files in: %s", path.c_str());
 
         if (m_file_manager->fileExists(path + "/stk/data/" + version))
         {
-            Log::info("AssetsAndroid", "Data files found in: %s", path.c_str());
+            loginfo("AssetsAndroid", "Data files found in: %s", path.c_str());
             m_stk_dir = path + "/stk";
             break;
         }
 
         if (m_file_manager->fileExists(path + "/supertuxkart/data/" + version))
         {
-            Log::info("AssetsAndroid", "Data files found in: %s", path.c_str());
+            loginfo("AssetsAndroid", "Data files found in: %s", path.c_str());
             m_stk_dir = path + "/supertuxkart";
             break;
         }
@@ -105,7 +105,7 @@ void AssetsAndroid::init()
             if (m_file_manager->checkAndCreateDirectoryP(preferred_path +
                                                                 "/stk/data"))
             {
-                Log::info("AssetsAndroid", "Data directory created in: %s",
+                loginfo("AssetsAndroid", "Data directory created in: %s",
                           preferred_path.c_str());
                 m_stk_dir = preferred_path + "/stk";
                 needs_extract_data = true;
@@ -121,7 +121,7 @@ void AssetsAndroid::init()
         {
             if (m_file_manager->checkAndCreateDirectoryP(path + "/stk/data"))
             {
-                Log::info("AssetsAndroid", "Data directory created in: %s",
+                loginfo("AssetsAndroid", "Data directory created in: %s",
                           path.c_str());
                 m_stk_dir = path + "/stk";
                 needs_extract_data = true;
@@ -133,7 +133,7 @@ void AssetsAndroid::init()
     // We can't continue if STK dir has not been found
     if (m_stk_dir.size() == 0)
     {
-        Log::fatal("AssetsAndroid", "Fatal error: Couldn't find Supertuxkart "
+        logfatal("AssetsAndroid", "Fatal error: Couldn't find Supertuxkart "
                    "data directory");
     }
 
@@ -142,14 +142,14 @@ void AssetsAndroid::init()
         !needs_extract_data)
     {
         needs_extract_data = true;
-        Log::warn("AssetsAndroid", "Assets seem to be not extracted properly, "
+        logwarn("AssetsAndroid", "Assets seem to be not extracted properly, "
                   "because the .extracted file doesn't exist. Force "
                   "extracting assets...");
     }
 
     if (!m_file_manager->checkAndCreateDirectoryP(m_stk_dir + "/home"))
     {
-        Log::warn("AssetsAndroid", "Couldn't create home directory");
+        logwarn("AssetsAndroid", "Couldn't create home directory");
     }
 
     // Set some useful variables
@@ -165,7 +165,7 @@ void AssetsAndroid::init()
 
         if (!m_file_manager->fileExists(m_stk_dir + "/.extracted"))
         {
-            Log::fatal("AssetsAndroid", "Fatal error: Assets were not "
+            logfatal("AssetsAndroid", "Fatal error: Assets were not "
                        "extracted properly");
         }
     }
@@ -193,7 +193,7 @@ void AssetsAndroid::extractData()
 
     if (!success)
     {
-        Log::error("AssetsAndroid", "Error: Couldn't extract main directory.");
+        logerror("AssetsAndroid", "Error: Couldn't extract main directory.");
         return;
     }
 
@@ -251,7 +251,7 @@ void AssetsAndroid::extractData()
     }
     else
     {
-        Log::warn("AssetsAndroid", "Warning: Cannot open %s file. Ignoring "
+        logwarn("AssetsAndroid", "Warning: Cannot open %s file. Ignoring "
                   "extraction of other directories.", dirs_list.c_str());
     }
 
@@ -275,7 +275,7 @@ bool AssetsAndroid::extractDir(std::string dir_name)
 #ifdef ANDROID
     AAssetManager* amgr = global_android_app->activity->assetManager;
 
-    Log::info("AssetsAndroid", "Extracting %s directory",
+    loginfo("AssetsAndroid", "Extracting %s directory",
               dir_name.length() > 0 ? dir_name.c_str() : "main");
 
     std::string output_dir = dir_name;
@@ -289,14 +289,14 @@ bool AssetsAndroid::extractDir(std::string dir_name)
 
     if (asset_dir == NULL)
     {
-        Log::warn("AssetsAndroid", "Couldn't get asset dir: %s",
+        logwarn("AssetsAndroid", "Couldn't get asset dir: %s",
                   dir_name.c_str());
         return true;
     }
 
     if (!m_file_manager->checkAndCreateDirectoryP(output_dir))
     {
-        Log::warn("AssetsAndroid", "Couldn't create %s directory",
+        logwarn("AssetsAndroid", "Couldn't create %s directory",
                   output_dir.c_str());
         return false;
     }
@@ -328,7 +328,7 @@ bool AssetsAndroid::extractDir(std::string dir_name)
 
         if (asset == NULL)
         {
-            Log::warn("AssetsAndroid", "Asset is null: %s", filename);
+            logwarn("AssetsAndroid", "Asset is null: %s", filename);
             continue;
         }
 
@@ -338,7 +338,7 @@ bool AssetsAndroid::extractDir(std::string dir_name)
         if (!out_file.good())
         {
             extraction_failed = true;
-            Log::error("AssetsAndroid", "Couldn't create a file: %s", filename);
+            logerror("AssetsAndroid", "Couldn't create a file: %s", filename);
             AAsset_close(asset);
             break;
         }
@@ -360,7 +360,7 @@ bool AssetsAndroid::extractDir(std::string dir_name)
         if (out_file.fail() || extraction_failed)
         {
             extraction_failed = true;
-            Log::error("AssetsAndroid", "Extraction failed for file: %s",
+            logerror("AssetsAndroid", "Extraction failed for file: %s",
                       filename);
         }
 
@@ -390,7 +390,7 @@ void AssetsAndroid::removeData()
     if (m_stk_dir.find("/stk") == std::string::npos &&
         m_stk_dir.find("/supertuxkart") == std::string::npos)
     {
-        Log::error("AssetsAndroid", "Invalid data directory: %s",
+        logerror("AssetsAndroid", "Invalid data directory: %s",
                    m_stk_dir.c_str());
         assert(false);
         return;
@@ -414,7 +414,7 @@ void AssetsAndroid::removeData()
         if (file == m_stk_dir + "/.nomedia")
             continue;
 
-        Log::info("AssetsAndroid", "Deleting file: %s\n", file.c_str());
+        loginfo("AssetsAndroid", "Deleting file: %s\n", file.c_str());
 
         if (m_file_manager->isDirectory(file))
         {
@@ -442,7 +442,7 @@ void AssetsAndroid::touchFile(std::string path)
 
     if (!file.good())
     {
-        Log::warn("AssetsAndroid", "Error: Cannot create %s file.",
+        logwarn("AssetsAndroid", "Error: Cannot create %s file.",
                   path.c_str());
     }
 
@@ -479,7 +479,7 @@ std::string AssetsAndroid::getPreferredPath(const std::vector<std::string>&
 
         int available_space = (int)((stat.f_bavail * stat.f_bsize) / 1000000);
 
-        Log::info("AssetsAndroid", "Available space in '%s': %i MB",
+        loginfo("AssetsAndroid", "Available space in '%s': %i MB",
                   path.c_str(), available_space);
                   
         if (available_space > prev_available_space)

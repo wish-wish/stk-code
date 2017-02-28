@@ -66,7 +66,7 @@ struct SNamedPath
 	{
 		return core::stringw(getPath());
 	}
-	const c8* getPtr() const
+	const fschar_t* getPtr() const
 	{
 		return getPath().c_str();
 	}

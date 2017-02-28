@@ -171,7 +171,7 @@ Dictionary::add_translation(const std::string& msgid, const std::string& msgstr)
   }
   else
   {
-    Log::warn("tinygettext",
+    logwarn("tinygettext",
               "Collision in add translation: '%s' -> '%s' vs '%s'.",
               msgid.c_str(), msgstr.c_str(), vec[0].c_str());
     vec[0] = msgstr;
@@ -190,7 +190,7 @@ Dictionary::add_translation(const std::string& msgctxt,
   }
   else
   {
-      Log::warn("tinygettext",
+      logwarn("tinygettext",
           "collision in add_translation(\"%s\", \"%s\", \"%s\")",
           msgctxt.c_str(), msgid.c_str(), msgid_plural.c_str());
     vec = msgstrs;
@@ -207,7 +207,7 @@ Dictionary::add_translation(const std::string& msgctxt, const std::string& msgid
   }
   else
   {
-    Log::warn("tinygettext", "collision in add_translation(\"%s\", \"%s\")",
+    logwarn("tinygettext", "collision in add_translation(\"%s\", \"%s\")",
               msgctxt.c_str(), msgid.c_str());
     vec[0] = msgstr;
   }

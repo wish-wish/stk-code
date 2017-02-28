@@ -117,7 +117,7 @@ void RaceManager::setDefaultAIKartList(const std::vector<std::string>& ai_list)
         const KartProperties *kp = kart_properties_manager->getKart(name);
         if(!kp)
         {
-            Log::warn("RaceManager", "Kart '%s' is unknown and therefore ignored.",
+            logwarn("RaceManager", "Kart '%s' is unknown and therefore ignored.",
                       name.c_str());
             continue;
         }
@@ -126,7 +126,7 @@ void RaceManager::setDefaultAIKartList(const std::vector<std::string>& ai_list)
         // player (and therefore the current slot) is not defined yet.
         //if(unlock_manager->getCurrentSlot()->isLocked(name))
         //{
-        //   Log::info("RaceManager", "Kart '%s' is locked and therefore ignored.",
+        //   loginfo("RaceManager", "Kart '%s' is locked and therefore ignored.",
         //           name.c_str());
         //    continue;
         //}
@@ -268,7 +268,7 @@ void RaceManager::computeRandomKartList()
 {
     int n = m_num_karts - (int)m_player_karts.size();
     if(UserConfigParams::logMisc())
-        Log::info("RaceManager", "AI karts count = %d for m_num_karts = %d and "
+        loginfo("RaceManager", "AI karts count = %d for m_num_karts = %d and "
             "m_player_karts.size() = %d", n, m_num_karts, m_player_karts.size());
 
     // If less kart selected than there are player karts, adjust the number of
@@ -345,7 +345,7 @@ void RaceManager::startNew(bool from_overworld)
             {
                 if (m_saved_gp == NULL)
                 {
-                    Log::error("Race Manager", "Can not continue Grand Prix '%s'"
+                    logerror("Race Manager", "Can not continue Grand Prix '%s'"
                                                "because it could not be loaded",
                                                m_grand_prix.getId().c_str());
                     m_continue_saved_gp = false; // simple and working
@@ -373,7 +373,7 @@ void RaceManager::startNew(bool from_overworld)
     if (gk > 0)
         m_num_karts += gk;
 
-    Log::verbose("RaceManager", "Nb of karts=%u, ghost karts:%u ai:%lu players:%lu\n",
+    logverbose("RaceManager", "Nb of karts=%u, ghost karts:%u ai:%lu players:%lu\n",
         (unsigned int) m_num_karts, gk, m_ai_kart_list.size(), m_player_karts.size());
 
     assert((unsigned int)m_num_karts == gk+m_ai_kart_list.size()+m_player_karts.size());
@@ -402,7 +402,7 @@ void RaceManager::startNew(bool from_overworld)
         init_gp_rank ++;
         if(UserConfigParams::m_ftl_debug)
         {
-            Log::debug("RaceManager", "[ftl] rank %d ai-kart %s", init_gp_rank,
+            logdebug("RaceManager", "[ftl] rank %d ai-kart %s", init_gp_rank,
                    m_ai_kart_list[i].c_str());
         }
     }
@@ -420,7 +420,7 @@ void RaceManager::startNew(bool from_overworld)
                                            m_player_karts[i].getDifficulty()));
         if(UserConfigParams::m_ftl_debug)
         {
-            Log::debug("RaceManager", "[ftl] rank %d kart %s", init_gp_rank,
+            logdebug("RaceManager", "[ftl] rank %d kart %s", init_gp_rank,
                 m_player_karts[i].getKartName().c_str());
         }
         init_gp_rank ++;
@@ -528,7 +528,7 @@ void RaceManager::startNextRace()
         World::setWorld(new EasterEggHunt());
     else
     {
-        Log::error("RaceManager", "Could not create given race mode.");
+        logerror("RaceManager", "Could not create given race mode.");
         assert(0);
     }
 
@@ -691,7 +691,7 @@ void RaceManager::computeGPRanks()
         m_kart_status[0].m_gp_rank = -1;
         if(UserConfigParams::m_ftl_debug)
         {
-            Log::debug("Race Manager","[ftl] kart '%s' has position %d.",
+            logdebug("Race Manager","[ftl] kart '%s' has position %d.",
                        World::getWorld()->getKart(0)->getIdent().c_str(),
                        sd->m_position);
         }
@@ -705,7 +705,7 @@ void RaceManager::computeGPRanks()
         sort_data.push_back(sd);
         if(UserConfigParams::m_ftl_debug)
         {
-            Log::debug("Race Manager",
+            logdebug("Race Manager",
                        "[ftl] kart '%s' has position %d score %d.",
                        World::getWorld()->getKart(kart_id)->getIdent().c_str(),
                        sd->m_position, sd->m_score);
@@ -719,7 +719,7 @@ void RaceManager::computeGPRanks()
         {
             const AbstractKart *kart =
                 World::getWorld()->getKart(sort_data[i].m_position);
-            Log::debug("Race Manager","[ftl] kart '%s' has now position %d.",
+            logdebug("Race Manager","[ftl] kart '%s' has now position %d.",
                 kart->getIdent().c_str(),
                 i-start);
         }
@@ -761,7 +761,7 @@ void RaceManager::exitRace(bool delete_world)
         {
             if(UserConfigParams::logMisc())
             {
-                Log::info("RaceManager", "%s has GP final rank %d",
+                loginfo("RaceManager", "%s has GP final rank %d",
                     m_kart_status[i].m_ident.c_str(), m_kart_status[i].m_gp_rank);
             }
 
@@ -818,7 +818,7 @@ void RaceManager::exitRace(bool delete_world)
             }
             else
             {
-                Log::error("RaceManager", "There are no winners and no losers."
+                logerror("RaceManager", "There are no winners and no losers."
                            "This should have never happend\n");
                 std::vector<std::string> karts;
                 karts.push_back(UserConfigParams::m_default_kart);
@@ -862,7 +862,7 @@ void RaceManager::kartFinishedRace(const AbstractKart *kart, float time)
         m_kart_status[id].m_score += wwr->getScoreForPosition(pos);
     else
     {
-        Log::error("RaceManager",
+        logerror("RaceManager",
                    "World with scores that is not a WorldWithRank??");
     }
 
@@ -959,7 +959,7 @@ void RaceManager::startWatchingReplay(const std::string &track_ident,
     m_num_karts = ReplayPlay::get()->getNumGhostKart();
     m_kart_status.clear();
 
-    Log::verbose("RaceManager", "%u ghost kart(s) for watching replay only\n",
+    logverbose("RaceManager", "%u ghost kart(s) for watching replay only\n",
         (unsigned int)m_num_karts);
 
     int init_gp_rank = 0;

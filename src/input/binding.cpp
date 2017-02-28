@@ -47,7 +47,7 @@ bool Binding::load(const XMLNode *action)
     int n;
     if(!action->get("id", &m_id) || !action->get("event", &n)  )
     {
-        Log::warn("Binding", "No id-string or event-string given - ignored.");
+        logwarn("Binding", "No id-string or event-string given - ignored.");
         return false;
     }
     m_type = (Input::InputType)n;
@@ -64,7 +64,7 @@ bool Binding::load(const XMLNode *action)
     {
         if(!action->get("direction", &n))
         {
-            Log::warn("Binding", "IT_STICKMOTION without direction, ignoring.");
+            logwarn("Binding", "IT_STICKMOTION without direction, ignoring.");
             return false;
         }
         m_dir = (Input::AxisDirection)n;

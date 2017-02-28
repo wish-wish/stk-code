@@ -411,7 +411,7 @@ void Track::cleanup()
 
     if(UserConfigParams::logMemory())
     {
-        Log::debug("track",
+        logdebug("track",
               "[memory] After cleaning '%s': mesh cache %d texture cache %d\n",
                 getIdent().c_str(),
                 irr_driver->getSceneManager()->getMeshCache()->getMeshCount(),
@@ -428,7 +428,7 @@ void Track::cleanup()
                 m_old_mesh_buffers.erase(p);
             else
             {
-                Log::debug("track", "[memory] Leaked mesh buffer '%s'.\n",
+                logdebug("track", "[memory] Leaked mesh buffer '%s'.\n",
                        name.getInternalName().c_str());
             }   // if name not found
         }   // for i < cache size
@@ -446,7 +446,7 @@ void Track::cleanup()
             }
             else
             {
-                Log::debug("track", "[memory] Leaked texture '%s'.\n",
+                logdebug("track", "[memory] Leaked texture '%s'.\n",
                     t->getName().getInternalName().c_str());
             }
         }
@@ -460,7 +460,7 @@ void Track::cleanup()
     {
         scene::IAnimatedMesh* mesh = meshCache->getMeshByIndex(i);
         io::SNamedPath path = meshCache->getMeshName(mesh);
-        Log::info("CACHE", "[%i] %s", i, path.getPath().c_str());
+        loginfo("CACHE", "[%i] %s", i, path.getPath().c_str());
     }
 #endif
 
@@ -597,7 +597,7 @@ void Track::loadTrackInfo()
         m_has_navmesh = true;
     else if ( (m_is_arena || m_is_soccer) && !m_dont_load_navmesh)
     {
-        Log::warn("Track", "NavMesh is not found for arena %s, "
+        logwarn("Track", "NavMesh is not found for arena %s, "
                   "disable AI for it.\n", m_name.c_str());
     }
     if (m_is_soccer)
@@ -653,7 +653,7 @@ void Track::getMusicInformation(std::vector<std::string>&       filenames,
         if(mi)
             m_music.push_back(mi);
         else
-            Log::warn("track",
+            logwarn("track",
                       "Music information file '%s' not found for track '%s' - ignored.\n",
                       filenames[i].c_str(), m_name.c_str());
 
@@ -684,7 +684,7 @@ void Track::loadArenaGraph(const XMLNode &node)
 
     if(Graph::get()->getNumNodes()==0)
     {
-        Log::warn("track", "No graph nodes defined for track '%s'\n",
+        logwarn("track", "No graph nodes defined for track '%s'\n",
                 m_filename.c_str());
     }
     else
@@ -705,7 +705,7 @@ btQuaternion Track::getArenaStartRotation(const Vec3& xyz, float heading)
     Graph::get()->findRoadSector(xyz, &node);
     if (node == Graph::UNKNOWN_SECTOR)
     {
-        Log::warn("track", "Starting position is not on ArenaGraph");
+        logwarn("track", "Starting position is not on ArenaGraph");
         return def_pos;
     }
 
@@ -738,11 +738,11 @@ void Track::loadDriveGraph(unsigned int mode_id, const bool reverse)
 
     if(DriveGraph::get()->getNumNodes()==0)
     {
-        Log::warn("track", "No graph nodes defined for track '%s'\n",
+        logwarn("track", "No graph nodes defined for track '%s'\n",
                 m_filename.c_str());
         if (race_manager->getNumberOfKarts() > 1)
         {
-            Log::fatal("track", "I can handle the lack of driveline in single"
+            logfatal("track", "I can handle the lack of driveline in single"
                 "kart mode, but not with AIs\n");
         }
     }
@@ -778,7 +778,7 @@ void Track::createPhysicsModel(unsigned int main_track_count)
 
     if (m_track_mesh == NULL)
     {
-        Log::error("track",
+        logerror("track",
                    "m_track_mesh == NULL, cannot createPhysicsModel\n");
         return;
     }
@@ -857,7 +857,7 @@ void Track::convertTrackToBullet(scene::ISceneNode *node)
         node = ((LODNode*)node)->getFirstNode();
         if (node == NULL)
         {
-            Log::warn("track",
+            logwarn("track",
                       "This track contains an empty LOD group.");
             return;
         }
@@ -899,7 +899,7 @@ void Track::convertTrackToBullet(scene::ISceneNode *node)
         default:
             int type_as_int = node->getType();
             char* type = (char*)&type_as_int;
-            Log::debug("track",
+            logdebug("track",
                 "[convertTrackToBullet] Unknown scene node type : %c%c%c%c.\n",
                    type[0], type[1], type[2], type[3]);
             return;
@@ -922,7 +922,7 @@ void Track::convertTrackToBullet(scene::ISceneNode *node)
             mb->getVertexType() != video::EVT_2TCOORDS &&
             mb->getVertexType() != video::EVT_TANGENTS)
         {
-            Log::warn("track", "convertTrackToBullet: Ignoring type '%d'!\n",
+            logwarn("track", "convertTrackToBullet: Ignoring type '%d'!\n",
                 mb->getVertexType());
             continue;
         }
@@ -1104,7 +1104,7 @@ bool Track::loadMainTrack(const XMLNode &root)
 
     if(!mesh)
     {
-        Log::fatal("track",
+        logfatal("track",
                    "Main track model '%s' in '%s' not found, aborting.\n",
                    track_node->getName().c_str(), model_name.c_str());
     }
@@ -1191,7 +1191,7 @@ bool Track::loadMainTrack(const XMLNode &root)
         // Only "object" entries are allowed now inside of the model tag
         if(n->getName()!="static-object")
         {
-            Log::error("track",
+            logerror("track",
                 "Incorrect tag '%s' inside <model> of scene file - ignored\n",
                     n->getName().c_str());
             continue;
@@ -1240,7 +1240,7 @@ bool Track::loadMainTrack(const XMLNode &root)
             scene::IMesh *a_mesh = irr_driver->getMesh(full_path);
             if(!a_mesh)
             {
-                Log::error("track", "Object model '%s' not found, ignored.\n",
+                logerror("track", "Object model '%s' not found, ignored.\n",
                            full_path.c_str());
                 continue;
             }
@@ -1281,7 +1281,7 @@ bool Track::loadMainTrack(const XMLNode &root)
                     c = unlock_manager->getChallengeData(challenge);
                     if (c == NULL)
                     {
-                        Log::error("track", "Cannot find challenge named <%s>\n",
+                        logerror("track", "Cannot find challenge named <%s>\n",
                                    challenge.c_str());
                         scene_node->remove();
                         continue;
@@ -1301,7 +1301,7 @@ bool Track::loadMainTrack(const XMLNode &root)
                         Track* t = track_manager->getTrack(c->getTrackId());
                         if (t == NULL)
                         {
-                            Log::error("track", "Cannot find track named <%s>\n",
+                            logerror("track", "Cannot find track named <%s>\n",
                                        c->getTrackId().c_str());
                             continue;
                         }
@@ -1311,7 +1311,7 @@ bool Track::loadMainTrack(const XMLNode &root)
 
                         if (screenshot == NULL)
                         {
-                            Log::error("track",
+                            logerror("track",
                                        "Cannot find track screenshot <%s>",
                                        sshot.c_str());
                             continue;
@@ -1362,7 +1362,7 @@ bool Track::loadMainTrack(const XMLNode &root)
 
     if (m_track_mesh == NULL)
     {
-        Log::fatal("track", "m_track_mesh == NULL, cannot loadMainTrack\n");
+        logfatal("track", "m_track_mesh == NULL, cannot loadMainTrack\n");
     }
 
     m_gfx_effect_mesh->createCollisionShape();
@@ -1388,7 +1388,7 @@ void Track::handleAnimatedTextures(scene::ISceneNode *node, const XMLNode &xml)
         texture_node->get("name", &name);
         if(name=="")
         {
-            Log::error("track",
+            logerror("track",
                 "Animated texture: no texture name specified for track '%s'\n",
                  m_ident.c_str());
             continue;
@@ -1419,7 +1419,7 @@ void Track::handleAnimatedTextures(scene::ISceneNode *node, const XMLNode &xml)
         }   // for i<getMaterialCount
 
         if (moving_textures_found == 0)
-            Log::warn("AnimTexture", "Did not find animate texture '%s'", name.c_str());
+            logwarn("AnimTexture", "Did not find animate texture '%s'", name.c_str());
     }   // for node_number < xml->getNumNodes
 }   // handleAnimatedTextures
 
@@ -1475,7 +1475,7 @@ void Track::createWater(const XMLNode &node)
     scene::IMesh *mesh = irr_driver->getMesh(full_path);
     if (mesh == NULL)
     {
-        Log::warn("Track", "Water not found : '%s'", full_path.c_str());
+        logwarn("Track", "Water not found : '%s'", full_path.c_str());
         return;
     }
 
@@ -1496,7 +1496,7 @@ void Track::createWater(const XMLNode &node)
         // A speed of 0 results in a division by zero, so avoid this.
         // The actual time for a wave from one maximum to the next is
         // given by 2*M_PI*speed/1000.
-        Log::warn("Track",
+        logwarn("Track",
                   "Wave-speed or time is 0, resetting it to the default.");
         wave_speed =300.0f;
     }
@@ -1525,7 +1525,7 @@ void Track::createWater(const XMLNode &node)
 
     if(!mesh || !scene_node)
     {
-        Log::error("track", "Water model '%s' in '%s' not found, ignored.\n",
+        logerror("track", "Water model '%s' in '%s' not found, ignored.\n",
                     node.getName().c_str(), model_name.c_str());
         return;
     }
@@ -1575,7 +1575,7 @@ void Track::loadTrackModel(bool reverse_track, unsigned int mode_id)
     assert(m_all_cached_meshes.size()==0);
     if(UserConfigParams::logMemory())
     {
-        Log::debug("[memory] Before loading '%s': mesh cache %d "
+        logdebug("[memory] Before loading '%s': mesh cache %d "
                    "texture cache %d\n",
             getIdent().c_str(),
             irr_driver->getSceneManager()->getMeshCache()->getMeshCount(),
@@ -1877,15 +1877,15 @@ void Track::loadTrackModel(bool reverse_track, unsigned int mode_id)
     if (CheckManager::get()->getCheckStructureCount()==0  &&
         race_manager->getMinorMode()!=RaceManager::MINOR_MODE_3_STRIKES && !m_is_cutscene)
     {
-        Log::warn("track", "No check lines found in track '%s'.",
+        logwarn("track", "No check lines found in track '%s'.",
                   m_ident.c_str());
-        Log::warn("track", "Lap counting will not work, and start "
+        logwarn("track", "Lap counting will not work, and start "
                   "positions might be incorrect.");
     }
 
     if (UserConfigParams::logMemory())
     {
-        Log::debug("track", "[memory] After loading  '%s': mesh cache %d "
+        logdebug("track", "[memory] After loading  '%s': mesh cache %d "
                    "texture cache %d\n", getIdent().c_str(),
                 irr_driver->getSceneManager()->getMeshCache()->getMeshCount(),
                 irr_driver->getVideoDriver()->getTextureCount());
@@ -2017,7 +2017,7 @@ void Track::loadObjects(const XMLNode* root, const std::string& path, ModelDefin
             }
             else
             {
-                Log::error("track", "Bad weather node found - ignored.\n");
+                logerror("track", "Bad weather node found - ignored.\n");
                 continue;
             }
         }
@@ -2056,7 +2056,7 @@ void Track::loadObjects(const XMLNode* root, const std::string& path, ModelDefin
         }
         else
         {
-            Log::warn("track", "While loading track '%s', element '%s' was "
+            logwarn("track", "While loading track '%s', element '%s' was "
                       "met but is unknown.",
                       m_ident.c_str(), node->getName().c_str());
         }
@@ -2160,7 +2160,7 @@ void Track::handleSky(const XMLNode &xml_node, const std::string &filename)
         }
         else
         {
-            Log::error("track", "Sky-dome texture '%s' not found - ignored.",
+            logerror("track", "Sky-dome texture '%s' not found - ignored.",
                         s.c_str());
         }
     }   // if sky-dome
@@ -2195,16 +2195,16 @@ void Track::handleSky(const XMLNode &xml_node, const std::string &filename)
             }
             else
             {
-                Log::error("track","Sky-box texture '%s' not found - ignored.",
+                logerror("track","Sky-box texture '%s' not found - ignored.",
                            v[i].c_str());
             }
         }   // for i<v.size()
         if(m_sky_textures.size()!=6)
         {
-            Log::error("track",
+            logerror("track",
                        "A skybox needs 6 textures, but %d are specified",
                        (int)m_sky_textures.size());
-            Log::error("track", "in '%s'.", filename.c_str());
+            logerror("track", "in '%s'.", filename.c_str());
 
         }
         else
@@ -2241,7 +2241,7 @@ void Track::handleSky(const XMLNode &xml_node, const std::string &filename)
             }
             else
             {
-                Log::error("track", "Sky-box spherical harmonics texture '%s' not found - ignored.",
+                logerror("track", "Sky-box spherical harmonics texture '%s' not found - ignored.",
                     v[i].c_str());
             }
         }   // for i<v.size()
@@ -2288,7 +2288,7 @@ void Track::itemCommand(const XMLNode *node)
     if(type==Item::ITEM_EASTER_EGG &&
         !(race_manager->getMinorMode()==RaceManager::MINOR_MODE_EASTER_EGG))
     {
-        Log::warn("track",
+        logwarn("track",
                   "Found easter egg in non-easter-egg mode - ignored.\n");
         return;
     }
@@ -2327,10 +2327,10 @@ void Track::itemCommand(const XMLNode *node)
             (-10000 * quad_normal), &hit_point, &m, &normal);
         if (!drop_success)
         {
-            Log::warn("track",
+            logwarn("track",
                       "Item at position (%f,%f,%f) can not be dropped",
                       loc.getX(), loc.getY(), loc.getZ());
-            Log::warn("track", "onto terrain - position unchanged.");
+            logwarn("track", "onto terrain - position unchanged.");
         }
 #endif
     }
@@ -2411,7 +2411,7 @@ bool Track::findGround(AbstractKart *kart)
                                              &m, &normal);
     if(!over_ground)
     {
-        Log::warn("physics", "Kart at (%f %f %f) can not be dropped.",
+        logwarn("physics", "Kart at (%f %f %f) can not be dropped.",
                   xyz.getX(),xyz.getY(),xyz.getZ());
         return false;
     }
@@ -2420,7 +2420,7 @@ bool Track::findGround(AbstractKart *kart)
     // a reset. If so, this is not a valid position.
     if(m && m->isDriveReset())
     {
-        Log::warn("physics","Kart at (%f %f %f) over reset terrain '%s'",
+        logwarn("physics","Kart at (%f %f %f) over reset terrain '%s'",
                    xyz.getX(),xyz.getY(),xyz.getZ(),
                    m->getTexFname().c_str());
         return false;
@@ -2430,7 +2430,7 @@ bool Track::findGround(AbstractKart *kart)
     // too long.
     if(xyz.getY() - hit_point.getY() > 5)
     {
-        Log::warn("physics",
+        logwarn("physics",
                   "Kart at (%f %f %f) is too high above ground at (%f %f %f)",
                   xyz.getX(),xyz.getY(),xyz.getZ(),
                   hit_point.getX(),hit_point.getY(),hit_point.getZ());

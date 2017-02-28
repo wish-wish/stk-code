@@ -106,7 +106,7 @@ void ServerLobby::setup()
                                                         : INIT_WAN;
     m_selection_enabled = false;
     m_current_protocol  = NULL;
-    Log::info("ServerLobby", "Starting the protocol.");
+    loginfo("ServerLobby", "Starting the protocol.");
 
     // Initialise the data structures to detect if all clients and 
     // the server are ready:
@@ -133,7 +133,7 @@ bool ServerLobby::notifyEventAsynchronous(Event* event)
         assert(data.size()); // message not empty
         uint8_t message_type;
         message_type = data.getUInt8();
-        Log::info("ServerLobby", "Message received with type %d.",
+        loginfo("ServerLobby", "Message received with type %d.",
                   message_type);
         switch(message_type)
         {
@@ -178,7 +178,7 @@ void ServerLobby::update(float dt)
         break;
     case GETTING_PUBLIC_ADDRESS:
     {
-        Log::debug("ServerLobby", "Public address known.");
+        logdebug("ServerLobby", "Public address known.");
         // Free GetPublicAddress protocol
         delete m_current_protocol;
 
@@ -186,7 +186,7 @@ void ServerLobby::update(float dt)
         // this thread, but there is no need for the protocol manager
         // to react to any requests before the server is registered.
         registerServer();
-        Log::info("ServerLobby", "Server registered.");
+        loginfo("ServerLobby", "Server registered.");
         m_state = ACCEPTING_CLIENTS;
     }
     break;
@@ -202,7 +202,7 @@ void ServerLobby::update(float dt)
         // once all track votes have been received.
         break;
     case LOAD_WORLD:
-        Log::info("ServerLobbyRoom", "Starting the race loading.");
+        loginfo("ServerLobbyRoom", "Starting the race loading.");
         // This will create the world instance, i.e. load track and karts
         loadWorld();
         m_state = WAIT_FOR_WORLD_LOADED;
@@ -299,7 +299,7 @@ void ServerLobby::registerServer()
     request->addParameter("name",   NetworkConfig::get()->getServerName() );
     request->addParameter("max_players", 
                           UserConfigParams::m_server_max_players          );
-    Log::info("RegisterServer", "Showing addr %s", addr.toString().c_str());
+    loginfo("RegisterServer", "Showing addr %s", addr.toString().c_str());
     
     request->executeNow();
 
@@ -308,13 +308,13 @@ void ServerLobby::registerServer()
 
     if (result->get("success", &rec_success) && rec_success == "yes")
     {
-        Log::info("RegisterServer", "Server is now online.");
+        loginfo("RegisterServer", "Server is now online.");
         STKHost::get()->setRegistered(true);
     }
     else
     {
         irr::core::stringc error(request->getInfo().c_str());
-        Log::error("RegisterServer", "%s", error.c_str());
+        logerror("RegisterServer", "%s", error.c_str());
         STKHost::get()->setErrorMessage(_("Failed to register server: %s", error.c_str()));
     }
 
@@ -344,13 +344,13 @@ void ServerLobby::startSelection(const Event *event)
 
     if (m_state != ACCEPTING_CLIENTS)
     {
-        Log::warn("ServerLobby",
+        logwarn("ServerLobby",
                   "Received startSelection while being in state %d", m_state);
         return;
     }
     if(event && !event->getPeer()->isAuthorised())
     {
-        Log::warn("ServerLobby", 
+        logwarn("ServerLobby", 
                   "Client %lx is not authorised to start selection.",
                   event->getPeer());
         return;
@@ -369,7 +369,7 @@ void ServerLobby::startSelection(const Event *event)
 
     Protocol *p = new LatencyProtocol();
     p->requestStart();
-    Log::info("LobbyProtocol", "LatencyProtocol started.");
+    loginfo("LobbyProtocol", "LatencyProtocol started.");
 
 }   // startSelection
 
@@ -403,7 +403,7 @@ void ServerLobby::checkIncomingConnectionRequests()
 
     if (!result->get("success", &success) || success != "yes")
     {
-        Log::error("ServerLobby", "Cannot retrieve the list.");
+        logerror("ServerLobby", "Cannot retrieve the list.");
         return;
     }
 
@@ -413,7 +413,7 @@ void ServerLobby::checkIncomingConnectionRequests()
     for (unsigned int i = 0; i < users_xml->getNumNodes(); i++)
     {
         users_xml->getNode(i)->get("id", &id);
-        Log::debug("ServerLobby",
+        logdebug("ServerLobby",
                    "User with id %d wants to connect.", id);
         Protocol *p = new ConnectToPeer(id);
         p->requestStart();
@@ -464,12 +464,12 @@ void ServerLobby::checkIncomingConnectionRequests()
     for (unsigned int i = 0; i < karts_results.size(); i++)
     {
         total->addUInt8(karts_results[i]); // kart pos = i+1
-        Log::info("ServerLobby", "Kart %d finished #%d",
+        loginfo("ServerLobby", "Kart %d finished #%d",
             karts_results[i], i + 1);
     }
     sendMessageToPeersChangingToken(total, /*reliable*/ true);
     delete total;
-    Log::info("ServerLobby", "End of game message sent");
+    loginfo("ServerLobby", "End of game message sent");
         
 }   // checkRaceFinished
 
@@ -488,7 +488,7 @@ void ServerLobby::clientDisconnected(Event* event)
     for(unsigned int i=0; i<players_on_host.size(); i++)
     {
         msg->addUInt8(players_on_host[i]->getGlobalPlayerId());
-        Log::info("ServerLobby", "Player disconnected : id %d",
+        loginfo("ServerLobby", "Player disconnected : id %d",
                   players_on_host[i]->getGlobalPlayerId());
         m_game_setup->removePlayer(players_on_host[i]);
     }
@@ -529,7 +529,7 @@ void ServerLobby::connectionRequested(Event* event)
         // send only to the peer that made the request
         peer->sendPacket(message);
         delete message;
-        Log::verbose("ServerLobby", "Player refused");
+        logverbose("ServerLobby", "Player refused");
         return;
     }
 
@@ -599,7 +599,7 @@ void ServerLobby::connectionRequested(Event* event)
     m_game_setup->addPlayer(profile);
     NetworkingLobby::getInstance()->addPlayer(profile);
 
-    Log::verbose("ServerLobby", "New player.");
+    logverbose("ServerLobby", "New player.");
 
 }   // connectionRequested
 
@@ -619,7 +619,7 @@ void ServerLobby::kartSelectionRequested(Event* event)
 {
     if(m_state!=SELECTING)
     {
-        Log::warn("Server", "Received kart selection while in state %d.",
+        logwarn("Server", "Received kart selection while in state %d.",
                   m_state);
         return;
     }
@@ -881,7 +881,7 @@ void ServerLobby::finishedLoadingWorldClient(Event *event)
         uint8_t player_id = data.getUInt8();
         if (m_player_states[player_id])
         {
-            Log::error("ServerLobbyProtocol",
+            logerror("ServerLobbyProtocol",
                        "Player %d send more than one ready message.",
                        player_id);
             m_client_ready_count.unlock();
@@ -889,7 +889,7 @@ void ServerLobby::finishedLoadingWorldClient(Event *event)
         }
         m_player_states[player_id] = true;
         m_client_ready_count.getData()++;
-        Log::info("ServerLobbyeProtocol", "Player %d is ready (%d/%d).",
+        loginfo("ServerLobbyeProtocol", "Player %d is ready (%d/%d).",
             player_id, m_client_ready_count.getData(),
             m_game_setup->getPlayerCount());
     }
@@ -909,7 +909,7 @@ void ServerLobby::finishedLoadingWorldClient(Event *event)
 void ServerLobby::startedRaceOnClient(Event *event)
 {
     m_client_ready_count.lock();
-    Log::verbose("ServerLobby", "Host %d has started race.",
+    logverbose("ServerLobby", "Host %d has started race.",
                  event->getPeer()->getHostId());
     m_client_ready_count.getData()++;
     if (m_client_ready_count.getData() == m_game_setup->getPlayerCount())

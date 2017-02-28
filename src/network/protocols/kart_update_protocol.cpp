@@ -45,7 +45,7 @@ bool KartUpdateProtocol::notifyEvent(Event* event)
     NetworkString &ns = event->data();
     if (ns.size() < 33)
     {
-        Log::info("KartUpdateProtocol", "Message too short.");
+        loginfo("KartUpdateProtocol", "Message too short.");
         return true;
     }
     float time = ns.getFloat();
@@ -92,7 +92,7 @@ void KartUpdateProtocol::update(float dt)
                 Vec3 xyz = kart->getXYZ();
                 ns->addUInt8( kart->getWorldKartId());
                 ns->add(xyz).add(kart->getRotation());
-                Log::verbose("KartUpdateProtocol",
+                logverbose("KartUpdateProtocol",
                              "Sending %d's positions %f %f %f",
                              kart->getWorldKartId(), xyz[0], xyz[1], xyz[2]);
             }
@@ -111,7 +111,7 @@ void KartUpdateProtocol::update(float dt)
                 const Vec3 &xyz = kart->getXYZ();
                 ns->addUInt8(kart->getWorldKartId());
                 ns->add(xyz).add(kart->getRotation());
-                Log::verbose("KartUpdateProtocol",
+                logverbose("KartUpdateProtocol",
                              "Sending %d's positions %f %f %f",
                               kart->getWorldKartId(), xyz[0], xyz[1], xyz[2]);
             }
@@ -137,7 +137,7 @@ void KartUpdateProtocol::update(float dt)
                 transform.setOrigin(m_next_positions[id]);
                 transform.setRotation(m_next_quaternions[id]);
                 kart->getBody()->setCenterOfMassTransform(transform);
-                Log::verbose("KartUpdateProtocol", "Update kart %i pos",
+                logverbose("KartUpdateProtocol", "Update kart %i pos",
                              id);
             }   // if not local player
         }   // for id < num_karts

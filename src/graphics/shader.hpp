@@ -278,7 +278,7 @@ protected:
     template<typename ...Types>
     void printFileList(GLint shader_type, const char *filepath, Types ... args)
     {
-        Log::error("shader", filepath);
+        logerror("shader", filepath);
         printFileList(args...);
     }   // printFileList
 
@@ -357,12 +357,12 @@ public:
         glGetProgramiv(m_program, GL_LINK_STATUS, &Result);
         if (Result == GL_FALSE) {
             int info_length;
-            Log::error("Shader", "Error when linking these shaders :");
+            logerror("Shader", "Error when linking these shaders :");
             printFileList(args...);
             glGetProgramiv(m_program, GL_INFO_LOG_LENGTH, &info_length);
             char *error_message = new char[info_length];
             glGetProgramInfoLog(m_program, info_length, NULL, error_message);
-            Log::error("Shader", error_message);
+            logerror("Shader", error_message);
             delete[] error_message;
         }
     }   // loadProgram

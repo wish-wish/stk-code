@@ -52,7 +52,7 @@ GameSetup::~GameSetup()
 void GameSetup::addPlayer(NetworkPlayerProfile* profile)
 {
     m_players.push_back(profile);
-    Log::info("GameSetup", "New player in the game setup. Player id : %d.",
+    loginfo("GameSetup", "New player in the game setup. Player id : %d.",
               profile->getGlobalPlayerId());
 }   // addPlayer
 
@@ -69,7 +69,7 @@ bool GameSetup::removePlayer(const NetworkPlayerProfile *profile)
         {
             delete m_players[i];
             m_players.erase(m_players.begin()+i, m_players.begin()+i+1);
-            Log::verbose("GameSetup",
+            logverbose("GameSetup",
                          "Removed a player from the game setup. Remains %u.",
                           m_players.size());
             return true;
@@ -110,14 +110,14 @@ void GameSetup::setPlayerKart(uint8_t player_id, const std::string &kart_name)
         if (m_players[i]->getGlobalPlayerId() == player_id)
         {
             m_players[i]->setKartName(kart_name);
-            Log::info("GameSetup::setPlayerKart", "Player %d took kart %s",
+            loginfo("GameSetup::setPlayerKart", "Player %d took kart %s",
                       player_id, kart_name.c_str());
             found = true;
         }
     }
     if (!found)
     {
-        Log::info("GameSetup::setPlayerKart", "The player %d was unknown.",
+        loginfo("GameSetup::setPlayerKart", "The player %d was unknown.",
                   player_id);
     }
 }   // setPlayerKart
@@ -130,13 +130,13 @@ void GameSetup::bindKartsToProfiles()
 
     for (unsigned int i = 0; i < m_players.size(); i++)
     {
-        Log::info("GameSetup", "Player %d has id %d and kart %s", i,
+        loginfo("GameSetup", "Player %d has id %d and kart %s", i,
                   m_players[i]->getGlobalPlayerId(),
                   m_players[i]->getKartName().c_str());
     }
     for (unsigned int i = 0; i < karts.size(); i++)
     {
-        Log::info("GameSetup", "Kart %d has id %d and kart %s", i,
+        loginfo("GameSetup", "Kart %d has id %d and kart %s", i,
                    karts[i]->getWorldKartId(), karts[i]->getIdent().c_str());
     }
     for (unsigned int j = 0; j < m_players.size(); j++)
@@ -153,7 +153,7 @@ void GameSetup::bindKartsToProfiles()
         }
         if (!found)
         {
-            Log::error("GameSetup", "Error while binding world kart ids to players profiles.");
+            logerror("GameSetup", "Error while binding world kart ids to players profiles.");
         }
     }
 }   // bindKartsToProfiles

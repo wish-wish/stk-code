@@ -46,7 +46,7 @@ MusicOggStream::MusicOggStream(float loop_start)
 MusicOggStream::~MusicOggStream()
 {
     if(stopMusic() == false)
-        Log::warn("MusicOgg", "problems while stopping music.");
+        logwarn("MusicOgg", "problems while stopping music.");
 }   // ~MusicOggStream
 
 //-----------------------------------------------------------------------------
@@ -62,7 +62,7 @@ bool MusicOggStream::load(const std::string& filename)
 
     if(!m_oggFile)
     {
-        Log::error("MusicOgg", "Loading Music: %s failed (fopen returned NULL)",
+        logerror("MusicOgg", "Loading Music: %s failed (fopen returned NULL)",
                    m_fileName.c_str());
         return false;
     }
@@ -101,8 +101,7 @@ bool MusicOggStream::load(const std::string& filename)
                 errorMessage = "Unknown Error";
         }
 
-        Log::error("MusicOgg", "Loading Music: %s failed : "
-                               "ov_open returned error code %i (%s)",
+        logerror("MusicOgg", "Loading Music: %s failed : ov_open returned error code %i (%s)",
                m_fileName.c_str(), result, errorMessage);
         return false;
     }
@@ -312,16 +311,14 @@ void MusicOggStream::update()
             static int count = 0;
             count++;
             if (count<10)
-                Log::warn("MusicOgg", "Music not playing when it should be. "
-                          "Source state: %d", state);
+                logwarn("MusicOgg", "Music not playing when it should be. Source state: %d", state);
             alGetSourcei(m_soundSource, AL_BUFFERS_PROCESSED, &processed);
             alSourcePlay(m_soundSource);
         }
     }
     else
     {
-        Log::warn("MusicOgg", "Attempt to stream music into buffer failed "
-                              "twice in a row.");
+        logwarn("MusicOgg", "Attempt to stream music into buffer failed twice in a row.");
     }
 }   // update
 
@@ -363,7 +360,7 @@ bool MusicOggStream::check(const char* what)
 
     if (error != AL_NO_ERROR)
     {
-        Log::error("MusicOgg", "OpenAL error at %s : %s (%i)", what,
+        logerror("MusicOgg", "OpenAL error at %s : %s (%i)", what,
                   SFXManager::getErrorString(error).c_str(), error);
         return false;
     }

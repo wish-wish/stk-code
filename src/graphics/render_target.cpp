@@ -61,7 +61,7 @@ void GL1RenderTarget::renderToTexture(irr::scene::ICameraSceneNode* camera, floa
     // m_render_target_texture will be NULL if RTT doesn't work on this computer
     if (m_render_target_texture == NULL)
     {
-        Log::error("GL1RenderTarget", "Cannot render to texture.");
+        logerror("GL1RenderTarget", "Cannot render to texture.");
         return;
     }
 

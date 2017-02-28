@@ -217,7 +217,7 @@ void EndController::handleSteering(float dt)
         const int next = m_next_node_index[m_track_node];
         target_point = DriveGraph::get()->getNode(next)->getCenter();
 #ifdef AI_DEBUG
-        Log::debug("end_controller.cpp", "- Outside of road: steer to center point.");
+        logdebug("end_controller.cpp", "- Outside of road: steer to center point.");
 #endif
     }
     else

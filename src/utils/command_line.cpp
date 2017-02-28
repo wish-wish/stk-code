@@ -64,6 +64,6 @@ void CommandLine::reportInvalidParameters()
         // invalid param needs to go to console
         UserConfigParams::m_log_errors_to_console = true;
 
-        Log::error("CommandLine", "Invalid parameter: %s.", m_argv[i].c_str() );
+        logerror("CommandLine", "Invalid parameter: %s.", m_argv[i].c_str() );
     }
 }   // reportInvalidParameters

@@ -201,27 +201,27 @@ void ProfileWorld::enterRaceOverState()
 
     // Print framerate statistics
     float runtime = (irr_driver->getRealTime()-m_start_time)*0.001f;
-    Log::verbose("profile", "Number of frames: %d time %f, Average FPS: %f",
+    logverbose("profile", "Number of frames: %d time %f, Average FPS: %f",
                  m_frame_count, runtime, (float)m_frame_count/runtime);
 
     // Print geometry statistics if we're not in no-graphics mode
     if(!m_no_graphics)
     {
-        Log::verbose("profile", "Average # drawn nodes           %f k",
+        logverbose("profile", "Average # drawn nodes           %f k",
                      (float)m_num_triangles/m_frame_count);
-        Log::verbose("profile", "Average # culled nodes:         %f k",
+        logverbose("profile", "Average # culled nodes:         %f k",
                      (float)m_num_culls/m_frame_count);
-        Log::verbose("profile", "Average # solid nodes:          %f k",
+        logverbose("profile", "Average # solid nodes:          %f k",
                      (float)m_num_solid/m_frame_count);
-        Log::verbose("profile", "Average # transparent nodes:    %f",
+        logverbose("profile", "Average # transparent nodes:    %f",
                      (float)m_num_transparent/m_frame_count);
-        Log::verbose("profile", "Average # transp. effect nodes: %f",
+        logverbose("profile", "Average # transp. effect nodes: %f",
                      (float)m_num_trans_effect/m_frame_count);
     }
 
     // Print race statistics for each individual kart
     float min_t=999999.9f, max_t=0.0, av_t=0.0;
-    Log::verbose("profile", "name start_position end_position time average_speed top_speed "
+    logverbose("profile", "name start_position end_position time average_speed top_speed "
            "skid_time rescue_time rescue_count brake_count "
            "explosion_time explosion_count bonus_count banana_count "
            "small_nitro_count large_nitro_count bubblegum_count");
@@ -252,11 +252,11 @@ void ProfileWorld::enterRaceOverState()
         ss << kart->getBonusCount() << " " << kart->getBananaCount() << " ";
         ss << kart->getSmallNitroCount() << " " << kart->getLargeNitroCount() << " ";
         ss << kart->getBubblegumCount() << " " << kart->getOffTrackCount() << " ";
-        Log::verbose("profile", ss.str().c_str());
+        logverbose("profile", ss.str().c_str());
     }
 
     // Print group statistics of all karts
-    Log::verbose("profile", "min %f  max %f  av %f\n",
+    logverbose("profile", "min %f  max %f  av %f\n",
                   min_t, max_t, av_t/m_karts.size());
 
     // Determine maximum length of group name
@@ -269,10 +269,10 @@ void ProfileWorld::enterRaceOverState()
     max_len++;  // increase by 1 for one additional space after the name
 
     std::ostringstream ss;
-    Log::verbose("profile", "");
+    logverbose("profile", "");
     ss << "name" << std::setw(max_len-4) << " "
        << "Strt End  Time    AvSp  Top   Skid  Resc Rsc Brake Expl Exp Itm Ban SNitLNit Bub Off Energy";
-    Log::verbose("profile", ss.str().c_str());
+    logverbose("profile", ss.str().c_str());
     for(std::set<std::string>::iterator it = all_groups.begin();
         it !=all_groups.end(); it++)
     {
@@ -302,7 +302,7 @@ void ProfileWorld::enterRaceOverState()
                                      ? race_manager->getNumLaps() : 1);
             distance *= Track::getCurrentTrack()->getTrackLength();
 
-            Log::verbose("profile",
+            logverbose("profile",
                    "%s %4.2f %3.2f %6.2f %4.2f %3d %5d %4.2f %3d %3d %3d %3d %3d %3d %5d %4.2f",
                    ss.str().c_str(), distance/kart->getFinishTime(),
                    kart->getTopSpeed(),
@@ -330,7 +330,7 @@ void ProfileWorld::enterRaceOverState()
             energy          += kart->getEnergy();
         }    // for i < m_karts.size
 
-        Log::verbose("profile", std::string(max_len+90, '-').c_str());
+        logverbose("profile", std::string(max_len+90, '-').c_str());
         ss.clear();
         ss.str("");
         ss << *it << std::string(max_len-it->size(),' ');
@@ -338,12 +338,12 @@ void ProfileWorld::enterRaceOverState()
            << std::noshowpos << std::setw(13) << av_time/count
            << std::string(11,' ');
 
-        Log::verbose("profile", "%s%6.2f %4.2f %3d %5d %4.2f %3d %3d %3d %3d %3d %3d %5d %4.2f",
+        logverbose("profile", "%s%6.2f %4.2f %3d %5d %4.2f %3d %3d %3d %3d %3d %3d %5d %4.2f",
                ss.str().c_str(), skidding_time/count, rescue_time/count,
                rescue_count,brake_count, expl_time, expl_count, bonus_count,
                banana_count, s_nitro_count, l_nitro_count, bubble_count,
                off_track_count, energy);
-        Log::verbose("profile", "");
+        logverbose("profile", "");
     }   // for it !=all_groups.end
     delete this;
     main_loop->abort();

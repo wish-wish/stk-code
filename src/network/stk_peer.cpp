@@ -63,7 +63,7 @@ void STKPeer::sendPacket(NetworkString *data, bool reliable)
 {
     data->setToken(m_client_server_token);
     TransportAddress a(m_enet_peer->address);
-    Log::verbose("STKPeer", "sending packet of size %d to %s",
+    logverbose("STKPeer", "sending packet of size %d to %s",
                  data->size(), a.toString().c_str());
          
     ENetPacket* packet = enet_packet_create(data->getData(),
@@ -94,7 +94,7 @@ uint16_t STKPeer::getPort() const
  */
 bool STKPeer::isConnected() const
 {
-    Log::info("STKPeer", "The peer state is %i", m_enet_peer->state);
+    loginfo("STKPeer", "The peer state is %i", m_enet_peer->state);
     return (m_enet_peer->state == ENET_PEER_STATE_CONNECTED);
 }   // isConnected
 

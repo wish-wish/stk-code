@@ -72,10 +72,10 @@ void CentralVideoSettings::init()
     {
         glGetIntegerv(GL_MAJOR_VERSION, &m_gl_major_version);
         glGetIntegerv(GL_MINOR_VERSION, &m_gl_minor_version);
-        Log::info("IrrDriver", "OpenGL version: %d.%d", m_gl_major_version, m_gl_minor_version);
-        Log::info("IrrDriver", "OpenGL vendor: %s", glGetString(GL_VENDOR));
-        Log::info("IrrDriver", "OpenGL renderer: %s", glGetString(GL_RENDERER));
-        Log::info("IrrDriver", "OpenGL version string: %s", glGetString(GL_VERSION));
+        loginfo("IrrDriver", "OpenGL version: %d.%d", m_gl_major_version, m_gl_minor_version);
+        loginfo("IrrDriver", "OpenGL vendor: %s", glGetString(GL_VENDOR));
+        loginfo("IrrDriver", "OpenGL renderer: %s", glGetString(GL_RENDERER));
+        loginfo("IrrDriver", "OpenGL version string: %s", glGetString(GL_VERSION));
     }
 #if !defined(USE_GLES2)
     m_glsl = (m_gl_major_version > 3 || (m_gl_major_version == 3 && m_gl_minor_version >= 1))
@@ -100,101 +100,101 @@ void CentralVideoSettings::init()
 #if !defined(USE_GLES2)
         if (hasGLExtension("GL_AMD_vertex_shader_layer")) {
             hasVSLayer = true;
-            Log::info("GLDriver", "AMD Vertex Shader Layer Present");
+            loginfo("GLDriver", "AMD Vertex Shader Layer Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_BUFFER_STORAGE) &&
             hasGLExtension("GL_ARB_buffer_storage")  )
         {
             hasBufferStorage = true;
-            Log::info("GLDriver", "ARB Buffer Storage Present");
+            loginfo("GLDriver", "ARB Buffer Storage Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_BASE_INSTANCE) &&
             hasGLExtension("GL_ARB_base_instance")) {
             hasBaseInstance = true;
-            Log::info("GLDriver", "ARB Base Instance Present");
+            loginfo("GLDriver", "ARB Base Instance Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_DRAW_INDIRECT) &&
             hasGLExtension("GL_ARB_draw_indirect")) {
             hasDrawIndirect = true;
-            Log::info("GLDriver", "ARB Draw Indirect Present");
+            loginfo("GLDriver", "ARB Draw Indirect Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_COMPUTE_SHADER) &&
             hasGLExtension("GL_ARB_compute_shader")) {
             hasComputeShaders = true;
-            Log::info("GLDriver", "ARB Compute Shader Present");
+            loginfo("GLDriver", "ARB Compute Shader Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_ARRAYS_OF_ARRAYS) &&
             hasGLExtension("GL_ARB_arrays_of_arrays")) {
             hasArraysOfArrays = true;
-            Log::info("GLDriver", "ARB Arrays of Arrays Present");
+            loginfo("GLDriver", "ARB Arrays of Arrays Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_TEXTURE_STORAGE) &&
             hasGLExtension("GL_ARB_texture_storage")) {
             hasTextureStorage = true;
-            Log::info("GLDriver", "ARB Texture Storage Present");
+            loginfo("GLDriver", "ARB Texture Storage Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_TEXTURE_VIEW) &&
             hasGLExtension("GL_ARB_texture_view")) {
             hasTextureView = true;
-            Log::info("GLDriver", "ARB Texture View Present");
+            loginfo("GLDriver", "ARB Texture View Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_BINDLESS_TEXTURE) &&
             hasGLExtension("GL_ARB_bindless_texture")) {
             hasBindlessTexture = true;
-            Log::info("GLDriver", "ARB Bindless Texture Present");
+            loginfo("GLDriver", "ARB Bindless Texture Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_IMAGE_LOAD_STORE) &&
             hasGLExtension("GL_ARB_shader_image_load_store")) {
             hasImageLoadStore = true;
-            Log::info("GLDriver", "ARB Image Load Store Present");
+            loginfo("GLDriver", "ARB Image Load Store Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_SHADER_ATOMIC_COUNTERS) &&
             hasGLExtension("GL_ARB_shader_atomic_counters")) {
             hasAtomics = true;
-            Log::info("GLDriver", "ARB Shader Atomic Counters Present");
+            loginfo("GLDriver", "ARB Shader Atomic Counters Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_SHADER_STORAGE_BUFFER_OBJECT) &&
             hasGLExtension("GL_ARB_shader_storage_buffer_object")) {
             hasSSBO = true;
-            Log::info("GLDriver", "ARB Shader Storage Buffer Object Present");
+            loginfo("GLDriver", "ARB Shader Storage Buffer Object Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_MULTI_DRAW_INDIRECT) &&
             hasGLExtension("GL_ARB_multi_draw_indirect")) {
             hasMultiDrawIndirect = true;
-            Log::info("GLDriver", "ARB Multi Draw Indirect Present");
+            loginfo("GLDriver", "ARB Multi Draw Indirect Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_EXT_TEXTURE_COMPRESSION_S3TC) &&
             hasGLExtension("GL_EXT_texture_compression_s3tc") &&
             hasGLExtension("GL_ARB_texture_compression_rgtc"))
         {
             hasTextureCompression = true;
-            Log::info("GLDriver", "EXT Texture Compression S3TC Present");
-            Log::info("GLDriver", "ARB Texture Compression RGTC Present");
+            loginfo("GLDriver", "EXT Texture Compression S3TC Present");
+            loginfo("GLDriver", "ARB Texture Compression RGTC Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_UNIFORM_BUFFER_OBJECT) &&
             hasGLExtension("GL_ARB_uniform_buffer_object")) {
             hasUBO = true;
-            Log::info("GLDriver", "ARB Uniform Buffer Object Present");
+            loginfo("GLDriver", "ARB Uniform Buffer Object Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_EXPLICIT_ATTRIB_LOCATION) &&
             hasGLExtension("GL_ARB_explicit_attrib_location")) {
             hasExplicitAttribLocation = true;
-            Log::info("GLDriver", "ARB Explicit Attrib Location Present");
+            loginfo("GLDriver", "ARB Explicit Attrib Location Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_TEXTURE_FILTER_ANISOTROPIC) &&
             hasGLExtension("GL_EXT_texture_filter_anisotropic")) {
             hasTextureFilterAnisotropic = true;
-            Log::info("GLDriver", "EXT Texture Filter Anisotropic Present");
+            loginfo("GLDriver", "EXT Texture Filter Anisotropic Present");
         }
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_GEOMETRY_SHADER) &&
             (m_gl_major_version > 3 || (m_gl_major_version == 3 && m_gl_minor_version >= 2))) {
             hasGS = true;
-            Log::info("GLDriver", "Geometry Shaders Present");
+            loginfo("GLDriver", "Geometry Shaders Present");
         }
         if (hasGLExtension("GL_ARB_texture_swizzle"))
         {
             hasTextureSwizzle = true;
-            Log::info("GLDriver", "ARB Texture Swizzle Present");
+            loginfo("GLDriver", "ARB Texture Swizzle Present");
         }
         // Only unset the high def textures if they are set as default. If the
         // user has enabled them (bit 1 set), then leave them enabled.
@@ -242,7 +242,7 @@ void CentralVideoSettings::init()
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_EXPLICIT_ATTRIB_LOCATION) &&
             m_glsl == true)
         {
-            Log::info("GLDriver", "Explicit Attrib Location Present");
+            loginfo("GLDriver", "Explicit Attrib Location Present");
             hasExplicitAttribLocation = true;
         }
 
@@ -251,14 +251,14 @@ void CentralVideoSettings::init()
              hasGLExtension("GL_EXT_texture_format_BGRA8888")))
         {
             hasBGRA = true;
-            Log::info("GLDriver", "EXT texture format BGRA8888 Present");
+            loginfo("GLDriver", "EXT texture format BGRA8888 Present");
         }
 
         if (!GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_COLOR_BUFFER_FLOAT) &&
             hasGLExtension("GL_EXT_color_buffer_float"))
         {
             hasColorBufferFloat = true;
-            Log::info("GLDriver", "EXT Color Buffer Float Present");
+            loginfo("GLDriver", "EXT Color Buffer Float Present");
         }
 #endif
     }

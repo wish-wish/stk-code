@@ -149,7 +149,7 @@ void OnlineUserSearch::parseResult(const XMLNode * input)
     }
     else
     {
-        Log::warn("OnlineSearch",
+        logwarn("OnlineSearch",
             "Too many results found, only %d will be displayed.", n);
     }
 
@@ -179,7 +179,7 @@ void OnlineUserSearch::showList()
         // This could still happen if something pushed results out of the cache.
         if (!profile)
         {
-            Log::warn("OnlineSearch", "User %d not in cache anymore, ignored.", m_users[i]);
+            logwarn("OnlineSearch", "User %d not in cache anymore, ignored.", m_users[i]);
             continue;
         }
 

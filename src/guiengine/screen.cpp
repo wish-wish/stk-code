@@ -188,13 +188,13 @@ void Screen::addWidgets()
 
     addWidgetsRecursively( m_widgets );
 
-    //Log::info("Screen::AddWidgets", "%s: focusing the first widget",  m_filename.c_str());
+    //loginfo("Screen::AddWidgets", "%s: focusing the first widget",  m_filename.c_str());
 
     // select the first widget (for first players only; if other players need some focus the Screen must provide it).
     Widget* w = getFirstWidget();
-    //Log::info("Screen::AddWidgets", "First widget is %s", (w == NULL ? "null" : w->m_properties[PROP_ID].c_str()));
+    //loginfo("Screen::AddWidgets", "First widget is %s", (w == NULL ? "null" : w->m_properties[PROP_ID].c_str()));
     if (w != NULL) w->setFocusForPlayer( PLAYER_ID_GAME_MASTER );
-    else           Log::warn("Screen::AddWidgets", "Couldn't select first widget, NULL was returned");
+    else           logwarn("Screen::AddWidgets", "Couldn't select first widget, NULL was returned");
 }   // addWidgets
 
 // -----------------------------------------------------------------------------
@@ -216,9 +216,9 @@ void Screen::manualRemoveWidget(Widget* w)
 #ifdef DEBUG
     if(!m_widgets.contains(w))
     {
-        Log::info("Screen", "Widget '%d' not found in screen when removing.",
+        loginfo("Screen", "Widget '%d' not found in screen when removing.",
                   w->m_id);
-        Log::info("Screen", "This can be ignored, but is probably wrong.");
+        loginfo("Screen", "This can be ignored, but is probably wrong.");
     }
 #endif
     m_widgets.remove(w);

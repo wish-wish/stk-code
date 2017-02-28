@@ -159,7 +159,7 @@ public:
                        ->getAchievement(achievement_id);
         if (!a)
         {
-            Log::fatal("PlayerManager", "Achievement '%d' not found.",
+            logfatal("PlayerManager", "Achievement '%d' not found.",
                         achievement_id);
         }
         a->increase(key, goal_key.empty() ? key : goal_key, increase);

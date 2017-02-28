@@ -241,7 +241,7 @@ void OptionsScreenInput::eventCallback(Widget* widget, const std::string& name, 
             }
             else
             {
-                Log::error("OptionsScreenInput", "Cannot read internal gamepad input device ID: %s",
+                logerror("OptionsScreenInput", "Cannot read internal gamepad input device ID: %s",
                     selection.c_str());
             }
         }
@@ -258,7 +258,7 @@ void OptionsScreenInput::eventCallback(Widget* widget, const std::string& name, 
             }
             else
             {
-                Log::error("OptionsScreenInput", "Cannot read internal keyboard input device ID: %s",
+                logerror("OptionsScreenInput", "Cannot read internal keyboard input device ID: %s",
                     selection.c_str());
             }
         }
@@ -273,7 +273,7 @@ void OptionsScreenInput::eventCallback(Widget* widget, const std::string& name, 
         }
         else
         {
-            Log::error("OptionsScreenInput", "Cannot read internal input device ID: %s", selection.c_str());
+            logerror("OptionsScreenInput", "Cannot read internal input device ID: %s", selection.c_str());
         }
     }
 

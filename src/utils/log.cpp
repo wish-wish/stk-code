@@ -32,6 +32,14 @@
 #  include <windows.h>
 #endif
 
+#if !defined(TEXT)
+#define TEXT(STR) STR
+#endif
+
+#if !defined(__TEXT)
+#define __TEXT(STR) STR
+#endif
+
 Log::LogLevel Log::m_min_log_level = Log::LL_VERBOSE;
 bool          Log::m_no_colors     = false;
 FILE*         Log::m_file_stdout   = NULL;
@@ -129,7 +137,7 @@ void Log::resetTerminalColor()
  *  \param format A printf-like format string.
  *  \param va_list The values to be printed for the format.
  */
-void Log::printMessage(int level, const char *component, const char *format,
+void Log::printMessage(int level, const irr::fschar_t *component, const irr::fschar_t *format,
                        VALIST args)
 {
     assert(level>=0 && level <=LL_FATAL);
@@ -155,9 +163,13 @@ void Log::printMessage(int level, const char *component, const char *format,
     }
 #endif
 
-    static const char *names[] = {"debug", "verbose  ", "info   ",
+#if defined(WIN32) && defined(UNICODE)
+	static const irr::fschar_t *names[] = { __TEXT("debug"), __TEXT("verbose  "), __TEXT("info   "),
+		__TEXT("warn   "), __TEXT("error  "), __TEXT("fatal  ") };
+#else
+	static const irr::fschar_t *names[] = {"debug", "verbose  ", "info   ",
                                   "warn   ", "error  ", "fatal  "};
-
+#endif
     // Using a va_list twice produces undefined results, ie crash.
     // So make a copy if we're going to use it twice.
     VALIST copy;
@@ -182,7 +194,7 @@ void Log::printMessage(int level, const char *component, const char *format,
         __android_log_vprint(alp, "SuperTuxKart", format, out);
         #else
         printf("[%s] %s: ", names[level], component);
-        vprintf(format, out);
+		_vtprintf(format, out);
         #endif
         resetTerminalColor();  // this prints a \n
 
@@ -190,23 +202,24 @@ void Log::printMessage(int level, const char *component, const char *format,
     }
 
 #if defined(_MSC_FULL_VER) && defined(_DEBUG)
-    static char szBuff[2048];
-    vsnprintf(szBuff, sizeof(szBuff), format, copy2);
+	static irr::fschar_t szBuff[2048];
+	
+	_sntprintf(szBuff, sizeof(szBuff), format, copy2);
 
-    OutputDebugString("[");
+	OutputDebugString(__TEXT("["));
     OutputDebugString(names[level]);
-    OutputDebugString("] ");
+	OutputDebugString(__TEXT("] "));
     OutputDebugString(component);
-    OutputDebugString(": ");
+	OutputDebugString(__TEXT(": "));
     OutputDebugString(szBuff);
-    OutputDebugString("\r\n");
+	OutputDebugString(__TEXT("\r\n"));
 #endif
 
 
     if(m_file_stdout)
     {
         fprintf (m_file_stdout, "[%s] %s: ", names[level], component);
-        vfprintf(m_file_stdout, format, copy);
+		_vftprintf(m_file_stdout, format, copy);
         fprintf (m_file_stdout, "\n");
         va_end(copy);
     }
@@ -214,36 +227,49 @@ void Log::printMessage(int level, const char *component, const char *format,
 #ifdef WIN32
     if (level >= LL_FATAL)
     {
+#if UNICODE
+		std::wstring message;
+#else
         std::string message;
-
-        char tmp[2048];
-        sprintf(tmp, "[%s] %s: ", names[level], component);
+#endif
+        irr::fschar_t tmp[2048];
+		_stprintf(tmp, TEXT("[%s] %s: "), names[level], component);
         message += tmp;
 
         VALIST out;
         va_copy(out, args);
-        vsprintf(tmp, format, out);
+		_vstprintf(tmp, format, out);
         message += tmp;
         va_end(out);
 
-        MessageBoxA(NULL, message.c_str(), "SuperTuxKart - Fatal error", MB_OK);
+        MessageBox(NULL, message.c_str(), TEXT("SuperTuxKart - Fatal error"), MB_OK);
     }
 #endif
 }   // printMessage
 
+
+void Log::setLogLevel(int n)
+{
+	if (n<0 || n>LL_FATAL)
+	{
+		warn(TEXT("Log"), TEXT("Log level %d not in range [%d-%d] - ignored.\n"),
+			n, LL_VERBOSE, LL_FATAL);
+		return;
+	}
+	m_min_log_level = (LogLevel)n;
+}    // setLogLevel
 
 // ----------------------------------------------------------------------------
 /** This function opens the files that will contain the output.
  *  \param logout : name of the file that will contain stdout output
  *  \param logerr : name of the file that will contain stderr output
  */
-void Log::openOutputFiles(const std::string &logout)
+void Log::openOutputFiles(const irr::fschar_t* &logout)
 {
-    m_file_stdout = fopen(logout.c_str(), "w");
+	m_file_stdout = _tfopen(logout, TEXT("w"));
     if (!m_file_stdout)
     {
-        Log::error("main", "Can not open log file '%s'. Writing to "
-                           "stdout instead.", logout.c_str());
+        logerror("main", "Can not open log file '%s'. Writing to stdout instead.", logout);
     }
     else
     {

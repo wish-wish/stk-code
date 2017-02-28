@@ -61,18 +61,18 @@ bool DeviceManager::initialize()
 
     if(UserConfigParams::logMisc())
     {
-        Log::info("Device manager","Initializing Device Manager");
-        Log::info("-","---------------------------");
+        loginfo("Device manager","Initializing Device Manager");
+        loginfo("-","---------------------------");
     }
 
     load();
 
     // Assign a configuration to the keyboard, or create one if we haven't yet
-    if(UserConfigParams::logMisc()) Log::info("Device manager","Initializing keyboard support.");
+    if(UserConfigParams::logMisc()) loginfo("Device manager","Initializing keyboard support.");
     if (m_keyboard_configs.size() == 0)
     {
         if(UserConfigParams::logMisc())
-            Log::info("Device manager","No keyboard configuration exists, creating one.");
+            loginfo("Device manager","No keyboard configuration exists, creating one.");
         m_keyboard_configs.push_back(new KeyboardConfig());
         created = true;
     }
@@ -84,14 +84,14 @@ bool DeviceManager::initialize()
     }
 
     if(UserConfigParams::logMisc())
-        Log::info("Device manager","Initializing gamepad support.");
+        loginfo("Device manager","Initializing gamepad support.");
 
     irr_driver->getDevice()->activateJoysticks(m_irrlicht_gamepads);
 
     int num_gamepads = m_irrlicht_gamepads.size();
     if(UserConfigParams::logMisc())
     {
-        Log::info("Device manager","Irrlicht reports %d gamepads are attached to the system.",
+        loginfo("Device manager","Irrlicht reports %d gamepads are attached to the system.",
                num_gamepads);
     }
 
@@ -116,20 +116,20 @@ bool DeviceManager::initialize()
 
         if (UserConfigParams::logMisc())
         {
-            Log::info("Device manager","#%d: %s detected...", id, name.c_str());
+            loginfo("Device manager","#%d: %s detected...", id, name.c_str());
         }
 
         // Returns true if new configuration was created
         if (getConfigForGamepad(id, name.c_str(), &gamepadConfig) == true)
         {
             if(UserConfigParams::logMisc())
-               Log::info("Device manager","creating new configuration.");
+               loginfo("Device manager","creating new configuration.");
             created = true;
         }
         else
         {
             if(UserConfigParams::logMisc())
-                Log::info("Device manager","using existing configuration.");
+                loginfo("Device manager","using existing configuration.");
         }
 
         gamepadConfig->setPlugged();
@@ -175,9 +175,9 @@ void DeviceManager::setAssignMode(const PlayerAssignMode assignMode)
     m_assign_mode = assignMode;
 
 #if INPUT_MODE_DEBUG
-    if (assignMode == NO_ASSIGN) Log::info("DeviceManager::setAssignMode(NO_ASSIGN)");
-    if (assignMode == ASSIGN) Log::info("DeviceManager::setAssignMode(ASSIGN)");
-    if (assignMode == DETECT_NEW) Log::info("DeviceManager::setAssignMode(DETECT_NEW)");
+    if (assignMode == NO_ASSIGN) loginfo("DeviceManager::setAssignMode(NO_ASSIGN)");
+    if (assignMode == ASSIGN) loginfo("DeviceManager::setAssignMode(ASSIGN)");
+    if (assignMode == DETECT_NEW) loginfo("DeviceManager::setAssignMode(DETECT_NEW)");
 #endif
 
     // when going back to no-assign mode, do some cleanup
@@ -491,7 +491,7 @@ InputDevice* DeviceManager::getLatestUsedDevice()
 
     if (m_latest_used_device == NULL)
     {
-        //Log::info("DeviceManager", "No latest device, returning keyboard);
+        //loginfo("DeviceManager", "No latest device, returning keyboard);
         return m_keyboards.get(0); // FIXME: is this right?
     }
 
@@ -512,20 +512,20 @@ bool DeviceManager::load()
     std::string filepath = file_manager->getUserConfigFile(INPUT_FILE_NAME);
 
     if(UserConfigParams::logMisc())
-        Log::info("Device manager","Loading input.xml...");
+        loginfo("Device manager","Loading input.xml...");
 
     const XMLNode *input = file_manager->createXMLTree(filepath);
 
     if(!input)
     {
         if(UserConfigParams::logMisc())
-            Log::warn("Device manager","No configuration file exists.");
+            logwarn("Device manager","No configuration file exists.");
         return false;
     }
 
     if(input->getName()!="input")
     {
-        Log::warn("DeviceManager", "Invalid input.xml file - no input node.");
+        logwarn("DeviceManager", "Invalid input.xml file - no input node.");
         delete input;
         return false;
     }
@@ -547,7 +547,7 @@ bool DeviceManager::load()
         DeviceConfig *device_config = DeviceConfig::create(config);
         if(!device_config)
         {
-            Log::warn("DeviceManager",
+            logwarn("DeviceManager",
                       "Invalid node '%s' in input.xml - ignored.",
                       config->getName().c_str());
             continue;
@@ -566,7 +566,7 @@ bool DeviceManager::load()
 
     if (UserConfigParams::logMisc())
     {
-        Log::info("Device manager",
+        loginfo("Device manager",
                   "Found %d keyboard and %d gamepad configurations.",
                   m_keyboard_configs.size(), m_gamepad_configs.size());
     }
@@ -589,7 +589,7 @@ bool DeviceManager::load()
 void DeviceManager::save()
 {
     static std::string filepath = file_manager->getUserConfigFile(INPUT_FILE_NAME);
-    if(UserConfigParams::logMisc()) Log::info("Device manager","Serializing input.xml...");
+    if(UserConfigParams::logMisc()) loginfo("Device manager","Serializing input.xml...");
 
 
     std::ofstream configfile;
@@ -597,7 +597,7 @@ void DeviceManager::save()
 
     if(!configfile.is_open())
     {
-        Log::error("Device manager","Failed to open %s for writing, controls won't be saved",filepath.c_str());
+        logerror("Device manager","Failed to open %s for writing, controls won't be saved",filepath.c_str());
         return;
     }
 
@@ -615,7 +615,7 @@ void DeviceManager::save()
 
     configfile << "</input>\n";
     configfile.close();
-    if(UserConfigParams::logMisc()) Log::info("Device manager","Serialization complete.");
+    if(UserConfigParams::logMisc()) loginfo("Device manager","Serialization complete.");
 }   // save
 
 // -----------------------------------------------------------------------------

@@ -119,16 +119,14 @@ void FontManager::unitTesting()
             }
             if (glyph_index > 0)
             {
-                Log::debug("UnitTest", "Character %s in language %s"
-                    " use face %s",
+                logdebug("UnitTest", "Character %s in language %s use face %s",
                     StringUtils::wideToUtf8(core::stringw(&c, 1)).c_str(),
                     lang.c_str(),
                     m_normal_ttf->getFace(font_number)->family_name);
             }
             else
             {
-                Log::warn("UnitTest", "Character %s in language %s"
-                    " is not supported by all fonts!",
+                logwarn("UnitTest", "Character %s in language %s is not supported by all fonts!",
                     StringUtils::wideToUtf8(core::stringw(&c, 1)).c_str(),
                     lang.c_str());
             }

@@ -52,12 +52,12 @@ void GetPublicAddress::setMyIPAddress(const std::string &s)
     std::vector<std::string> l = StringUtils::split(s, ':');
     if (l.size() != 2)
     {
-        Log::fatal("Invalid IP address '%s'.", s.c_str());
+        logfatal("Invalid IP address '%s'.", s.c_str());
     }
     std::vector<std::string> ip = StringUtils::split(l[0], '.');
     if (ip.size() != 4)
     {
-        Log::fatal("Invalid IP address '%s'.", s.c_str());
+        logfatal("Invalid IP address '%s'.", s.c_str());
     }
     uint32_t u = 0;
     for (unsigned int i = 0; i < 4; i++)
@@ -93,7 +93,7 @@ void GetPublicAddress::createStunRequest()
     std::vector<std::string> stun_servers = UserConfigParams::m_stun_servers;
 
     const char* server_name = stun_servers[rand() % stun_servers.size()].c_str();
-    Log::debug("GetPublicAddress", "Using STUN server %s", server_name);
+    logdebug("GetPublicAddress", "Using STUN server %s", server_name);
 
     struct addrinfo hints, *res;
 
@@ -105,7 +105,7 @@ void GetPublicAddress::createStunRequest()
     int status = getaddrinfo(server_name, NULL, &hints, &res);
     if (status != 0)
     {
-        Log::error("GetPublicAddress", "Error in getaddrinfo: %s",
+        logerror("GetPublicAddress", "Error in getaddrinfo: %s",
                    gai_strerror(status));
         return;
     }
@@ -157,7 +157,7 @@ std::string GetPublicAddress::parseStunResponse()
     if(sender.getIP()!=m_stun_server_ip)
     {
         TransportAddress stun(m_stun_server_ip, m_stun_server_port);
-        Log::warn("GetPublicAddress", 
+        logwarn("GetPublicAddress", 
                   "Received stun response from %s instead of %s.",
                   sender.toString().c_str(), stun.toString().c_str());
     }
@@ -184,7 +184,7 @@ std::string GetPublicAddress::parseStunResponse()
             return "STUN response doesn't contain the transaction ID";
     }
 
-    Log::debug("GetPublicAddress",
+    logdebug("GetPublicAddress",
                "The STUN server responded with a valid answer");
 
     // The stun message is valid, so we parse it now:
@@ -209,7 +209,7 @@ std::string GetPublicAddress::parseStunResponse()
             uint32_t ip   = datas.getUInt32();
             TransportAddress address(ip, port);
             // finished parsing, we know our public transport address
-            Log::debug("GetPublicAddress", 
+            logdebug("GetPublicAddress", 
                        "The public address has been found: %s",
                         address.toString().c_str());
             NetworkConfig::get()->setMyAddress(address);
@@ -257,7 +257,7 @@ void GetPublicAddress::asynchronousUpdate()
         delete m_transaction_host;
         if (message != "")
         {
-            Log::warn("GetPublicAddress", "%s", message.c_str());
+            logwarn("GetPublicAddress", "%s", message.c_str());
             m_state = NOTHING_DONE;  // try again
         }
         else

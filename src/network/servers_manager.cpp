@@ -72,7 +72,7 @@ void ServersManager::cleanUpServers()
     {
         // m_joinsed_server is a pointer into the m_server structure,
         // we can not modify this data structure while this pointer exists.
-        Log::warn("ServersManager", "Server cleanUp while being already "
+        logwarn("ServersManager", "Server cleanUp while being already "
                                     "connected to a server.");
         return;
     }
@@ -157,7 +157,7 @@ Online::XMLRequest* ServersManager::getLANRefreshRequest() const
                                NetworkConfig::get()->getServerDiscoveryPort());
             broadcast->sendRawPacket(s, broadcast_address);
 
-            Log::info("ServersManager", "Sent broadcast message.");
+            loginfo("ServersManager", "Sent broadcast message.");
 
             const int LEN=2048;
             char buffer[LEN];
@@ -226,7 +226,7 @@ Online::XMLRequest* ServersManager::getRefreshRequest(bool request_now)
     {
         // m_joinsed_server is a pointer into the m_server structure,
         // we can not modify this data structure while this pointer exists.
-        Log::warn("ServersManager", "Server refresh while being already "
+        logwarn("ServersManager", "Server refresh while being already "
                                     "connected to a server.");
         return NULL;
     }
@@ -251,7 +251,7 @@ void ServersManager::refresh(bool success, const XMLNode *input)
 {
     if (!success)
     {
-        Log::error("Server Manager", "Could not refresh server list");
+        logerror("Server Manager", "Could not refresh server list");
         return;
     }
 

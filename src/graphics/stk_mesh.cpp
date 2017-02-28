@@ -384,7 +384,7 @@ static void setTexture(GLMesh &mesh, unsigned i, bool is_srgb,
 {
     if (!mesh.textures[i])
     {
-        Log::error("STKMesh", "Missing texture %d for material %s", i,
+        logerror("STKMesh", "Missing texture %d for material %s", i,
                    mat_name.c_str());
         // use unicolor texture to replace missing texture
         mesh.textures[i] = 

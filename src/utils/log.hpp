@@ -25,6 +25,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include "irrTypes.h"
 
 #ifdef __GNUC__
 #  define VALIST __gnuc_va_list
@@ -34,6 +35,18 @@
 
 #if defined(_WIN32) && defined(_MSC_VER) && _MSC_VER < 1800
 #  define va_copy(dest, src) dest = src
+#endif
+
+#if !defined(_MSC_VER)
+#if !defined(TEXT)
+#define TEXT(STR) STR
+#endif
+
+#if !defined(__TEXT)
+#define __TEXT(STR) STR
+#endif
+#else
+#include "winnt.rh"
 #endif
 
 class Log
@@ -64,14 +77,14 @@ private:
 
 public:
 
-    static void printMessage(int level, const char *component,
-                             const char *format, VALIST va_list);
+    static void printMessage(int level, const irr::fschar_t *component,
+		const irr::fschar_t *format, VALIST va_list);
     // ------------------------------------------------------------------------
     /** A simple macro to define the various log functions.
      *  Note that an assert is added so that a debugger is triggered
      *  when debugging. */
 #define LOG(NAME, LEVEL)                                             \
-    static void NAME(const char *component, const char *format, ...) \
+    static void NAME(const irr::fschar_t *component, const irr::fschar_t *format, ...) \
     {                                                                \
         if(LEVEL < m_min_log_level) return;                          \
         va_list args;                                                \
@@ -92,22 +105,13 @@ public:
     LOG(error,   LL_ERROR);
     LOG(fatal,   LL_FATAL);
 
-    static void openOutputFiles(const std::string &logout);
+	static void openOutputFiles(const irr::fschar_t* &logout);
 
     static void closeOutputFiles();
 
     // ------------------------------------------------------------------------
     /** Defines the minimum log level to be displayed. */
-    static void setLogLevel(int n)
-    {
-        if(n<0 || n>LL_FATAL)
-        {
-            warn("Log", "Log level %d not in range [%d-%d] - ignored.\n",
-                 n, LL_VERBOSE, LL_FATAL);
-            return;
-        }
-        m_min_log_level = (LogLevel)n;
-    }    // setLogLevel
+	static void setLogLevel(int n);
 
     // ------------------------------------------------------------------------
     /** Returns the log level. This is useful if some work is necessary to
@@ -121,4 +125,12 @@ public:
         m_no_colors = true;
     }   // disableColor
 };   // Log
+
+#define logverbose(a,b,...) Log::verbose(TEXT(a),TEXT(b),##__VA_ARGS__)
+#define logdebug(a,b,...) Log::debug(TEXT(a),TEXT(b),##__VA_ARGS__)
+#define loginfo(a,b,...) Log::info(TEXT(a),TEXT(b),##__VA_ARGS__)
+#define logwarn(a,b,...) Log::warn(TEXT(a),TEXT(b),##__VA_ARGS__)
+#define logerror(a,b,...) Log::error(TEXT(a),TEXT(b),##__VA_ARGS__)
+#define logfatal(a,b,...) Log::fatal(TEXT(a),TEXT(b),##__VA_ARGS__)
+
 #endif

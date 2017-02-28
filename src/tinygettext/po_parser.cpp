@@ -66,14 +66,14 @@ POParser::~POParser()
 void
 POParser::warning(const std::string& msg)
 {
-    Log::warn("tinygettext", "%s line %d %s: \"%s\"",
+    logwarn("tinygettext", "%s line %d %s: \"%s\"",
         filename.c_str(), line_number, msg.c_str(), current_line.c_str());
 }
 
 void
 POParser::error(const std::string& msg)
 {
-    Log::error("tinygettext", "%s line %d %s: \"%s\"",
+    logerror("tinygettext", "%s line %d %s: \"%s\"",
         filename.c_str(), line_number, msg.c_str(), current_line.c_str());
 
   // Try to recover from an error by searching for start of another entry

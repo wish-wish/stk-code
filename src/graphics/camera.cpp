@@ -218,7 +218,7 @@ void Camera::setupCamera()
             break;
     default:
             if(UserConfigParams::logMisc())
-                Log::warn("Camera", "Incorrect number of players: '%d' - assuming 1.",
+                logwarn("Camera", "Incorrect number of players: '%d' - assuming 1.",
                           race_manager->getNumLocalPlayers());
             m_viewport = core::recti(0, 0,
                                      irr_driver->getActualScreenSize().Width,

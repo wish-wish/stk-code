@@ -211,9 +211,9 @@ void KartProperties::load(const std::string &filename, const std::string &node)
     }
     catch(std::exception& err)
     {
-        Log::error("[KartProperties]", "Error while parsing KartProperties '%s':",
+        logerror("[KartProperties]", "Error while parsing KartProperties '%s':",
                    filename.c_str());
-        Log::error("[KartProperties]", "%s", err.what());
+        logerror("[KartProperties]", "%s", err.what());
     }
     if(root) delete root;
 
@@ -320,7 +320,7 @@ void KartProperties::combineCharacteristics()
     const AbstractCharacteristic *characteristic = kart_properties_manager->
         getKartTypeCharacteristic(m_kart_type);
     if (!characteristic)
-        Log::warn("KartProperties", "Can't find kart type '%s' for kart '%s'",
+        logwarn("KartProperties", "Can't find kart type '%s' for kart '%s'",
             m_kart_type.c_str(), m_name.c_str());
     else
         // Kart type found
@@ -399,7 +399,7 @@ void KartProperties::getAllData(const XMLNode * root)
             m_terrain_impulse_type = IMPULSE_TO_DRIVELINE;
         else
         {
-            Log::fatal("[KartProperties]",
+            logfatal("[KartProperties]",
                        "Missing or incorrect value for impulse-type: '%s'.",
                        s.c_str());
         }
@@ -424,7 +424,7 @@ void KartProperties::getAllData(const XMLNode * root)
             }
             else
             {
-                Log::error("[KartProperties]",
+                logerror("[KartProperties]",
                            "Kart '%s' has an invalid engine '%s'.",
                            m_name.c_str(), s.c_str());
                 m_engine_sfx_type = "engine_small";
@@ -468,7 +468,7 @@ void KartProperties::getAllData(const XMLNode * root)
 void KartProperties::checkAllSet(const std::string &filename)
 {
 #define CHECK_NEG(  a,strA) if(a<=UNDEFINED) {                      \
-        Log::fatal("[KartProperties]",                                \
+        logfatal("[KartProperties]",                                \
                     "Missing default value for '%s' in '%s'.",    \
                     strA,filename.c_str());                \
     }

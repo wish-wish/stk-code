@@ -91,7 +91,7 @@ PhysicalObject::Settings::Settings(const XMLNode &xml_node)
     else if(shape=="exact"    ) m_body_type = MP_EXACT;
 
     else
-        Log::error("PhysicalObject", "Unknown shape type : %s.",
+        logerror("PhysicalObject", "Unknown shape type : %s.",
                    shape.c_str());
 }   // Settings(XMLNode)
 
@@ -260,12 +260,12 @@ void PhysicalObject::init(const PhysicalObject::Settings& settings)
         }
         else
         {
-            Log::fatal("PhysicalObject", "Unknown node type");
+            logfatal("PhysicalObject", "Unknown node type");
         }
     }
     else
     {
-        Log::fatal("PhysicalObject", "Unknown node type");
+        logfatal("PhysicalObject", "Unknown node type");
     }
 
     Vec3 parent_scale(1.0f, 1.0f, 1.0f);
@@ -373,7 +373,7 @@ void PhysicalObject::init(const PhysicalObject::Settings& settings)
                     break;
                 }
             default:
-                Log::warn("PhysicalObject", "Unknown object type, "
+                logwarn("PhysicalObject", "Unknown object type, "
                                         "cannot create exact collision body!");
                 return;
         }   // switch node->getType()
@@ -387,7 +387,7 @@ void PhysicalObject::init(const PhysicalObject::Settings& settings)
             if (mb->getVertexType() != video::EVT_STANDARD &&
                 mb->getVertexType() != video::EVT_2TCOORDS)
             {
-                Log::warn("PhysicalObject",
+                logwarn("PhysicalObject",
                           "createPhysicsBody: Ignoring type '%d'!",
                           mb->getVertexType());
                 continue;
@@ -473,7 +473,7 @@ void PhysicalObject::init(const PhysicalObject::Settings& settings)
     }
     case MP_NONE:
     default:
-        Log::warn("PhysicalObject", "Uninitialised moving shape");
+        logwarn("PhysicalObject", "Uninitialised moving shape");
         // intended fall-through
     case MP_BOX:
     {
@@ -594,7 +594,7 @@ bool PhysicalObject::castRay(const btVector3 &from, const btVector3 &to,
 {
     if(m_body_type!=MP_EXACT)
     {
-        Log::warn("PhysicalObject", "Can only raycast against 'exact' meshes.");
+        logwarn("PhysicalObject", "Can only raycast against 'exact' meshes.");
         return false;
     }
     bool result = m_triangle_mesh->castRay(from, to, hit_point, 

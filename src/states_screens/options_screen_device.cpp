@@ -384,7 +384,7 @@ void OptionsScreenDevice::gotSensedInput(const Input& sensed_input)
     {
         if (UserConfigParams::logMisc())
         {
-            Log::info("OptionsScreenDevice", "Binding %s: setting to keyboard key %d",
+            loginfo("OptionsScreenDevice", "Binding %s: setting to keyboard key %d",
                 KartActionStrings[binding_to_set].c_str(), sensed_input.m_button_id);
         }
 
@@ -401,21 +401,21 @@ void OptionsScreenDevice::gotSensedInput(const Input& sensed_input)
     {
         if (UserConfigParams::logMisc())
         {
-            Log::info("OptionsScreenDevice", "Binding %s: setting to gamepad #%d",
+            loginfo("OptionsScreenDevice", "Binding %s: setting to gamepad #%d",
                 KartActionStrings[binding_to_set].c_str(), sensed_input.m_device_id);
 
             if (sensed_input.m_type == Input::IT_STICKMOTION)
             {
-                Log::info("OptionsScreenDevice", "Axis %d; direction %s", sensed_input.m_button_id,
+                loginfo("OptionsScreenDevice", "Axis %d; direction %s", sensed_input.m_button_id,
                     sensed_input.m_axis_direction == Input::AD_NEGATIVE ? "-" : "+");
             }
             else if (sensed_input.m_type == Input::IT_STICKBUTTON)
             {
-                Log::info("OptionsScreenDevice", "Button %d", sensed_input.m_button_id);
+                loginfo("OptionsScreenDevice", "Button %d", sensed_input.m_button_id);
             }
             else
             {
-                Log::info("OptionsScreenDevice", "Sensed unknown gamepad event type??");
+                loginfo("OptionsScreenDevice", "Sensed unknown gamepad event type??");
             }
         }
 
@@ -439,7 +439,7 @@ void OptionsScreenDevice::gotSensedInput(const Input& sensed_input)
     {
         if (UserConfigParams::logMisc())
         {
-            Log::info("OptionsScreenDevice", "Binding %s: setting to keyboard key NONE",
+            loginfo("OptionsScreenDevice", "Binding %s: setting to keyboard key NONE",
                 KartActionStrings[binding_to_set].c_str());
         }
 
@@ -529,7 +529,7 @@ void OptionsScreenDevice::eventCallback(Widget* widget,
                 // we found which one. show the "press a key" dialog.
                 if (UserConfigParams::logMisc())
                 {
-                    Log::info("OptionsScreenDevice", "Entering sensing mode for %s",
+                    loginfo("OptionsScreenDevice", "Entering sensing mode for %s",
                          m_config->getName().c_str());
                 }
 
@@ -547,7 +547,7 @@ void OptionsScreenDevice::eventCallback(Widget* widget,
                 }
                 else
                 {
-                    Log::error("OptionsScreenDevice", "Unknown selection device in options: %s",
+                    logerror("OptionsScreenDevice", "Unknown selection device in options: %s",
                         m_config->getName().c_str());
                 }
                 break;
@@ -605,7 +605,7 @@ void OptionsScreenDevice::onConfirm()
         input_manager->getDeviceManager()->deleteConfig(m_config);
     assert(success);
     if (!success)
-        Log::error("OptionsScreenDevice", "Failed to delete config!");
+        logerror("OptionsScreenDevice", "Failed to delete config!");
 
     m_config = NULL;
     input_manager->getDeviceManager()->save();

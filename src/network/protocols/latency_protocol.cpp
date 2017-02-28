@@ -36,7 +36,7 @@ LatencyProtocol::~LatencyProtocol()
 //-----------------------------------------------------------------------------
 void LatencyProtocol::setup()
 {
-    Log::info("LatencyProtocol", "Ready !");
+    loginfo("LatencyProtocol", "Ready !");
 }   // setup
 
  //-----------------------------------------------------------------------------
@@ -87,7 +87,7 @@ bool LatencyProtocol::notifyEventAsynchronous(Event* event)
         assert(NetworkConfig::get()->isServer());
         if (sequence >= m_pings[peer_id].size())
         {
-            Log::warn("LatencyProtocol",
+            logwarn("LatencyProtocol",
                       "The sequence# %u isn't known.", sequence);
             return true;
         }
@@ -97,7 +97,7 @@ bool LatencyProtocol::notifyEventAsynchronous(Event* event)
         m_average_ping[peer_id] =
             (int)((m_total_diff[peer_id]/m_successed_pings[peer_id])*1000.0);
 
-        Log::debug("LatencyProtocol",
+        logdebug("LatencyProtocol",
             "Peer %d sequence %d ping %u average %u at %lf",
             peer_id, sequence,
             (unsigned int)((current_time - m_pings[peer_id][sequence])*1000),

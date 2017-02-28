@@ -71,7 +71,7 @@ GUIEngine::EventPropagation DebugSliderDialog::processEvent(const std::string& e
         return GUIEngine::EVENT_LET;
 
     int value = getWidget<SpinnerWidget>(eventSource.c_str())->getValue();
-    Log::info("DebugSlider", "Value for <%s> : %i", eventSource.c_str(), value);
+    loginfo("DebugSlider", "Value for <%s> : %i", eventSource.c_str(), value);
     Setters[eventSource](value);
     return GUIEngine::EVENT_BLOCK;
 #else

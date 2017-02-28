@@ -130,7 +130,7 @@ void OnlineProfileServers::doQuickPlay()
     }
     else
     {
-        Log::error("OnlineScreen", "Could not get the server list.");
+        logerror("OnlineScreen", "Could not get the server list.");
         return;
     }
 
@@ -138,7 +138,7 @@ void OnlineProfileServers::doQuickPlay()
     const Server *server = ServersManager::get()->getQuickPlay();
     if(!server)
     {
-        Log::error("OnlineProfileServers", "Can not find quick play server.");
+        logerror("OnlineProfileServers", "Can not find quick play server.");
         return;
     }
 

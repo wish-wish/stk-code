@@ -224,11 +224,11 @@ void RaceGUIOverworld::renderPlayerView(const Camera *camera, float dt)
     
     const core::recti &viewport = camera->getViewport();
     core::vector2df scaling     = camera->getScaling();
-    //Log::info("RaceGUIOverworld", "Applied ratio: %f", viewport.getWidth()/800.0f);
+    //loginfo("RaceGUIOverworld", "Applied ratio: %f", viewport.getWidth()/800.0f);
 
     scaling *= viewport.getWidth()/800.0f; // scale race GUI along screen size
 
-    //Log::info("RaceGUIOverworld", "Scale: %f, %f", scaling.X, scaling.Y);
+    //loginfo("RaceGUIOverworld", "Scale: %f, %f", scaling.X, scaling.Y);
 
     drawAllMessages     (kart, viewport, scaling);
 
@@ -520,7 +520,7 @@ void RaceGUIOverworld::drawGlobalMiniMap()
 
             if (challenge == NULL)
             {
-                Log::error("RaceGUIOverworld", "Cannot find challenge <%s>.",
+                logerror("RaceGUIOverworld", "Cannot find challenge <%s>.",
                            challenges[n].m_challenge_id.c_str());
                 break;
             }
@@ -532,7 +532,7 @@ void RaceGUIOverworld::drawGlobalMiniMap()
 
                 if (gp == NULL)
                 {
-                    Log::error("RaceGUIOverworld", "Cannot find GP <%s>, "
+                    logerror("RaceGUIOverworld", "Cannot find GP <%s>, "
                                "referenced from challenge <%s>",
                                challenge->getGPId().c_str(),
                                challenges[n].m_challenge_id.c_str());
@@ -556,7 +556,7 @@ void RaceGUIOverworld::drawGlobalMiniMap()
                 Track* track = track_manager->getTrack(challenge->getTrackId());
                 if (track == NULL)
                 {
-                    Log::error("RaceGUIOverworld", "Cannot find track <%s>, "
+                    logerror("RaceGUIOverworld", "Cannot find track <%s>, "
                                "referenced from challenge <%s>",
                                challenge->getTrackId().c_str(),
                                challenges[n].m_challenge_id.c_str());

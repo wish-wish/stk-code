@@ -73,8 +73,7 @@ ChallengeData::ChallengeData(const std::string& filename)
     // is not supported anyway (id is needed for warning message)
     if(!unlock_manager->isSupportedVersion(*this))
     {
-        Log::warn("ChallengeData", "Challenge <%s> is older "
-                  "or newer than this version of STK, will be ignored.\n",
+        logwarn("ChallengeData", "Challenge <%s> is older or newer than this version of STK, will be ignored.\n",
                   filename.c_str());
         return;
     }
@@ -198,7 +197,7 @@ ChallengeData::ChallengeData(const std::string& filename)
             }
             else
             {
-                Log::warn("ChallengeData", "Unknown superpower '%s'",
+                logwarn("ChallengeData", "Unknown superpower '%s'",
                           superPower.c_str());
             }
         }
@@ -247,7 +246,7 @@ ChallengeData::ChallengeData(const std::string& filename)
             setUnlocks(s, ChallengeData::UNLOCK_DIFFICULTY);
         else
         {
-            Log::warn("ChallengeData", "Unknown unlock entry. Must be one of kart, track, gp, mode, difficulty.");
+            logwarn("ChallengeData", "Unknown unlock entry. Must be one of kart, track, gp, mode, difficulty.");
             throw std::runtime_error("Unknown unlock entry");
         }
     }
@@ -282,7 +281,7 @@ void ChallengeData::error(const char *id) const
     msg << "Undefined or incorrect value for '" << id
         << "' in challenge file '" << m_filename << "'.";
 
-    Log::error("ChallengeData", "%s", msg.str().c_str());
+    logerror("ChallengeData", "%s", msg.str().c_str());
 
     throw std::runtime_error(msg.str());
 }   // error
@@ -355,8 +354,7 @@ void ChallengeData::setUnlocks(const std::string &id, RewardType reward)
                                 kart_properties_manager->getKart(id);
                             if (prop == NULL)
                             {
-                                Log::warn("ChallengeData", "Challenge refers to kart %s, "
-                                          "which is unknown. Ignoring reward.",
+                                logwarn("ChallengeData", "Challenge refers to kart %s, which is unknown. Ignoring reward.",
                                           id.c_str());
                                 break;
                             }
@@ -376,7 +374,7 @@ void ChallengeData::setRace(RaceManager::Difficulty d) const
         race_manager->setMajorMode(RaceManager::MAJOR_MODE_SINGLE);
     else
     {
-        Log::error("challenge_data", "Invalid mode %d in setRace.", m_mode);
+        logerror("challenge_data", "Invalid mode %d in setRace.", m_mode);
         assert(false);
     }
 
@@ -410,7 +408,7 @@ void ChallengeData::setRace(RaceManager::Difficulty d) const
             ->getAsset(FileManager::CHALLENGE, m_replay_files[d]),
             true/*custom_replay*/);
         if (!result)
-            Log::fatal("ChallengeData", "Can't open replay for challenge!");
+            logfatal("ChallengeData", "Can't open replay for challenge!");
         race_manager->setRaceGhostKarts(true);
     }
 

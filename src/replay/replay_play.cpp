@@ -114,16 +114,16 @@ bool ReplayPlay::addReplayFile(const std::string& fn, bool custom_replay)
     unsigned int version;
     if (sscanf(s,"version: %u", &version) != 1)
     {
-        Log::warn("Replay", "No Version information "
+        logwarn("Replay", "No Version information "
                   "found in replay file (bogus replay file).");
         fclose(fd);
         return false;
     }
     if (version != getReplayVersion())
     {
-        Log::warn("Replay", "Replay is version '%d'", version);
-        Log::warn("Replay", "STK version is '%d'", getReplayVersion());
-        Log::warn("Replay", "Skipped '%s'", fn.c_str());
+        logwarn("Replay", "Replay is version '%d'", version);
+        logwarn("Replay", "STK version is '%d'", getReplayVersion());
+        logwarn("Replay", "Skipped '%s'", fn.c_str());
         fclose(fd);
         return false;
     }
@@ -138,7 +138,7 @@ bool ReplayPlay::addReplayFile(const std::string& fn, bool custom_replay)
 
         if (sscanf(s,"kart: %s", s1) != 1)
         {
-            Log::warn("Replay", "Could not read ghost karts info!");
+            logwarn("Replay", "Could not read ghost karts info!");
             break;
         }
         rd.m_kart_list.push_back(std::string(s1));
@@ -148,7 +148,7 @@ bool ReplayPlay::addReplayFile(const std::string& fn, bool custom_replay)
     fgets(s, 1023, fd);
     if(sscanf(s, "reverse: %d", &reverse) != 1)
     {
-        Log::warn("Replay", "Reverse info found in replay file.");
+        logwarn("Replay", "Reverse info found in replay file.");
         fclose(fd);
         return false;
     }
@@ -157,7 +157,7 @@ bool ReplayPlay::addReplayFile(const std::string& fn, bool custom_replay)
     fgets(s, 1023, fd);
     if (sscanf(s, "difficulty: %u", &rd.m_difficulty) != 1)
     {
-        Log::warn("Replay", " No difficulty found in replay file.");
+        logwarn("Replay", " No difficulty found in replay file.");
         fclose(fd);
         return false;
     }
@@ -165,7 +165,7 @@ bool ReplayPlay::addReplayFile(const std::string& fn, bool custom_replay)
     fgets(s, 1023, fd);
     if (sscanf(s, "track: %s", s1) != 1)
     {
-        Log::warn("Replay", "Track info not found in replay file.");
+        logwarn("Replay", "Track info not found in replay file.");
         fclose(fd);
         return false;
     }
@@ -173,7 +173,7 @@ bool ReplayPlay::addReplayFile(const std::string& fn, bool custom_replay)
     Track* t = track_manager->getTrack(rd.m_track_name);
     if (t == NULL)
     {
-        Log::warn("Replay", "Track '%s' used in replay not found in STK!",
+        logwarn("Replay", "Track '%s' used in replay not found in STK!",
         rd.m_track_name.c_str());
         fclose(fd);
         return false;
@@ -182,7 +182,7 @@ bool ReplayPlay::addReplayFile(const std::string& fn, bool custom_replay)
     fgets(s, 1023, fd);
     if (sscanf(s, "laps: %u", &rd.m_laps) != 1)
     {
-        Log::warn("Replay", "No number of laps found in replay file.");
+        logwarn("Replay", "No number of laps found in replay file.");
         fclose(fd);
         return false;
     }
@@ -190,7 +190,7 @@ bool ReplayPlay::addReplayFile(const std::string& fn, bool custom_replay)
     fgets(s, 1023, fd);
     if (sscanf(s, "min_time: %f", &rd.m_min_time) != 1)
     {
-        Log::warn("Replay", "Finish time not found in replay file.");
+        logwarn("Replay", "Finish time not found in replay file.");
         fclose(fd);
         return false;
     }
@@ -216,13 +216,13 @@ void ReplayPlay::load()
         m_replay_file_list.at(m_current_replay_file).m_custom_replay_file);
     if(!fd)
     {
-        Log::error("Replay", "Can't read '%s', ghost replay disabled.",
+        logerror("Replay", "Can't read '%s', ghost replay disabled.",
                getReplayFilename().c_str());
         destroy();
         return;
     }
 
-    Log::info("Replay", "Reading replay file '%s'.", getReplayFilename().c_str());
+    loginfo("Replay", "Reading replay file '%s'.", getReplayFilename().c_str());
 
     const unsigned int line_skipped = getNumGhostKart() + 7;
     for (unsigned int i = 0; i < line_skipped; i++)
@@ -258,7 +258,7 @@ void ReplayPlay::readKartData(FILE *fd, char *next_line)
 
     unsigned int size;
     if(sscanf(next_line,"size: %u",&size)!=1)
-        Log::fatal("Replay", "Number of records not found in replay file "
+        logfatal("Replay", "Number of records not found in replay file "
             "for kart %d.", kart_num);
 
     for(unsigned int i=0; i<size; i++)
@@ -299,9 +299,9 @@ void ReplayPlay::readKartData(FILE *fd, char *next_line)
         {
             // Invalid record found
             // ---------------------
-            Log::warn("Replay", "Can't read replay data line %d:", i);
-            Log::warn("Replay", "%s", s);
-            Log::warn("Replay", "Ignored.");
+            logwarn("Replay", "Can't read replay data line %d:", i);
+            logwarn("Replay", "%s", s);
+            logwarn("Replay", "Ignored.");
         }
     }   // for i
 

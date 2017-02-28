@@ -1033,7 +1033,7 @@ namespace GUIEngine
         }
         catch (std::runtime_error& /*err*/)
         {
-            Log::error("Engine::init", "Cannot load skin specified in user config. "
+            logerror("Engine::init", "Cannot load skin specified in user config. "
                 "Falling back to defaults.");
             UserConfigParams::m_skin_file.revertToDefaults();
 
@@ -1047,7 +1047,7 @@ namespace GUIEngine
             catch (std::runtime_error& err)
             {
                 (void)err;
-                Log::fatal("Engine::init", "Canot load default GUI skin");
+                logfatal("Engine::init", "Canot load default GUI skin");
             }
         }
 
@@ -1107,7 +1107,7 @@ namespace GUIEngine
         }
         catch (std::runtime_error& /*err*/)
         {
-            Log::error("Engine::reloadSkin", "Canot load newly specified skin");
+            logerror("Engine::reloadSkin", "Canot load newly specified skin");
             return;
         }
 
@@ -1266,7 +1266,7 @@ namespace GUIEngine
 
         if(!loading)
         {
-            Log::fatal("Engine", "Can not find loading.png texture, aborting.");
+            logfatal("Engine", "Can not find loading.png texture, aborting.");
             exit(-1);
         }
         const int texture_w = loading->getSize().Width;
@@ -1338,7 +1338,7 @@ namespace GUIEngine
         }
         else
         {
-            Log::warn("Engine::addLoadingIcon", "Given "
+            logwarn("Engine::addLoadingIcon", "Given "
                 "NULL icon");
         }
     } // addLoadingIcon

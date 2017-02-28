@@ -178,7 +178,7 @@ PlayerKartWidget::PlayerKartWidget(KartSelectionScreen* parent,
         }
 
         if(!props)
-            Log::fatal("KartSelectionScreen", "Can't find default "
+            logfatal("KartSelectionScreen", "Can't find default "
                        "kart '%s' nor any other kart.",
                        default_kart.c_str());
     }
@@ -264,10 +264,10 @@ void PlayerKartWidget::setPlayerID(const int newPlayerID)
     if (StateManager::get()->getActivePlayer(newPlayerID)
             != m_associated_player)
     {
-        Log::error("KartSelectionScreen",  "Internal "
+        logerror("KartSelectionScreen",  "Internal "
                    "inconsistency, PlayerKartWidget has IDs and "
                    "pointers that do not correspond to one player");
-        Log::fatal("KartSelectionScreen", "    Player: %p  -  Index: %d  -  m_associated_player: %p",
+        logfatal("KartSelectionScreen", "    Player: %p  -  Index: %d  -  m_associated_player: %p",
                    StateManager::get()->getActivePlayer(newPlayerID),
                    newPlayerID, m_associated_player);
     }
@@ -590,7 +590,7 @@ GUIEngine::EventPropagation PlayerKartWidget::transmitEvent(Widget* w,
     {
         if(UserConfigParams::logGUI())
         {
-            Log::info("[KartSelectionScreen]", "Identity changed "
+            loginfo("[KartSelectionScreen]", "Identity changed "
                       "for player %s : %s",m_player_id,
                       irr::core::stringc(
                           m_player_ident_spinner->getStringValue()

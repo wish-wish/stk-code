@@ -67,7 +67,7 @@ class LeakCheck : public MemoryLeaks::AllocatedObject                \
 public:                                                              \
     virtual void print() const                                       \
     {                                                                \
-        Log::error("LeakCheck", "Undeleted object at %s : %i",       \
+        logerror("LeakCheck", "Undeleted object at %s : %i",       \
                     __FILE__, __LINE__);                             \
         AllocatedObject::print();                                    \
     }                                                                \

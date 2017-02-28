@@ -84,7 +84,7 @@ public:
     virtual void reset() {}
     virtual void setEnable(bool enabled)
     {
-        Log::warn("TrackObjectPresentation", "setEnable unimplemented for this presentation type");
+        logwarn("TrackObjectPresentation", "setEnable unimplemented for this presentation type");
     }
     virtual void update(float dt) {}
     virtual void move(const core::vector3df& xyz, const core::vector3df& hpr,

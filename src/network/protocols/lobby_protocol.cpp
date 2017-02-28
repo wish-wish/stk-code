@@ -56,7 +56,7 @@ LobbyProtocol::~LobbyProtocol()
  */
 void LobbyProtocol::loadWorld()
 {
-    Log::info("LobbyProtocol", "Ready !");
+    loginfo("LobbyProtocol", "Ready !");
 
     // Race startup sequence
     // ---------------------
@@ -119,7 +119,7 @@ void LobbyProtocol::loadWorld()
 
     input_manager->getDeviceManager()->setSinglePlayer(ap);
 
-    Log::info("LobbyProtocol", "Player configuration ready.");
+    loginfo("LobbyProtocol", "Player configuration ready.");
 
     // Load the actual world.
     m_game_setup->getRaceConfig()->loadWorld();

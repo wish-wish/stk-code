@@ -91,7 +91,7 @@ int getRAM()
     memory_size /= (1024*1024);
     return int(memory_size);
 #endif
-    Log::error("HW report",
+    logerror("HW report",
               "No RAM information available for hardware report.");
     return 0;
 }   // getRAM
@@ -119,7 +119,7 @@ int getNumProcessors()
     assert(ret != -1);
     return ncpus;
 #endif
-    Log::error("HW report",
+    logerror("HW report",
                "Number of processors not available for hardware report.");
     return 0;
 }   // getNumProcessors
@@ -208,7 +208,7 @@ void determineOSVersion()
 
     HKEY hKey;
     if (RegOpenKeyEx(HKEY_LOCAL_MACHINE,
-                      "SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion", 0,
+                      TEXT("SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion"), 0,
                       KEY_QUERY_VALUE, &hKey) != ERROR_SUCCESS)
     {
         m_os_version = "windows-unknown";
@@ -216,7 +216,7 @@ void determineOSVersion()
     }
     char windows_version_string[20];
     DWORD size = sizeof(windows_version_string);
-    RegQueryValueEx(hKey, "CurrentVersion", 0, 0, (LPBYTE)windows_version_string, &size);
+    RegQueryValueEx(hKey, TEXT("CurrentVersion"), 0, 0, (LPBYTE)windows_version_string, &size);
     unsigned major = 0, minor = 0;
 
     std::stringstream sstr(windows_version_string);
@@ -368,15 +368,15 @@ void reportHardwareStats()
             // download error, but return an error string as return value:
             if(hadDownloadError() || getData()=="<h1>Bad Request (400)</h1>")
             {
-                Log::error("HW report", "Error uploading the HW report.");
+                logerror("HW report", "Error uploading the HW report.");
                 if(hadDownloadError())
-                    Log::error("HW report", "%s", getDownloadErrorMessage());
+                    logerror("HW report", "%s", getDownloadErrorMessage());
                 else
-                    Log::error("HW report", "%s", getData().c_str());
+                    logerror("HW report", "%s", getData().c_str());
             }
             else
             {
-                Log::info("HW report", "Upload successful.");
+                loginfo("HW report", "Upload successful.");
                 UserConfigParams::m_last_hw_report_version = m_version;
                 // The callback is executed by the main thread, so no need
                 // to worry about locks when writing the file.

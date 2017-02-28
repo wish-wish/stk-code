@@ -171,7 +171,7 @@ void AddonsScreen::init()
     getWidget<GUIEngine::RibbonWidget>("category")->setActive(false);
 
     if(UserConfigParams::logAddons())
-        Log::info("addons", "Using directory <%s>", file_manager->getAddonsDir().c_str());
+        loginfo("addons", "Using directory <%s>", file_manager->getAddonsDir().c_str());
 
     GUIEngine::ListWidget* w_list =
         getWidget<GUIEngine::ListWidget>("list_addons");

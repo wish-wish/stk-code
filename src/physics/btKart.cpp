@@ -429,7 +429,7 @@ void btKart::updateVehicle( btScalar step )
             //float v_old = m_chassisBody->getLinearVelocity().getY();
             //float x = m_wheelInfo[0].m_raycastInfo.m_isInContact ?    m_wheelInfo[0].m_raycastInfo.m_contactPointWS.getY() : -100;
             m_chassisBody->applyCentralImpulse(impulse);
-            //Log::verbose("physics", "Cushioning %f from %f m/s to %f m/s wheel %f kart %f", impulse.getY(),
+            //logverbose("physics", "Cushioning %f from %f m/s to %f m/s wheel %f kart %f", impulse.getY(),
             //  v_old, m_chassisBody->getLinearVelocity().getY(), x,
             //                m_chassisBody->getWorldTransform().getOrigin().getY()
             //               );

@@ -65,7 +65,7 @@ void EasterEggScreen::eventCallback(Widget* widget, const std::string& name, con
         {
             const std::string selection = w2->getSelectionIDString(PLAYER_ID_GAME_MASTER);
             if(UserConfigParams::logGUI())
-                Log::info("EasterEggScreen", "Clicked on track %s", selection.c_str());
+                loginfo("EasterEggScreen", "Clicked on track %s", selection.c_str());
 
             UserConfigParams::m_last_track = selection;
 

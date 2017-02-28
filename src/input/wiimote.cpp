@@ -102,7 +102,7 @@ void Wiimote::update()
 
     if(UserConfigParams::m_wiimote_debug)
     {
-        Log::verbose("wiimote", "raw %d normal %f result %f",
+        logverbose("wiimote", "raw %d normal %f result %f",
                      m_wiimote_handle->accel.y,
                      normalized_angle,
                      normalized_angle_2);
@@ -135,7 +135,7 @@ void Wiimote::update()
 }   // update
 
 // ----------------------------------------------------------------------------
-/** Prints debug information to Log::verbose about accelerometer and button
+/** Prints debug information to logverbose about accelerometer and button
  *  states.
  */
 void Wiimote::printDebugInfo() const
@@ -165,7 +165,7 @@ void Wiimote::printDebugInfo() const
     {
         if(IS_PRESSED(m_wiimote_handle, wiimote_actions[i].wiimote_action_id))
         {
-            Log::verbose("wiimote", "%d: pressed button %s -> button id: %d",
+            logverbose("wiimote", "%d: pressed button %s -> button id: %d",
                 m_wiimote_id, wiimote_actions[i].wiimote_action_name,
                 i);
         }

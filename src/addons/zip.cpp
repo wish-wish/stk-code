@@ -54,7 +54,7 @@ s32 IFileSystem_copyFileToFile(IWriteFile* dst, IReadFile* src)
  *  \param to The destination directory.
  *  \return True if successful.
  */
-bool extract_zip(const std::string &from, const std::string &to)
+bool extract_zip(const path &from, const path &to)
 {
     //Add the zip to the file system
     IFileSystem *file_system = irr_driver->getDevice()->getFileSystem();
@@ -74,17 +74,18 @@ bool extract_zip(const std::string &from, const std::string &to)
     bool error = false;
     for(unsigned int i=0; i<zip_file_list->getFileCount(); i++)
     {
-        const std::string current_file=zip_file_list->getFileName(i).c_str();
-        Log::info("addons", "Unzipping file '%s'.", current_file.c_str());
+		const path current_file=zip_file_list->getFileName(i).c_str();
+
+		loginfo("addons", "Unzipping file '%s'.", current_file.c_str());
         if(zip_file_list->isDirectory(i)) continue;
         if(current_file[0]=='.') continue;
-        const std::string base = StringUtils::getBasename(current_file);
+        const path base = StringUtils::getBasename(current_file);
 
         IReadFile* src_file =
             zip_archive->createAndOpenFile(current_file.c_str());
         if(!src_file)
         {
-            Log::warn("addons", "Can't read file '%s'. This is ignored, but the addon might not work", current_file.c_str());
+            logwarn("addons", "Can't read file '%s'. This is ignored, but the addon might not work", current_file.c_str());
             error = true;
             continue;
         }
@@ -93,7 +94,7 @@ bool extract_zip(const std::string &from, const std::string &to)
             file_system->createAndWriteFile((to+"/"+base).c_str());
         if(dst_file == NULL)
         {
-            Log::warn("addons", "Couldn't create the file '%s'. The directory might not exist. This is ignored, but the addon might not work.",
+            logwarn("addons", "Couldn't create the file '%s'. The directory might not exist. This is ignored, but the addon might not work.",
                       (to+"/"+current_file).c_str());
             error = true;
             continue;
@@ -101,7 +102,7 @@ bool extract_zip(const std::string &from, const std::string &to)
 
         if (IFileSystem_copyFileToFile(dst_file, src_file) < 0)
         {
-            Log::warn("addons", "Could not copy '%s' from archive '%s'. This is ignored, but the addon might not work.",
+            logwarn("addons", "Could not copy '%s' from archive '%s'. This is ignored, but the addon might not work.",
                       current_file.c_str(), from.c_str());
             error = true;
         }

@@ -181,7 +181,7 @@ void GhostReplaySelection::onConfirm()
 {
     if (!file_manager
         ->removeFile(file_manager->getReplayDir() + m_file_to_be_deleted))
-        Log::warn("GhostReplayInfoDialog", "Failed to delete file.");
+        logwarn("GhostReplayInfoDialog", "Failed to delete file.");
 
     ModalDialog::dismiss();
     GhostReplaySelection::getInstance()->refresh();

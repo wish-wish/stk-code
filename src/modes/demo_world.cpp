@@ -122,7 +122,7 @@ bool DemoWorld::updateIdleTimeAndStartDemo(float dt)
             && m_demo_tracks.size() > 0)
     {
         if(!track)
-            Log::warn("[DemoWorld]", "Invalid demo track identifier '%s'.",
+            logwarn("[DemoWorld]", "Invalid demo track identifier '%s'.",
                    m_demo_tracks[0].c_str());
         m_demo_tracks.erase(m_demo_tracks.begin());
         track = track_manager->getTrack(m_demo_tracks[0]);
@@ -132,7 +132,7 @@ bool DemoWorld::updateIdleTimeAndStartDemo(float dt)
     // be filled up with all the tracks.
     if(m_demo_tracks.size()==0)
     {
-        Log::warn("[DemoWorld]", "No valid tracks found, no demo started.");
+        logwarn("[DemoWorld]", "No valid tracks found, no demo started.");
         return false;
     }
 

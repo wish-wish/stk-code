@@ -181,7 +181,7 @@ void Screen::parseScreenFileDiv(irr::io::IXMLReader* xml, PtrVector<Widget>& app
                 }
                 else
                 {
-                    Log::warn("Screen::parseScreenFileDiv", "unknown tag found in STK GUI file '%s'", xml->getNodeName());
+                    logwarn("Screen::parseScreenFileDiv", "unknown tag found in STK GUI file '%s'", xml->getNodeName());
                     continue;
                 }
 

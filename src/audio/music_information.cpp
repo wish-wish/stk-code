@@ -44,7 +44,7 @@ MusicInformation *MusicInformation::create(const std::string &filename)
     if (!root) return NULL;
     if(root->getName()!="music")
     {
-        Log::error("MusicInformation",
+        logerror("MusicInformation",
                    "Music file '%s' does not contain music node.\n",
                    filename.c_str());
         delete root;
@@ -56,9 +56,8 @@ MusicInformation *MusicInformation::create(const std::string &filename)
        !root->get("file",     &s)    )
 
     {
-        Log::error("MusicInformation",
-                    "One of 'title', 'composer' or 'file' attribute "
-                    "is missing in the music XML file '%s'!\n",
+        logerror("MusicInformation",
+                    "One of 'title', 'composer' or 'file' attribute is missing in the music XML file '%s'!\n",
                     filename.c_str());
         delete root;
         return NULL;
@@ -151,8 +150,7 @@ void MusicInformation::startMusic()
     // -----------------------------
     if (StringUtils::getExtension(m_normal_filename) != "ogg")
     {
-        Log::warn("MusicInformation", "Music file %s is not found or file "
-                  "format is not recognized.\n", m_normal_filename.c_str());
+        logwarn("MusicInformation", "Music file %s is not found or file format is not recognized.\n", m_normal_filename.c_str());
         return;
     }
 
@@ -168,8 +166,7 @@ void MusicInformation::startMusic()
     {
         delete m_normal_music;
         m_normal_music = NULL;
-        Log::warn("MusicInformation", "Unable to load music %s, "
-                  "not supported or not found.",
+        logwarn("MusicInformation", "Unable to load music %s, not supported or not found.",
                   m_normal_filename.c_str());
         return;
     }
@@ -187,7 +184,7 @@ void MusicInformation::startMusic()
 
     if(StringUtils::getExtension(m_fast_filename)!="ogg")
     {
-        Log::warn(
+        logwarn(
                 "Music file %s format not recognized, fast music is ignored",
                 m_fast_filename.c_str());
         return;
@@ -203,8 +200,7 @@ void MusicInformation::startMusic()
     {
         delete m_fast_music;
         m_fast_music=0;
-        Log::warn("MusicInformation", "Unabled to load fast music %s, not "
-                  "supported or not found.\n", m_fast_filename.c_str());
+        logwarn("MusicInformation", "Unabled to load fast music %s, not supported or not found.\n", m_fast_filename.c_str());
         return;
     }
     m_fast_music->setVolume(m_gain);

@@ -52,12 +52,12 @@ bool GameEventsProtocol::notifyEvent(Event* event)
     NetworkString &data = event->data();
     if (data.size() < 1) // for token and type
     {
-        Log::warn("GameEventsProtocol", "Too short message.");
+        logwarn("GameEventsProtocol", "Too short message.");
         return true;
     }
     if ( event->getPeer()->getClientServerToken() != data.getToken())
     {
-        Log::warn("GameEventsProtocol", "Bad token.");
+        logwarn("GameEventsProtocol", "Bad token.");
         return true;
     }
     int8_t type = data.getUInt8();
@@ -71,7 +71,7 @@ bool GameEventsProtocol::notifyEvent(Event* event)
         kartFinishedRace(data);     break;
 
     default:
-        Log::warn("GameEventsProtocol", "Unkown message type.");
+        logwarn("GameEventsProtocol", "Unkown message type.");
         break;
     }
     return true;
@@ -102,7 +102,7 @@ void GameEventsProtocol::collectedItem(Item* item, AbstractKart* kart)
            .addUInt8(powerup).addUInt8(kart->getWorldKartId());
         peers[i]->sendPacket(ns, /*reliable*/true);
         delete ns;
-        Log::info("GameEventsProtocol",
+        loginfo("GameEventsProtocol",
                   "Notified a peer that a kart collected item %d.",
                   (int)(kart->getPowerup()->getType()));
     }
@@ -115,7 +115,7 @@ void GameEventsProtocol::collectedItem(const NetworkString &data)
 {
     if (data.size() < 6)
     {
-        Log::warn("GameEventsProtocol", "collectedItem: Too short message.");
+        logwarn("GameEventsProtocol", "collectedItem: Too short message.");
     }
     uint32_t item_id = data.getUInt32();
     uint8_t powerup_type = data.getUInt8();
@@ -124,7 +124,7 @@ void GameEventsProtocol::collectedItem(const NetworkString &data)
     AbstractKart* kart = World::getWorld()->getKart(kart_id);
     ItemManager::get()->collectedItem(ItemManager::get()->getItem(item_id),
                                       kart, powerup_type);
-    Log::info("GameEventsProtocol", "Item %d picked by a player.",
+    loginfo("GameEventsProtocol", "Item %d picked by a player.",
                powerup_type);
 }   // collectedItem
 
@@ -153,7 +153,7 @@ void GameEventsProtocol::kartFinishedRace(const NetworkString &ns)
 {
     if (ns.size() < 5) // for token and type
     {
-        Log::warn("GameEventsProtocol", "kartFinisheRace: Too short message.");
+        logwarn("GameEventsProtocol", "kartFinisheRace: Too short message.");
         return;
     }
 
@@ -185,13 +185,13 @@ void GameEventsProtocol::receivedClientHasStarted(Event *event)
 {
     assert(NetworkConfig::get()->isServer());
     m_count_ready_clients++;
-    Log::verbose("GameEvent",
+    logverbose("GameEvent",
                  "Host %d has started ready-set-go: %d out of %d done",
                  event->getPeer()->getHostId(), m_count_ready_clients, 
                  STKHost::get()->getGameSetup()->getPlayerCount()        );
     if (m_count_ready_clients==STKHost::get()->getGameSetup()->getPlayerCount())
     {
-        Log::verbose("GameEvent", "All %d clients have started.",
+        logverbose("GameEvent", "All %d clients have started.",
                      STKHost::get()->getGameSetup()->getPlayerCount());
         // SIgnal the server to start now - since it is now behind the client
         // times by the latency of the 'slowest' client.

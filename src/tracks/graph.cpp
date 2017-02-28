@@ -379,7 +379,7 @@ void Graph::createQuad(const Vec3 &p0, const Vec3 &p1, const Vec3 &p2,
     Quad* q = NULL;
     if (angle > 0.5f)
     {
-        Log::debug("Graph", "3d node created, normal: %f, %f, %f",
+        logdebug("Graph", "3d node created, normal: %f, %f, %f",
             normal.x(), normal.y(), normal.z());
         if (is_arena)
         {
@@ -393,7 +393,7 @@ void Graph::createQuad(const Vec3 &p0, const Vec3 &p1, const Vec3 &p2,
     }
     else
     {
-        Log::debug("Graph", "2d node created, normal: %f, %f, %f",
+        logdebug("Graph", "2d node created, normal: %f, %f, %f",
             normal.x(), normal.y(), normal.z());
         if (is_arena)
         {
@@ -578,7 +578,7 @@ int Graph::findOutOfRoadSector(const Vec3& xyz, const int curr_sector,
 
     if(min_sector==UNKNOWN_SECTOR)
     {
-        Log::info("Graph", "unknown sector found.");
+        loginfo("Graph", "unknown sector found.");
     }
     return min_sector;
 }   // findOutOfRoadSector

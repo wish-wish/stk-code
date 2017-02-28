@@ -245,7 +245,7 @@ void ParticleSystemProxy::generateParticlesFromPointEmitter(scene::IParticlePoin
     }
     else
     {
-        Log::error("GPUParticles", "Not enough memory for %d from point particles.", m_count);
+        logerror("GPUParticles", "Not enough memory for %d from point particles.", m_count);
         m_count = m_previous_count;
     }
     if (InitialValuesTmp != NULL)
@@ -254,7 +254,7 @@ void ParticleSystemProxy::generateParticlesFromPointEmitter(scene::IParticlePoin
     }
     else
     {
-        Log::fatal("GPUParticles", "Not enough memory for %d from point particles.", m_count);
+        logfatal("GPUParticles", "Not enough memory for %d from point particles.", m_count);
         m_count = m_previous_count;
     }
 
@@ -286,7 +286,7 @@ void ParticleSystemProxy::generateParticlesFromBoxEmitter(scene::IParticleBoxEmi
     }
     else
     {
-        Log::error("GPUParticles", "Not enough memory for %d from box particles.", m_count);
+        logerror("GPUParticles", "Not enough memory for %d from box particles.", m_count);
         m_count = m_previous_count;
     }
     if (InitialValuesTmp != NULL)
@@ -295,7 +295,7 @@ void ParticleSystemProxy::generateParticlesFromBoxEmitter(scene::IParticleBoxEmi
     }
     else
     {
-        Log::error("GPUParticles", "Not enough memory for %d from box particles.", m_count);
+        logerror("GPUParticles", "Not enough memory for %d from box particles.", m_count);
         m_count = m_previous_count;
     }
 

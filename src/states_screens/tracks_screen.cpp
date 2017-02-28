@@ -59,7 +59,7 @@ void TracksScreen::eventCallback(Widget* widget, const std::string& name,
         std::string selection = w2->getSelectionIDString(PLAYER_ID_GAME_MASTER);
         if (UserConfigParams::logGUI())
         {
-            Log::info("TracksScreen", "Clicked on track '%s'.",
+            loginfo("TracksScreen", "Clicked on track '%s'.",
                        selection.c_str());
         }
 

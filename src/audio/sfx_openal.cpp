@@ -449,7 +449,7 @@ void SFXOpenAL::reallySetPosition(const Vec3 &position)
         // possible, in cutscenes)
         if (race_manager->getNumLocalPlayers() < 2)
         {
-            Log::warn("SFX", "Position called on non-positional SFX");
+            logwarn("SFX", "Position called on non-positional SFX");
         }
         return;
     }

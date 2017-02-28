@@ -40,7 +40,7 @@ void override_default_params()
 
 void android_main(struct android_app* app) 
 {
-    Log::info("AndroidMain", "Loading application...");
+    loginfo("AndroidMain", "Loading application...");
         
     app_dummy();
     
@@ -49,7 +49,7 @@ void android_main(struct android_app* app)
     global_android_app = app;
     main(0, {});
 
-    Log::info("AndroidMain", "Closing STK...");
+    loginfo("AndroidMain", "Closing STK...");
     
     // TODO: Irrlicht device is properly waiting for destroy event, but
     // some global variables are not initialized/cleared in functions and thus 

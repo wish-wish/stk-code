@@ -52,7 +52,7 @@ void StopServer::asynchronousUpdate()
         m_request->addParameter("address", addr.getIP());
         m_request->addParameter("port", addr.getPort());
 
-        Log::info("StopServer", "address %s", addr.toString().c_str());
+        loginfo("StopServer", "address %s", addr.toString().c_str());
 
         Online::RequestManager::get()->addRequest(m_request);
         m_state = REQUEST_PENDING;
@@ -66,16 +66,16 @@ void StopServer::asynchronousUpdate()
         {
             if(rec_success == "yes")
             {
-                Log::info("StopServer", "Server is now offline.");
+                loginfo("StopServer", "Server is now offline.");
             }
             else
             {
-                Log::error("StopServer", "Fail to stop server.");
+                logerror("StopServer", "Fail to stop server.");
             }
         }
         else
         {
-            Log::error("StopServer", "Fail to stop server.");
+            logerror("StopServer", "Fail to stop server.");
         }
         m_state = DONE;
     }

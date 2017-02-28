@@ -141,7 +141,7 @@ private:
             }
             if (m_blue_check_goal == NULL || m_red_check_goal == NULL)
             {
-                Log::error("SoccerWorld", "Goal(s) is missing!");
+                logerror("SoccerWorld", "Goal(s) is missing!");
             }
         }   // init
 

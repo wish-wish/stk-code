@@ -27,7 +27,7 @@ class NetworkPlayerController : public PlayerController
 public:
     NetworkPlayerController(AbstractKart *kart) : PlayerController(kart)
     {
-        Log::info("NetworkPlayerController",
+        loginfo("NetworkPlayerController",
                   "New network player controller.");
     }   // NetworkPlayerController
     // ------------------------------------------------------------------------

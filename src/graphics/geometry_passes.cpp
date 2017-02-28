@@ -212,8 +212,7 @@ void renderTransparenPass(const std::vector<RenderGeometry::TexUnit> &TexUnits,
         if (mesh.VAOType != VertexType)
         {
 #ifdef DEBUG
-            Log::error("Materials", "Wrong vertex Type associed to pass 2 "
-                                    "(hint texture : %s)",
+            logerror("Materials", "Wrong vertex Type associed to pass 2 (hint texture : %s)",
                        mesh.textures[0]->getName().getPath().c_str());
 #endif
             continue;
@@ -337,7 +336,7 @@ void AbstractGeometryPasses::renderTransparent(const DrawCalls& draw_calls,
         if (mesh.VAOType != video::EVT_2TCOORDS)
         {
 #ifdef DEBUG
-            Log::error("Materials", "Displacement has wrong vertex type");
+            logerror("Materials", "Displacement has wrong vertex type");
 #endif
             continue;
         }

@@ -59,10 +59,10 @@ namespace
      */  
     void displayCoeff(float *SH_coeff)
     {
-        Log::debug("SphericalHarmonics", "L00:%f", SH_coeff[0]);
-        Log::debug("SphericalHarmonics", "L1-1:%f, L10:%f, L11:%f", 
+        logdebug("SphericalHarmonics", "L00:%f", SH_coeff[0]);
+        logdebug("SphericalHarmonics", "L1-1:%f, L10:%f, L11:%f", 
                    SH_coeff[1], SH_coeff[2], SH_coeff[3]);
-        Log::debug("SphericalHarmonics", "L2-2:%f, L2-1:%f, L20:%f, L21:%f, L22:%f",
+        logdebug("SphericalHarmonics", "L2-2:%f, L2-1:%f, L20:%f, L21:%f, L22:%f",
                    SH_coeff[4], SH_coeff[5], SH_coeff[6], SH_coeff[7], SH_coeff[8]);
     }   // displayCoeff
 
@@ -487,11 +487,11 @@ void SphericalHarmonics::setAmbientLight(const video::SColor &ambient)
 // ----------------------------------------------------------------------------
 /** Print spherical harmonics coefficients (debug) */
 void SphericalHarmonics::printCoeff() {
-    Log::debug("SphericalHarmonics", "Blue_SH:");
+    logdebug("SphericalHarmonics", "Blue_SH:");
     displayCoeff(m_SH_coeff->blue_SH_coeff);
-    Log::debug("SphericalHarmonics", "Green_SH:");
+    logdebug("SphericalHarmonics", "Green_SH:");
     displayCoeff(m_SH_coeff->green_SH_coeff);
-    Log::debug("SphericalHarmonics", "Red_SH:");
+    logdebug("SphericalHarmonics", "Red_SH:");
     displayCoeff(m_SH_coeff->red_SH_coeff);  
 } //printCoeff
 

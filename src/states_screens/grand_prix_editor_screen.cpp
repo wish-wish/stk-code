@@ -200,7 +200,7 @@ void GrandPrixEditorScreen::loadTrackList (const std::string& gpname)
         Track* curr = track_manager->getTrack(tracks[t]);
         if (curr == NULL)
         {
-            Log::warn("GrandPrixEditor",
+            logwarn("GrandPrixEditor",
                 "Grand Prix '%s' refers to track '%s', which does not exist\n",
                 gp->getId().c_str(), tracks[t].c_str());
         }

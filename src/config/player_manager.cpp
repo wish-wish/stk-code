@@ -192,12 +192,12 @@ void PlayerManager::load()
     m_player_data = file_manager->createXMLTree(filename);
     if(!m_player_data)
     {
-        Log::info("player_manager", "A new players.xml file will be created.");
+        loginfo("player_manager", "A new players.xml file will be created.");
         return;
     }
     else if(m_player_data->getName()!="players")
     {
-        Log::info("player_manager", "The players.xml file is invalid.");
+        loginfo("player_manager", "The players.xml file is invalid.");
         return;
     }
 
@@ -283,9 +283,9 @@ void PlayerManager::save()
     }
     catch (std::runtime_error& e)
     {
-        Log::error("PlayerManager", "Failed to write config to %s.",
+        logerror("PlayerManager", "Failed to write config to %s.",
                     filename.c_str());
-        Log::error("PlayerManager", "Error: %s", e.what());
+        logerror("PlayerManager", "Error: %s", e.what());
     }
 
 }   // save
@@ -326,7 +326,7 @@ void PlayerManager::enforceCurrentPlayer()
     {
         if (!player->isGuestAccount())
         {
-            Log::info("PlayerManager", "Enforcing current player '%ls'.",
+            loginfo("PlayerManager", "Enforcing current player '%ls'.",
                       player->getName(true/*ignoreRTL*/).c_str());
             m_current_player = player;
             return;
@@ -340,7 +340,7 @@ void PlayerManager::enforceCurrentPlayer()
     {
         if (!player->isGuestAccount())
         {
-            Log::info("PlayerManager", "Enforcing current player '%s'.",
+            loginfo("PlayerManager", "Enforcing current player '%s'.",
                        player->getName(true/*ignoreRTL*/).c_str());
             m_current_player = player;
             return;
@@ -348,7 +348,7 @@ void PlayerManager::enforceCurrentPlayer()
     }   // for player in m_all_players
 
     // Now this really really should not happen.
-    Log::fatal("PlayerManager", "Failed to find a non-guest player.");
+    logfatal("PlayerManager", "Failed to find a non-guest player.");
 }   // enforceCurrentPlayer
 
 // ----------------------------------------------------------------------------

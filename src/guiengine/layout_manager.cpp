@@ -47,7 +47,7 @@ int atoi_p(const char* val)
     }
     else
     {
-        Log::warn("LayoutManager", "Invalid value '%s' found in XML file where integer was expected.", val);
+        logwarn("LayoutManager", "Invalid value '%s' found in XML file where integer was expected.", val);
         return 0;
     }
 }
@@ -432,7 +432,7 @@ void LayoutManager::doCalculateLayout(PtrVector<Widget>& widgets, AbstractTopLev
             horizontal = false;
         else
         {
-            Log::error("LayoutManager::doCalculateLayout", "Unknown layout name: %s", layout_name.c_str());
+            logerror("LayoutManager::doCalculateLayout", "Unknown layout name: %s", layout_name.c_str());
             break;
         }
 
@@ -473,7 +473,7 @@ void LayoutManager::doCalculateLayout(PtrVector<Widget>& widgets, AbstractTopLev
 
         if (left_space < 0)
         {
-            Log::warn("LayoutManager", "Statically sized widgets took all the place!!");
+            logwarn("LayoutManager", "Statically sized widgets took all the place!!");
             left_space = 0;
         }
 
@@ -487,7 +487,7 @@ void LayoutManager::doCalculateLayout(PtrVector<Widget>& widgets, AbstractTopLev
                 int proportion = 1;
                 std::istringstream myStream(prop);
                 if (!(myStream >> proportion))
-                    Log::warn("LayoutManager::doCalculateLayout",
+                    logwarn("LayoutManager::doCalculateLayout",
                         "Proportion '%s' is not a number for widget %s", prop.c_str(),
                         widgets[n].m_properties[PROP_ID].c_str());
 
@@ -532,7 +532,7 @@ void LayoutManager::doCalculateLayout(PtrVector<Widget>& widgets, AbstractTopLev
                     }
                     else
                     {
-                        Log::warn("LayoutManager::doCalculateLayout",
+                        logwarn("LayoutManager::doCalculateLayout",
                             "Alignment '%s' is unknown (widget '%s', in a horiozntal-row layout)",
                             align.c_str(), widgets[n].m_properties[PROP_ID].c_str());
                     }
@@ -546,7 +546,7 @@ void LayoutManager::doCalculateLayout(PtrVector<Widget>& widgets, AbstractTopLev
 
                     if (widgets[n].m_w <= 0)
                     {
-                        Log::warn("LayoutManager", "Widget '%s' has a width of %i (left_space = %i, "
+                        logwarn("LayoutManager", "Widget '%s' has a width of %i (left_space = %i, "
                                   "fraction = %f, max_width = %s)", widgets[n].m_properties[PROP_ID].c_str(),
                                   widgets[n].m_w, left_space, fraction, widgets[n].m_properties[PROP_MAX_WIDTH].c_str());
                         widgets[n].m_w = 1;
@@ -566,7 +566,7 @@ void LayoutManager::doCalculateLayout(PtrVector<Widget>& widgets, AbstractTopLev
 
                     if (widgets[n].m_h <= 0)
                     {
-                        Log::warn("LayoutManager", "Widget '%s' has a height of %i (left_space = %i, "
+                        logwarn("LayoutManager", "Widget '%s' has a height of %i (left_space = %i, "
                                   "fraction = %f, max_width = %s)\n", widgets[n].m_properties[PROP_ID].c_str(),
                                   widgets[n].m_h, left_space, fraction, widgets[n].m_properties[PROP_MAX_WIDTH].c_str());
                         widgets[n].m_h = 1;
@@ -607,7 +607,7 @@ void LayoutManager::doCalculateLayout(PtrVector<Widget>& widgets, AbstractTopLev
                     }
                     else
                     {
-                        Log::warn("LayoutManager::doCalculateLayout",
+                        logwarn("LayoutManager::doCalculateLayout",
                             "Alignment '%s' is unknown (widget '%s', in a vertical-row layout)",
                             align.c_str(), widgets[n].m_properties[PROP_ID].c_str());
                     }
@@ -661,7 +661,7 @@ void LayoutManager::doCalculateLayout(PtrVector<Widget>& widgets, AbstractTopLev
                     }
                     else
                     {
-                        Log::warn("LayoutManager::doCalculateLayout",
+                        logwarn("LayoutManager::doCalculateLayout",
                             "Alignment '%s' is unknown in widget '%s'",
                             align.c_str(), widgets[n].m_properties[PROP_ID].c_str());
                     }
@@ -707,7 +707,7 @@ void LayoutManager::doCalculateLayout(PtrVector<Widget>& widgets, AbstractTopLev
                     }
                     else
                     {
-                        Log::warn("LayoutManager::doCalculateLayout",
+                        logwarn("LayoutManager::doCalculateLayout",
                             "Alignment '%s' is unknown in widget '%s'",
                             align.c_str(), widgets[n].m_properties[PROP_ID].c_str());
                     }

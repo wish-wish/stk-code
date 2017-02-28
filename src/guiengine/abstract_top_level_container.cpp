@@ -72,14 +72,14 @@ void AbstractTopLevelContainer::addWidgetsRecursively(
                 widgets[n].getType() != WTYPE_ICON_BUTTON &&
                 widgets[n].getType() != WTYPE_SPACER)
             {
-                Log::warn("AbstractTopLevelContainer::addWidgetsRecursively",
+                logwarn("AbstractTopLevelContainer::addWidgetsRecursively",
                     "Widget %s of type %d has no dimensions",
                     widgets[n].m_properties[PROP_ID].c_str(), widgets[n].getType());
             }
 
             if (widgets[n].m_x == -1 || widgets[n].m_y == -1)
             {
-                Log::warn("AbstractTopLevelContainer::addWidgetsRecursively",
+                logwarn("AbstractTopLevelContainer::addWidgetsRecursively",
                     "Widget %s of type %d has no position",
                     widgets[n].m_properties[PROP_ID].c_str(), widgets[n].getType());
             }
@@ -195,7 +195,7 @@ Widget* AbstractTopLevelContainer::getWidget(const int id,
 
         if (widget.searchInsideMe() && widget.getChildren().size() > 0)
         {
-            //Log::info("AbstractTopLevelContainer", "widget = <%s> widget.m_children.size() = ",
+            //loginfo("AbstractTopLevelContainer", "widget = <%s> widget.m_children.size() = ",
             //    widget.m_properties[PROP_ID].c_str(), widget.m_children.size());
             Widget* el = getWidget(id, &(widget.m_children));
             if(el != NULL) return el;

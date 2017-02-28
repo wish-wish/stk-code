@@ -53,7 +53,7 @@ namespace Scripting
         else if (msg->type == asMSGTYPE_INFORMATION)
             type = "INFO";
 
-        Log::warn("Scripting", "%s (%d, %d) : %s : %s\n", msg->section, msg->row, msg->col, type, msg->message);
+        logwarn("Scripting", "%s (%d, %d) : %s : %s\n", msg->section, msg->row, msg->col, type, msg->message);
     }
 
 
@@ -64,7 +64,7 @@ namespace Scripting
         m_engine = asCreateScriptEngine(ANGELSCRIPT_VERSION);
         if (m_engine == NULL)
         {
-            Log::fatal("Scripting", "Failed to create script engine.");
+            logfatal("Scripting", "Failed to create script engine.");
         }
 
         // The script compiler will write any compiler messages to the callback.
@@ -96,7 +96,7 @@ namespace Scripting
         FILE *f = fopen(script_path.c_str(), "rb");
         if (f == NULL)
         {
-            Log::debug("Scripting", "File does not exist : %s", script_path.c_str());
+            logdebug("Scripting", "File does not exist : %s", script_path.c_str());
             return "";
         }
 
@@ -112,7 +112,7 @@ namespace Scripting
         fclose(f);
         if (c != 1)
         {
-            Log::error("Scripting", "Failed to load script file.");
+            logerror("Scripting", "Failed to load script file.");
             return "";
         }
         return script;
@@ -130,14 +130,14 @@ namespace Scripting
         int r = mod->CompileFunction("eval", script_fragment.c_str(), 0, 0, &func);
         if (r < 0)
         {
-            Log::error("Scripting", "evalScript: CompileFunction() failed");
+            logerror("Scripting", "evalScript: CompileFunction() failed");
             return;
         }
 
         asIScriptContext *ctx = m_engine->CreateContext();
         if (ctx == NULL)
         {
-            Log::error("Scripting", "evalScript: Failed to create the context.");
+            logerror("Scripting", "evalScript: Failed to create the context.");
             //m_engine->Release();
             return;
         }
@@ -145,7 +145,7 @@ namespace Scripting
         r = ctx->Prepare(func);
         if (r < 0)
         {
-            Log::error("Scripting", "evalScript: Failed to prepare the context.");
+            logerror("Scripting", "evalScript: Failed to prepare the context.");
             ctx->Release();
             return;
         }
@@ -157,15 +157,15 @@ namespace Scripting
             // The execution didn't finish as we had planned. Determine why.
             if (r == asEXECUTION_ABORTED)
             {
-                Log::error("Scripting", "The script was aborted before it could finish. Probably it timed out.");
+                logerror("Scripting", "The script was aborted before it could finish. Probably it timed out.");
             }
             else if (r == asEXECUTION_EXCEPTION)
             {
-                Log::error("Scripting", "The script ended with an exception.");
+                logerror("Scripting", "The script ended with an exception.");
             }
             else
             {
-                Log::error("Scripting", "The script ended for some unforeseen reason (%i)", r);
+                logerror("Scripting", "The script ended for some unforeseen reason (%i)", r);
             }
         }
 
@@ -180,7 +180,7 @@ namespace Scripting
         asIScriptContext *ctx = m_engine->CreateContext();
         if (ctx == NULL)
         {
-            Log::error("Scripting", "runMethod: Failed to create the context.");
+            logerror("Scripting", "runMethod: Failed to create the context.");
             //m_engine->Release();
             return;
         }
@@ -188,7 +188,7 @@ namespace Scripting
         int r = ctx->Prepare(delegate);
         if (r < 0)
         {
-            Log::error("Scripting", "runMethod: Failed to prepare the context.");
+            logerror("Scripting", "runMethod: Failed to prepare the context.");
             ctx->Release();
             return;
         }
@@ -200,17 +200,17 @@ namespace Scripting
             // The execution didn't finish as we had planned. Determine why.
             if (r == asEXECUTION_ABORTED)
             {
-                Log::error("Scripting", "The script was aborted before it could finish. Probably it timed out.");
+                logerror("Scripting", "The script was aborted before it could finish. Probably it timed out.");
             }
             else if (r == asEXECUTION_EXCEPTION)
             {
-                Log::error("Scripting", "The script ended with an exception : (line %i) %s",
+                logerror("Scripting", "The script ended with an exception : (line %i) %s",
                     ctx->GetExceptionLineNumber(), 
                     ctx->GetExceptionString());
             }
             else
             {
-                Log::error("Scripting", "The script ended for some unforeseen reason (%i)", r);
+                logerror("Scripting", "The script ended for some unforeseen reason (%i)", r);
             }
         }
 
@@ -225,13 +225,13 @@ namespace Scripting
         asIObjectType* type = obj->GetObjectType();
         asIScriptFunction* method = type->GetMethodByName(methodName.c_str());
         if (method == NULL)
-            Log::error("Scripting", ("runMethod: object does not implement method " + methodName).c_str());
+            logerror("Scripting", ("runMethod: object does not implement method " + methodName).c_str());
 
 
         asIScriptContext *ctx = m_engine->CreateContext();
         if (ctx == NULL)
         {
-            Log::error("Scripting", "runMethod: Failed to create the context.");
+            logerror("Scripting", "runMethod: Failed to create the context.");
             //m_engine->Release();
             return;
         }
@@ -239,7 +239,7 @@ namespace Scripting
         int r = ctx->Prepare(method);
         if (r < 0)
         {
-            Log::error("Scripting", "runMethod: Failed to prepare the context.");
+            logerror("Scripting", "runMethod: Failed to prepare the context.");
             ctx->Release();
             return;
         }
@@ -251,15 +251,15 @@ namespace Scripting
             // The execution didn't finish as we had planned. Determine why.
             if (r == asEXECUTION_ABORTED)
             {
-                Log::error("Scripting", "The script was aborted before it could finish. Probably it timed out.");
+                logerror("Scripting", "The script was aborted before it could finish. Probably it timed out.");
             }
             else if (r == asEXECUTION_EXCEPTION)
             {
-                Log::error("Scripting", "The script ended with an exception.");
+                logerror("Scripting", "The script ended with an exception.");
             }
             else
             {
-                Log::error("Scripting", "The script ended for some unforeseen reason (%i)", r);
+                logerror("Scripting", "The script ended for some unforeseen reason (%i)", r);
             }
         }
 
@@ -313,9 +313,9 @@ namespace Scripting
             if (module == NULL)
             {
                 if (warn_if_not_found)
-                    Log::warn("Scripting", "Scripting function was not found : %s (module not found)", function_name.c_str());
+                    logwarn("Scripting", "Scripting function was not found : %s (module not found)", function_name.c_str());
                 else
-                    Log::debug("Scripting", "Scripting function was not found : %s (module not found)", function_name.c_str());
+                    logdebug("Scripting", "Scripting function was not found : %s (module not found)", function_name.c_str());
                 m_functions_cache[function_name] = NULL; // remember that this function is unavailable
                 return;
             }
@@ -325,9 +325,9 @@ namespace Scripting
             if (func == NULL)
             {
                 if (warn_if_not_found)
-                    Log::warn("Scripting", "Scripting function was not found : %s", function_name.c_str());
+                    logwarn("Scripting", "Scripting function was not found : %s", function_name.c_str());
                 else
-                    Log::debug("Scripting", "Scripting function was not found : %s", function_name.c_str());
+                    logdebug("Scripting", "Scripting function was not found : %s", function_name.c_str());
                 m_functions_cache[function_name] = NULL; // remember that this function is unavailable
                 return;
             }
@@ -344,7 +344,7 @@ namespace Scripting
         if (func == NULL)
         {
             if (warn_if_not_found)
-                Log::warn("Scripting", "Scripting function was not found : %s", function_name.c_str());
+                logwarn("Scripting", "Scripting function was not found : %s", function_name.c_str());
             return; // function unavailable
         }
 
@@ -352,7 +352,7 @@ namespace Scripting
         asIScriptContext *ctx = m_engine->CreateContext();
         if (ctx == NULL)
         {
-            Log::error("Scripting", "Failed to create the context.");
+            logerror("Scripting", "Failed to create the context.");
             //m_engine->Release();
             return;
         }
@@ -365,7 +365,7 @@ namespace Scripting
         r = ctx->Prepare(func);
         if (r < 0)
         {
-            Log::error("Scripting", "Failed to prepare the context.");
+            logerror("Scripting", "Failed to prepare the context.");
             ctx->Release();
             //m_engine->Release();
             return;
@@ -385,11 +385,11 @@ namespace Scripting
             // The execution didn't finish as we had planned. Determine why.
             if (r == asEXECUTION_ABORTED)
             {
-                Log::error("Scripting", "The script was aborted before it could finish. Probably it timed out.");
+                logerror("Scripting", "The script was aborted before it could finish. Probably it timed out.");
             }
             else if (r == asEXECUTION_EXCEPTION)
             {
-                Log::error("Scripting", "The script ended with an exception.");
+                logerror("Scripting", "The script ended with an exception.");
 
                 // Write some information about the script exception
                 //asIScriptFunction *func = ctx->GetExceptionFunction();
@@ -401,7 +401,7 @@ namespace Scripting
             }
             else
             {
-                Log::error("Scripting", "The script ended for some unforeseen reason (%i)", r);
+                logerror("Scripting", "The script ended for some unforeseen reason (%i)", r);
             }
         }
         else
@@ -483,7 +483,7 @@ namespace Scripting
         r = mod->AddScriptSection("script", &script[0], script.size());
         if (r < 0)
         {
-            Log::error("Scripting", "AddScriptSection() failed");
+            logerror("Scripting", "AddScriptSection() failed");
             return false;
         }
     
@@ -504,7 +504,7 @@ namespace Scripting
         r = mod->Build();
         if (r < 0)
         {
-            Log::error("Scripting", "Build() failed");
+            logerror("Scripting", "Build() failed");
             return false;
         }
 

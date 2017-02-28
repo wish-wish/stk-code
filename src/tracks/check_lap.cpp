@@ -75,7 +75,7 @@ bool CheckLap::isTriggered(const Vec3 &old_pos, const Vec3 &new_pos,
 
     if (UserConfigParams::m_check_debug && result)
     {
-        Log::info("CheckLap", "Kart %s crossed start line from %f to %f.",
+        loginfo("CheckLap", "Kart %s crossed start line from %f to %f.",
             World::getWorld()->getKart(kart_index)->getIdent().c_str(),
             m_previous_distance[kart_index], current_distance);
     }

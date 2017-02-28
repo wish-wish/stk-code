@@ -156,7 +156,7 @@ namespace Online
         m_curl_session = curl_easy_init();
         if (!m_curl_session)
         {
-            Log::error("HTTPRequest::prepareOperation",
+            logerror("HTTPRequest::prepareOperation",
                        "LibCurl session not initialized.");
             return;
         }
@@ -182,9 +182,9 @@ namespace Online
                        file_manager->getAsset("addons.supertuxkart.net.pem").c_str());
             if (error != CURLE_OK)
             {
-                Log::error("HTTPRequest", "Error setting CAINFO to '%s'",
+                logerror("HTTPRequest", "Error setting CAINFO to '%s'",
                       file_manager->getAsset("addons.supertuxkart.net.pem").c_str());
-                Log::error("HTTPRequest", "Error %d: '%s'.", error,
+                logerror("HTTPRequest", "Error %d: '%s'.", error,
                            curl_easy_strerror(error));
             }
             curl_easy_setopt(m_curl_session, CURLOPT_SSL_VERIFYPEER, 1L);
@@ -211,7 +211,7 @@ namespace Online
 
             if (!fout)
             {
-                Log::error("HTTPRequest",
+                logerror("HTTPRequest",
                            "Can't open '%s' for writing, ignored.",
                            (m_filename+".part").c_str());
                 return;
@@ -235,7 +235,7 @@ namespace Online
 
         if (m_parameters.size() == 0)
         {
-            Log::info("HTTPRequest", "Downloading %s", m_url.c_str());
+            loginfo("HTTPRequest", "Downloading %s", m_url.c_str());
         }
         else if (Log::getLogLevel() <= Log::LL_INFO)
         {
@@ -263,7 +263,7 @@ namespace Online
                 j++;
             }   // while dont_print[j].size()>0
 
-            Log::info("HTTPRequest", "Sending %s to %s", param.c_str(), m_url.c_str());
+            loginfo("HTTPRequest", "Sending %s to %s", param.c_str(), m_url.c_str());
         } // end log http request
 
         curl_easy_setopt(m_curl_session, CURLOPT_POSTFIELDS, m_parameters.c_str());
@@ -290,14 +290,14 @@ namespace Online
             if (m_curl_code == CURLE_OK)
             {
                 if(UserConfigParams::logAddons())
-                    Log::info("HTTPRequest", "Download successful.");
+                    loginfo("HTTPRequest", "Download successful.");
 
                 // The behaviour of rename is unspecified if the target
                 // file should already exist - so remove it.
                 bool ok = file_manager->removeFile(m_filename);
                 if (!ok)
                 {
-                    Log::error("addons",
+                    logerror("addons",
                                "Could not removed existing addons.xml file.");
                     m_curl_code = CURLE_WRITE_ERROR;
                 }
@@ -307,7 +307,7 @@ namespace Online
                 // In case of an error, set the status to indicate this
                 if (ret != 0)
                 {
-                    Log::error("addons",
+                    logerror("addons",
                                "Could not rename downloaded addons.xml file!");
                     m_curl_code = CURLE_WRITE_ERROR;
                 }

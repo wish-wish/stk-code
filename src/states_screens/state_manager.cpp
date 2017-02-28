@@ -70,7 +70,7 @@ StateManager::ActivePlayer* StateManager::getActivePlayer(const int id)
     }
     else
     {
-        Log::error("StateManager", "getActivePlayer(): id %d out of bounds", id);
+        logerror("StateManager", "getActivePlayer(): id %d out of bounds", id);
         assert(false);
         return NULL;
     }

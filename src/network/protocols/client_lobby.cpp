@@ -233,7 +233,7 @@ bool ClientLobby::notifyEvent(Event* event)
     NetworkString &data = event->data();
     assert(data.size()); // assert that data isn't empty
     uint8_t message_type = data.getUInt8();
-    Log::info("ClientLobby", "Synchronous message of type %d",
+    loginfo("ClientLobby", "Synchronous message of type %d",
               message_type);
     switch(message_type)
     {
@@ -259,7 +259,7 @@ bool ClientLobby::notifyEventAsynchronous(Event* event)
         assert(data.size()); // assert that data isn't empty
         uint8_t message_type = data.getUInt8();
 
-        Log::info("ClientLobby", "Asynchronous message of type %d",
+        loginfo("ClientLobby", "Asynchronous message of type %d",
                   message_type);
         switch(message_type)
         {
@@ -339,7 +339,7 @@ void ClientLobby::update(float dt)
 
         Protocol *p = new LatencyProtocol();
         p->requestStart();
-        Log::info("LobbyProtocol", "LatencyProtocol started.");
+        loginfo("LobbyProtocol", "LatencyProtocol started.");
     }
     break;
     case SELECTING_KARTS:
@@ -381,13 +381,13 @@ void ClientLobby::newPlayer(Event* event)
     // FIXME need adjusting when splitscreen is used/
     if(STKHost::get()->getGameSetup()->isLocalMaster(player_id))
     {
-        Log::error("ClientLobby",
+        logerror("ClientLobby",
                    "The server notified me that I'm a new player in the "
                    "room (not normal).");
     }
     else if (m_game_setup->getProfile(player_id) == NULL)
     {
-        Log::verbose("ClientLobby", "New player connected.");
+        logverbose("ClientLobby", "New player connected.");
         NetworkPlayerProfile* profile = 
                       new NetworkPlayerProfile(name, player_id, host_id);
         m_game_setup->addPlayer(profile);
@@ -395,7 +395,7 @@ void ClientLobby::newPlayer(Event* event)
     }
     else
     {
-        Log::error("ClientLobby",
+        logerror("ClientLobby",
                    "One of the player notified in the list is myself.");
     }
 }   // newPlayer
@@ -423,13 +423,13 @@ void ClientLobby::disconnectedPlayer(Event* event)
                         m_game_setup->getProfile(data.getUInt8());
         if (m_game_setup->removePlayer(profile))
         {
-            Log::info("ClientLobby",
+            loginfo("ClientLobby",
                       "Player %d removed successfully.",
                       profile->getGlobalPlayerId());
         }
         else
         {
-            Log::error("ClientLobby",
+            logerror("ClientLobby",
                        "The disconnected peer wasn't known.");
         }
     }   // while
@@ -459,7 +459,7 @@ void ClientLobby::connectionAccepted(Event* event)
 
     // Accepted
     // ========
-    Log::info("ClientLobby",
+    loginfo("ClientLobby",
               "The server accepted the connection.");
 
     // self profile
@@ -529,17 +529,17 @@ void ClientLobby::connectionRefused(Event* event)
     switch (data.getUInt8()) // the second byte
     {
     case 0:
-        Log::info("ClientLobby",
+        loginfo("ClientLobby",
                   "Connection refused : too many players.");
         break;
     case 1:
-        Log::info("ClientLobby", "Connection refused : banned.");
+        loginfo("ClientLobby", "Connection refused : banned.");
         break;
     case 2:
-        Log::info("ClientLobby", "Client busy.");
+        loginfo("ClientLobby", "Client busy.");
         break;
     default:
-        Log::info("ClientLobby", "Connection refused.");
+        loginfo("ClientLobby", "Connection refused.");
         break;
     }
 }   // connectionRefused
@@ -565,15 +565,15 @@ void ClientLobby::kartSelectionRefused(Event* event)
     switch (data.getUInt8()) // the error code
     {
     case 0:
-        Log::info("ClientLobby",
+        loginfo("ClientLobby",
                   "Kart selection refused : already taken.");
         break;
     case 1:
-        Log::info("ClientLobby",
+        loginfo("ClientLobby",
                   "Kart selection refused : not available.");
         break;
     default:
-        Log::info("ClientLobby", "Kart selection refused.");
+        loginfo("ClientLobby", "Kart selection refused.");
         break;
     }
 }   // kartSelectionRefused
@@ -599,7 +599,7 @@ void ClientLobby::kartSelectionUpdate(Event* event)
     data.decodeString(&kart_name);
     if (!m_game_setup->isKartAvailable(kart_name))
     {
-        Log::error("ClientLobby",
+        logerror("ClientLobby",
                    "The updated kart is taken already.");
     }
     m_game_setup->setPlayerKart(player_id, kart_name);
@@ -620,7 +620,7 @@ void ClientLobby::startGame(Event* event)
     // Triggers the world finite state machine to go from WAIT_FOR_SERVER_PHASE
     // to READY_PHASE.
     World::getWorld()->setReadyToRace();
-    Log::info("ClientLobby", "Starting new game");
+    loginfo("ClientLobby", "Starting new game");
 }   // startGame
 
 //-----------------------------------------------------------------------------
@@ -647,7 +647,7 @@ void ClientLobby::startingRaceNow()
 void ClientLobby::startSelection(Event* event)
 {
     m_state = KART_SELECTION;
-    Log::info("ClientLobby", "Kart selection starts now");
+    loginfo("ClientLobby", "Kart selection starts now");
 }   // startSelection
 
 //-----------------------------------------------------------------------------
@@ -667,7 +667,7 @@ void ClientLobby::raceFinished(Event* event)
     if(!checkDataSize(event, 1)) return;
 
     NetworkString &data = event->data();
-    Log::error("ClientLobby",
+    logerror("ClientLobby",
                "Server notified that the race is finished.");
 
     // stop race protocols
@@ -676,7 +676,7 @@ void ClientLobby::raceFinished(Event* event)
     if (protocol)
         ProtocolManager::getInstance()->requestTerminate(protocol);
     else
-        Log::error("ClientLobby",
+        logerror("ClientLobby",
                    "No controller events protocol registered.");
 
     protocol = ProtocolManager::getInstance() 
@@ -684,7 +684,7 @@ void ClientLobby::raceFinished(Event* event)
     if (protocol)
         ProtocolManager::getInstance()->requestTerminate(protocol);
     else
-        Log::error("ClientLobby",
+        logerror("ClientLobby",
                    "No kart update protocol registered.");
 
     protocol = ProtocolManager::getInstance()
@@ -692,7 +692,7 @@ void ClientLobby::raceFinished(Event* event)
     if (protocol)
         ProtocolManager::getInstance()->requestTerminate(protocol);
     else
-        Log::error("ClientLobby",
+        logerror("ClientLobby",
                    "No game events protocol registered.");
 
     // finish the race
@@ -704,7 +704,7 @@ void ClientLobby::raceFinished(Event* event)
     {
         uint8_t kart_id = data.getUInt8();
         ranked_world->setKartPosition(kart_id,position);
-        Log::info("ClientLobby", "Kart %d has finished #%d",
+        loginfo("ClientLobby", "Kart %d has finished #%d",
                   kart_id, position);
         position++;
     }
@@ -868,7 +868,7 @@ void ClientLobby::finishedLoadingWorld()
     for (unsigned int i = 0; i < players.size(); i++)
     {
         ns->addUInt8(players[i]->getGlobalPlayerId());
-        Log::info("ClientLobby", 
+        loginfo("ClientLobby", 
                   "Player %d ready, notifying server.",
                   players[i]->getGlobalPlayerId());
     }   // for i < players.size()

@@ -114,7 +114,7 @@ void GamePadDevice::resetAxisDirection(const int axis,
     AbstractKart* pk = getPlayer()->getKart();
     if (!pk)
     {
-        Log::error("Binding", "Trying to reset axis for an unknown player.");
+        logerror("Binding", "Trying to reset axis for an unknown player.");
         return;
     }
 

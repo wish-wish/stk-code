@@ -80,7 +80,7 @@ bool ConnectToPeer::notifyEventAsynchronous(Event* event)
 {
     if (event->getType() == EVENT_TYPE_CONNECTED)
     {
-        Log::debug("ConnectToPeer", "Received event notifying peer connection.");
+        logdebug("ConnectToPeer", "Received event notifying peer connection.");
         m_state = CONNECTED; // we received a message, we are connected
     }
     return true;
@@ -113,7 +113,7 @@ void ConnectToPeer::asynchronousUpdate()
         {
             if (m_peer_address.getIP() == 0 || m_peer_address.getPort() == 0)
             {
-                Log::error("ConnectToPeer",
+                logerror("ConnectToPeer",
                     "The peer you want to connect to has hidden his address.");
                 m_state = DONE;
                 break;
@@ -158,7 +158,7 @@ void ConnectToPeer::asynchronousUpdate()
                 // Not much we can do about if we don't receive the client
                 // connection - it could have stopped, lost network, ...
                 // Terminate this protocol.
-                Log::error("ConnectToPeer", "Time out trying to connect to %s",
+                logerror("ConnectToPeer", "Time out trying to connect to %s",
                            m_peer_address.toString().c_str());
                 requestTerminate();
             }
@@ -180,13 +180,13 @@ void ConnectToPeer::asynchronousUpdate()
 
             BareNetworkString aloha(std::string("aloha_stk"));
             STKHost::get()->sendRawPacket(aloha, broadcast_address);
-            Log::info("ConnectToPeer", "Broadcast aloha sent.");
+            loginfo("ConnectToPeer", "Broadcast aloha sent.");
             StkTime::sleep(1);
 
             broadcast_address.setIP(0x7f000001); // 127.0.0.1 (localhost)
             broadcast_address.setPort(m_peer_address.getPort());
             STKHost::get()->sendRawPacket(aloha, broadcast_address);
-            Log::info("ConnectToPeer", "Broadcast aloha to self.");
+            loginfo("ConnectToPeer", "Broadcast aloha to self.");
             break;
         }
         case CONNECTING: // waiting for the peer to connect

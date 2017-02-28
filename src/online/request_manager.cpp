@@ -113,7 +113,7 @@ namespace Online
             delete m_thread_id.getData();
             m_thread_id.unlock();
             m_thread_id.setAtomic(0);
-            Log::error("HTTP Manager", "Could not create thread, error=%d.",
+            logerror("HTTP Manager", "Could not create thread, error=%d.",
                        errno);
         }
         pthread_attr_destroy(&attr);

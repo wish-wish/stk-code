@@ -111,7 +111,7 @@ void TrackManager::setUnavailableTracks(const std::vector<std::string> &tracks)
         if (std::find(tracks.begin(), tracks.end(), id)==tracks.end())
         {
             m_track_avail[i-m_tracks.begin()] = false;
-            Log::warn("TrackManager", "Track '%s' not available on all clients, disabled.",
+            logwarn("TrackManager", "Track '%s' not available on all clients, disabled.",
                       id.c_str());
         }   // if id not in tracks
     }   // for all available tracks in track manager
@@ -186,7 +186,7 @@ bool TrackManager::loadTrack(const std::string& dirname)
     }
     catch (std::exception& e)
     {
-        Log::error("TrackManager", "Cannot load track <%s> : %s\n",
+        logerror("TrackManager", "Cannot load track <%s> : %s\n",
                 dirname.c_str(), e.what());
         return false;
     }
@@ -194,7 +194,7 @@ bool TrackManager::loadTrack(const std::string& dirname)
     if (track->getVersion()<stk_config->m_min_track_version ||
         track->getVersion()>stk_config->m_max_track_version)
     {
-        Log::warn("TrackManager", "Track '%s' is not supported "
+        logwarn("TrackManager", "Track '%s' is not supported "
                         "by this binary, ignored. (Track is version %i, this "
                         "executable supports from %i to %i).",
                   track->getIdent().c_str(), track->getVersion(),
@@ -224,14 +224,14 @@ void TrackManager::removeTrack(const std::string &ident)
 {
     Track *track = getTrack(ident);
     if (track == NULL)
-        Log::fatal("TrackManager", "There is no track named '%s'!!", ident.c_str());
+        logfatal("TrackManager", "There is no track named '%s'!!", ident.c_str());
 
     if (track->isInternal()) return;
 
     std::vector<Track*>::iterator it = std::find(m_tracks.begin(),
                                                  m_tracks.end(), track);
     if (it == m_tracks.end())
-        Log::fatal("TrackManager", "Cannot find track '%s' in map!!", ident.c_str());
+        logfatal("TrackManager", "Cannot find track '%s' in map!!", ident.c_str());
 
     int index = it - m_tracks.begin();
 

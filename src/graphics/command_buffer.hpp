@@ -280,7 +280,7 @@ public:
 #ifdef DEBUG
             if (mesh->VAOType != T::VertexType)
             {
-                Log::error("CommandBuffer", "Wrong instanced vertex format (hint : %s)", 
+                logerror("CommandBuffer", "Wrong instanced vertex format (hint : %s)", 
                     mesh->textures[0]->getName().getPath().c_str());
                 continue;
             }

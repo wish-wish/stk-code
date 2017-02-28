@@ -107,19 +107,19 @@ void RequestConnection::asynchronousUpdate()
             {
                 if (rec_success == "yes")
                 {
-                    Log::debug("RequestConnection",
+                    logdebug("RequestConnection",
                                "Connection Request made successfully.");
                 }
                 else
                 {
-                    Log::error("RequestConnection",
+                    logerror("RequestConnection",
                              "Fail to make a request to connecto to server %d",
                                m_server_id);
                 }
             }
             else
             {
-                Log::error("RequestConnection", "Fail to make a request.");
+                logerror("RequestConnection", "Fail to make a request.");
             }
             m_state = DONE;
 

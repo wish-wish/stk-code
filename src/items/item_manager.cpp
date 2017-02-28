@@ -100,7 +100,7 @@ void ItemManager::loadDefaultItemMeshes()
         scene::IMesh *mesh = irr_driver->getAnimatedMesh(model_filename);
         if(!node || model_filename.size()==0 || !mesh)
         {
-            Log::fatal("[ItemManager]", "Item model '%s' in items.xml could not be loaded "
+            logfatal("[ItemManager]", "Item model '%s' in items.xml could not be loaded "
                         "- aborting", name.c_str());
             exit(-1);
         }
@@ -500,7 +500,7 @@ bool ItemManager::randomItemsForArena(const AlignedArray<btTransform>& pos)
     const unsigned int MIN_DIST = int(sqrt(ALL_NODES));
     const unsigned int TOTAL_ITEM = MIN_DIST / 2;
 
-    Log::info("[ItemManager]","Creating %d random items for arena", TOTAL_ITEM);
+    loginfo("[ItemManager]","Creating %d random items for arena", TOTAL_ITEM);
     for (unsigned int i = 0; i < TOTAL_ITEM; i++)
     {
         int chosen_node = -1;
@@ -509,7 +509,7 @@ bool ItemManager::randomItemsForArena(const AlignedArray<btTransform>& pos)
             if (used_location.size() - pos.size() +
                 invalid_location.size() == ALL_NODES)
             {
-                Log::warn("[ItemManager]","Can't place more random items! "
+                logwarn("[ItemManager]","Can't place more random items! "
                     "Use default item location.");
                 return false;
             }
@@ -586,7 +586,7 @@ bool ItemManager::randomItemsForArena(const AlignedArray<btTransform>& pos)
         }
         else
         {
-            Log::warn("[ItemManager]","Raycast to surface failed"
+            logwarn("[ItemManager]","Raycast to surface failed"
                       "from node %d", used_location[i]);
             newItem(type, an->getCenter(), quad_normal);
         }

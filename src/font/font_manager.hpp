@@ -77,7 +77,7 @@ public:
         {
             return out;
         }
-        Log::fatal("FontManager", "Can't get a font!");
+        logfatal("FontManager", "Can't get a font!");
         return out;
     }
     // ------------------------------------------------------------------------
@@ -89,8 +89,7 @@ public:
     {
         if (err > 0)
         {
-            Log::error("FontManager", "Something wrong when %s! The error "
-                "code was %d.", desc.c_str(), err);
+            logerror("FontManager", "Something wrong when %s! The error code was %d.", desc.c_str(), err);
         }
     }
     // ------------------------------------------------------------------------

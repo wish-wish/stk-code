@@ -135,7 +135,7 @@ DictionaryManager::get_dictionary(const Language& language)
 
           if (!po_language)
           {
-              Log::warn("tinygettext", "%s: warning: ignoring, unknown language",
+              logwarn("tinygettext", "%s: warning: ignoring, unknown language",
                          filename->c_str());
           }
           else
@@ -159,7 +159,7 @@ DictionaryManager::get_dictionary(const Language& language)
           std::unique_ptr<std::istream> in = filesystem->open_file(pofile);
           if (!in.get())
           {
-              Log::error("tinygettext", "error: failure opening: '%s'.",
+              logerror("tinygettext", "error: failure opening: '%s'.",
                          pofile.c_str());
           }
           else
@@ -169,8 +169,8 @@ DictionaryManager::get_dictionary(const Language& language)
         }
         catch(std::exception& e)
         {
-          Log::error("tinygettext", "error: failure parsing: '%s'.", pofile.c_str());
-          Log::error("tinygettext", "%s", e.what());
+          logerror("tinygettext", "error: failure parsing: '%s'.", pofile.c_str());
+          logerror("tinygettext", "%s", e.what());
         }
       }
     }

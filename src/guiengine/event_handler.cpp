@@ -184,7 +184,7 @@ bool EventHandler::OnEvent (const SEvent &event)
         }
         else if (cmd == APP_CMD_LOW_MEMORY)
         {
-            Log::warn("EventHandler", "Low memory event received");
+            logwarn("EventHandler", "Low memory event received");
         }
 
         return false;
@@ -227,7 +227,7 @@ bool EventHandler::OnEvent (const SEvent &event)
 
         if (UserConfigParams::m_keyboard_debug)
         {
-            Log::verbose("keyboard", "char %d key %d ctrl %d down %d shift %d",
+            logverbose("keyboard", "char %d key %d ctrl %d down %d shift %d",
                 event.KeyInput.Char, event.KeyInput.Key,
                 event.KeyInput.Control, event.KeyInput.PressedDown, 
                 event.KeyInput.Shift);
@@ -259,7 +259,7 @@ bool EventHandler::OnEvent (const SEvent &event)
             // mode ignore this error message, but leave it in for debugging.
             if(std::string(event.LogEvent.Text)=="Unsupported texture format")
 #ifdef DEBUG
-                Log::info("EventHandler", "The following message will not be printed in release mode");
+                loginfo("EventHandler", "The following message will not be printed in release mode");
 #else
             return true; // EVENT_BLOCK
 #endif
@@ -267,14 +267,14 @@ bool EventHandler::OnEvent (const SEvent &event)
             if (event.LogEvent.Level == irr::ELL_WARNING)
             {
                 if(error_info.size()>0)
-                    Log::warn("EventHandler", error_info.c_str());
-                Log::warn("Irrlicht", event.LogEvent.Text);
+                    logwarn("EventHandler", error_info.c_str());
+                logwarn("Irrlicht", event.LogEvent.Text);
             }
             else if (event.LogEvent.Level == irr::ELL_ERROR)
             {
                 if(error_info.size()>0)
-                    Log::error("EventHandler", error_info.c_str());
-                Log::error("Irrlicht", event.LogEvent.Text);
+                    logerror("EventHandler", error_info.c_str());
+                logerror("Irrlicht", event.LogEvent.Text);
             }
         }
         return true;
@@ -474,7 +474,7 @@ void EventHandler::navigate(const int playerID, Input::InputType type, const boo
 
         if (el == NULL)
         {
-            Log::warn("EventHandler::navigate", "m_tab_down/up_root is set to an ID for which I can't find the widget");
+            logwarn("EventHandler::navigate", "m_tab_down/up_root is set to an ID for which I can't find the widget");
             return;
         }
     }
@@ -522,7 +522,7 @@ void EventHandler::navigate(const int playerID, Input::InputType type, const boo
 
                 if (NAVIGATION_DEBUG)
                 {
-                    Log::info("EventHandler", "Navigating %s to %d", (reverse ? "up" : "down"), closest->getID());
+                    loginfo("EventHandler", "Navigating %s to %d", (reverse ? "up" : "down"), closest->getID());
                 }
 
                 assert(closestWidget != NULL);
@@ -548,7 +548,7 @@ void EventHandler::navigate(const int playerID, Input::InputType type, const boo
     if (!found)
     {
         if (NAVIGATION_DEBUG)
-            Log::info( "EventHandler::navigate", "Wrap around");
+            loginfo( "EventHandler::navigate", "Wrap around");
 
         // select the last/first widget
         Widget* wrapWidget = NULL;
@@ -625,7 +625,7 @@ EventPropagation EventHandler::onWidgetActivated(GUIEngine::Widget* w, const int
         if (w->m_event_handler == NULL) return EVENT_LET;
     }
 
-    //Log::info("EventHandler", "Widget activated: %s", w->m_properties[PROP_ID].c_str());
+    //loginfo("EventHandler", "Widget activated: %s", w->m_properties[PROP_ID].c_str());
 
     if (w->m_event_handler != NULL)
     {

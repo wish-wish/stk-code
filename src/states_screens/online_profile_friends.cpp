@@ -200,7 +200,7 @@ void OnlineProfileFriends::displayResults()
         // guaranteed to be persistent, so they might not be found in cache.
         if (!friend_profile)
         {
-            Log::warn("OnlineProfileFriends",
+            logwarn("OnlineProfileFriends",
                       "Profile for %d not found - ignored.", friends[i]);
             continue;
         }

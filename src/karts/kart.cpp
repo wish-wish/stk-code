@@ -208,7 +208,7 @@ void Kart::init(RaceManager::KartType type)
 
     if(!m_engine_sound)
     {
-        Log::error("Kart","Could not allocate a sfx object for the kart. Further errors may ensue!");
+        logerror("Kart","Could not allocate a sfx object for the kart. Further errors may ensue!");
     }
 
 
@@ -971,7 +971,7 @@ void Kart::setRaceResult()
         m_race_result = true;
     }
     else
-        Log::warn("Kart", "Unknown game mode given.");
+        logwarn("Kart", "Unknown game mode given.");
 
 }   // setRaceResult
 
@@ -1239,7 +1239,7 @@ void Kart::update(float dt)
 
 #undef DEBUG_CAMERA_SHAKE
 #ifdef DEBUG_CAMERA_SHAKE
-    Log::verbose("camera", "%s t %f %f xyz %f %f %f v %f %f %f d3 %f d2 %f",
+    logverbose("camera", "%s t %f %f xyz %f %f %f v %f %f %f d3 %f d2 %f",
         getIdent().c_str(),
         World::getWorld()->getTime(), dt,
         getXYZ().getX(), getXYZ().getY(), getXYZ().getZ(),
@@ -1253,7 +1253,7 @@ void Kart::update(float dt)
 #ifdef DEBUG_TO_COMPARE_KART_PHYSICS
     // This information is useful when comparing kart physics, e.g. to
     // see top speed, acceleration (i.e. time to top speed) etc.
-    Log::verbose("physics", "%s t %f %f xyz %f %f %f v %f %f %f sk %f %d %f %f %f st %f %f",
+    logverbose("physics", "%s t %f %f xyz %f %f %f v %f %f %f sk %f %d %f %f %f st %f %f",
         getIdent().c_str(),
         World::getWorld()->getTime(), dt,
         getXYZ().getX(), getXYZ().getY(), getXYZ().getZ(),
@@ -1472,7 +1472,7 @@ void Kart::update(float dt)
 #ifdef DEBUG
             if(UserConfigParams::m_material_debug)
             {
-                Log::info("Kart","%s\tfraction %f\ttime %f.",
+                loginfo("Kart","%s\tfraction %f\ttime %f.",
                        material->getTexFname().c_str(),
                        material->getMaxSpeedFraction(),
                        material->getSlowDownTime()       );
@@ -1998,7 +1998,7 @@ void Kart::crashed(const Material *m, const Vec3 &normal)
         // Add a counter to make it easier to see if a new line of
         // output was added.
         static int counter=0;
-        Log::info("Kart","Kart %s hit track: %d material %s.",
+        loginfo("Kart","Kart %s hit track: %d material %s.",
                getIdent().c_str(), counter++,
                m ? m->getTexFname().c_str() : "None");
     }
@@ -2086,7 +2086,7 @@ void Kart::crashed(const Material *m, const Vec3 &normal)
             }
             else
             {
-                Log::error("Kart","Unknown particles kind <%s> in material "
+                logerror("Kart","Unknown particles kind <%s> in material "
                                 "crash-reset properties\n", particles.c_str());
             }
         }
@@ -2287,7 +2287,7 @@ void Kart::updatePhysics(float dt)
 
     updateEngineSFX();
 #ifdef XX
-    Log::info("Kart","angVel %f %f %f heading %f suspension %f %f %f %f"
+    loginfo("Kart","angVel %f %f %f heading %f suspension %f %f %f %f"
        ,m_body->getAngularVelocity().getX()
        ,m_body->getAngularVelocity().getY()
        ,m_body->getAngularVelocity().getZ()

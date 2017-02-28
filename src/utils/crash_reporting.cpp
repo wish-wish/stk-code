@@ -151,7 +151,7 @@
             HINSTANCE hImageHlpDll = LoadLibraryA("imagehlp.dll");
             if(!hImageHlpDll)
             {
-                Log::warn("CrashReporting", "Failed to load DLL imagehlp.dll");
+                logwarn("CrashReporting", "Failed to load DLL imagehlp.dll");
                 callstack = "Crash reporting failed to load DLL imagehlp.dll";
                 return;
             }
@@ -160,7 +160,7 @@
 #define GET_FUNC_PTR(FuncName)  \
     t##FuncName _##FuncName = (t##FuncName)GetProcAddress(hImageHlpDll, #FuncName); \
     if(!_##FuncName) {    \
-    Log::warn("CrashReporting", "Failed to import symbol " #FuncName " from imagehlp.dll"); \
+    logwarn("CrashReporting", "Failed to import symbol " #FuncName " from imagehlp.dll"); \
             FreeLibrary(hImageHlpDll);  \
             return; \
     }
@@ -187,7 +187,7 @@
                 GetModuleFileNameA(NULL, filepath, sizeof(filepath));
                 if(!filepath)
                 {
-                    Log::warn("CrashReporting", "GetModuleFileNameA failed");
+                    logwarn("CrashReporting", "GetModuleFileNameA failed");
                     FreeLibrary(hImageHlpDll);
                     return;
                 }
@@ -208,7 +208,7 @@
                     BOOL    bOk = _SymInitialize(hProcess, filepath ? filepath : NULL, TRUE);
                     if (!bOk)
                     {
-                        Log::warn("CrashReporting", "SymInitialize() failed");
+                        logwarn("CrashReporting", "SymInitialize() failed");
                         FreeLibrary(hImageHlpDll);
                         return;
                     }
@@ -400,12 +400,12 @@
         {
             if (m_stk_bfd == NULL)
             {
-                Log::warn("CrashReporting", "Failed loading or missing BFD of "
+                logwarn("CrashReporting", "Failed loading or missing BFD of "
                           "STK binary, no backtrace available when reporting");
                 exit(0);
             }
 
-            Log::error("CrashReporting", "STK has crashed! Backtrace info:");
+            logerror("CrashReporting", "STK has crashed! Backtrace info:");
             std::string stack;
             getCallStack(stack);
 
@@ -413,7 +413,7 @@
             for (unsigned int i = 3; i < each.size(); i++)
             {
                 // Skip 3 stacks which are crash_reporting doing
-                Log::error("CrashReporting", "%s", each[i].c_str());
+                logerror("CrashReporting", "%s", each[i].c_str());
             }
             exit(0);
         }

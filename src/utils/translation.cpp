@@ -197,7 +197,7 @@ Translations::Translations() //: m_dictionary_manager("UTF-16")
         std::unique_ptr<std::istream> in(new std::ifstream(file_name.c_str()));
         if (!in.get())
         {
-            Log::error("translation", "error: failure opening: '%s'.",
+            logerror("translation", "error: failure opening: '%s'.",
                 file_name.c_str());
         }
         else
@@ -218,8 +218,8 @@ Translations::Translations() //: m_dictionary_manager("UTF-16")
     }
     catch(std::exception& e)
     {
-        Log::error("translation", "error: failure extract localized name.");
-        Log::error("translation", "%s", e.what());
+        logerror("translation", "error: failure extract localized name.");
+        logerror("translation", "%s", e.what());
     }
 
     // LC_ALL does not work, sscanf will then not always be able
@@ -256,16 +256,16 @@ Translations::Translations() //: m_dictionary_manager("UTF-16")
 
     /*
     const std::set<Language>& languages = m_dictionary_manager.get_languages();
-    Log::info("Translatings", "Number of languages: %d", languages.size());
+    loginfo("Translatings", "Number of languages: %d", languages.size());
     for (std::set<Language>::const_iterator i = languages.begin();
                                             i != languages.end(); ++i)
     {
         const Language& language = *i;
-        Log::info("Translatings", "Env:       %s", language.str());
-        Log::info("Translatings", "Name:      %s", language.get_name());
-        Log::info("Translatings", "Language:  %s", language.get_language());
-        Log::info("Translatings", "Country:   %s", language.get_country());
-        Log::info("Translatings", "Modifier:  %s", language.get_modifier());
+        loginfo("Translatings", "Env:       %s", language.str());
+        loginfo("Translatings", "Name:      %s", language.get_name());
+        loginfo("Translatings", "Language:  %s", language.get_language());
+        loginfo("Translatings", "Country:   %s", language.get_country());
+        loginfo("Translatings", "Modifier:  %s", language.get_modifier());
     }
     */
 
@@ -290,14 +290,14 @@ Translations::Translations() //: m_dictionary_manager("UTF-16")
             char c[1024];
             GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_SISO639LANGNAME,
                            c, 1024);
-            Log::verbose("translation", "GetLocaleInfo langname returns '%s'.",
+            logverbose("translation", "GetLocaleInfo langname returns '%s'.",
                          c);
             if(c[0])
             {
                 language = c;
                 GetLocaleInfoA(LOCALE_USER_DEFAULT, LOCALE_SISO3166CTRYNAME,
                                c, 1024);
-                Log::verbose("translation",
+                logverbose("translation",
                              "GetLocaleInfo tryname returns '%s'.", c);
                 if(c[0]) language += std::string("_")+c;
             }   // if c[0]
@@ -308,7 +308,7 @@ Translations::Translations() //: m_dictionary_manager("UTF-16")
 
     if (language != "")
     {
-        Log::verbose("translation", "Env var LANGUAGE = '%s'.",
+        logverbose("translation", "Env var LANGUAGE = '%s'.",
                      language.c_str());
 
         if (language.find(":") != std::string::npos)
@@ -321,7 +321,7 @@ Translations::Translations() //: m_dictionary_manager("UTF-16")
                 l = Language::from_env(langs[curr]);
                 if (l)
                 {
-                    Log::verbose("translation", "Language '%s'.",
+                    logverbose("translation", "Language '%s'.",
                                  l.get_name().c_str());
                     m_dictionary = m_dictionary_manager.get_dictionary(l);
                     break;
@@ -341,7 +341,7 @@ Translations::Translations() //: m_dictionary_manager("UTF-16")
             const Language& tgtLang = Language::from_env(language);
             if (!tgtLang)
             {
-                Log::warn("Translation", "Unsupported langage '%s'", language.c_str());
+                logwarn("Translation", "Unsupported langage '%s'", language.c_str());
                 UserConfigParams::m_language = "system";
                 m_current_language_name = "Default language";
                 m_current_language_name_code = "en";
@@ -351,7 +351,7 @@ Translations::Translations() //: m_dictionary_manager("UTF-16")
             {
                 m_current_language_name = tgtLang.get_name();
                 m_current_language_name_code = tgtLang.get_language();
-                Log::verbose("translation", "Language '%s'.", m_current_language_name.c_str());
+                logverbose("translation", "Language '%s'.", m_current_language_name.c_str());
                 m_dictionary = m_dictionary_manager.get_dictionary(tgtLang);
             }
         }
@@ -491,7 +491,7 @@ const wchar_t* Translations::w_gettext(const char* original, const char* context
     if (original[0] == '\0') return L"";
 
 #if TRANSLATE_VERBOSE
-    Log::info("Translations", "Translating %s", original);
+    loginfo("Translations", "Translating %s", original);
 #endif
 
     const std::string& original_t = (context == NULL ?
@@ -621,7 +621,7 @@ core::stringw Translations::fribidizeLine(const core::stringw &str)
     if (!result)
     {
         delete[] fribidiOutput;
-        Log::error("Translations::fribidize", "Fribidi failed in 'fribidi_log2vis' =(");
+        logerror("Translations::fribidize", "Fribidi failed in 'fribidi_log2vis' =(");
         return core::stringw(str);
     }
 

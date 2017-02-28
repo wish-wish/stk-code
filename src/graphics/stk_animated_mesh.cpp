@@ -94,7 +94,7 @@ void STKAnimatedMesh::updateNoGL()
         Box = m->getBoundingBox();
     else
     {
-        Log::error("animated mesh", "Animated Mesh returned no mesh to render.");
+        logerror("animated mesh", "Animated Mesh returned no mesh to render.");
         return;
     }
 
@@ -174,7 +174,7 @@ void STKAnimatedMesh::updateNoGL()
             if (!isObject(type))
             {
 #ifdef DEBUG
-                Log::warn("material", "Unhandled (animated) material type : %d", type);
+                logwarn("material", "Unhandled (animated) material type : %d", type);
 #endif
                 continue;
             }

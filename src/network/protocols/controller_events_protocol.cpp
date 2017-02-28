@@ -58,7 +58,7 @@ bool ControllerEventsProtocol::notifyEventAsynchronous(Event* event)
         uint8_t kart_id = data.getUInt8();
         if (kart_id >=World::getWorld()->getNumKarts())
         {
-            Log::warn("ControllerEventProtocol", "No valid kart id (%s).",
+            logwarn("ControllerEventProtocol", "No valid kart id (%s).",
                       kart_id);
             continue;
         }
@@ -67,7 +67,7 @@ bool ControllerEventsProtocol::notifyEventAsynchronous(Event* event)
         uint8_t serialized_3   = data.getUInt8();
         PlayerAction action    = (PlayerAction)(data.getUInt8());
         int action_value       = data.getUInt32();
-        Log::info("ControllerEventsProtocol", "KartID %d action %d value %d",
+        loginfo("ControllerEventsProtocol", "KartID %d action %d value %d",
                   kart_id, action, action_value);
         Controller *controller = World::getWorld()->getKart(kart_id)
                                                   ->getController();
@@ -83,7 +83,7 @@ bool ControllerEventsProtocol::notifyEventAsynchronous(Event* event)
     }
     if (data.size() > 0 )
     {
-        Log::warn("ControllerEventProtocol",
+        logwarn("ControllerEventProtocol",
                   "The data seems corrupted. Remains %d", data.size());
     }
     if (NetworkConfig::get()->isServer())
@@ -132,5 +132,5 @@ void ControllerEventsProtocol::controllerAction(Controller* controller,
     sendToServer(ns, false); // send message to server
     delete ns;
 
-    Log::info("ControllerEventsProtocol", "Action %d value %d", action, value);
+    loginfo("ControllerEventsProtocol", "Action %d value %d", action, value);
 }   // controllerAction

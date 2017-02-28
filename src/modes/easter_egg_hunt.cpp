@@ -42,7 +42,7 @@ void EasterEggHunt::init()
     // check for possible problems if AI karts were incorrectly added
     if(getNumKarts() > race_manager->getNumPlayers())
     {
-        Log::error("EasterEggHunt]", "No AI exists for this game mode");
+        logerror("EasterEggHunt]", "No AI exists for this game mode");
         exit(1);
     }
 
@@ -70,7 +70,7 @@ void EasterEggHunt::readData(const std::string &filename)
 
     if(easter->getName()!="EasterEggHunt")
     {
-        Log::error("[EasterEggHunt]", "Can't load easter egg file '%s' - no EasterEggHunt element.",
+        logerror("[EasterEggHunt]", "Can't load easter egg file '%s' - no EasterEggHunt element.",
                 filename.c_str());
         delete easter;
         return;
@@ -121,7 +121,7 @@ void EasterEggHunt::readData(const std::string &filename)
         const XMLNode *egg = data->getNode(i);
         if(egg->getName()!="easter-egg")
         {
-            Log::warn("[EasterEggHunt]", "Unknown node '%s' in easter egg level '%s' - ignored.",
+            logwarn("[EasterEggHunt]", "Unknown node '%s' in easter egg level '%s' - ignored.",
                    egg->getName().c_str(),
                    race_manager->getDifficultyAsString(act_difficulty).c_str());
             continue;

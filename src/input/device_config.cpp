@@ -49,7 +49,7 @@ DeviceConfig* DeviceConfig::create(const XMLNode *config)
     }
     else
     {
-        Log::error("DeviceConfig", "Incorrect type: '%s'.", 
+        logerror("DeviceConfig", "Incorrect type: '%s'.", 
                    config->getName().c_str());
         return NULL;
     }
@@ -313,7 +313,7 @@ bool DeviceConfig::load(const XMLNode *config)
         const XMLNode *action = config->getNode(i);
         if(action->getName()!="action")
         {
-            Log::warn("DeviceConfig", "Invalid configuration '%s' - ignored.");
+            logwarn("DeviceConfig", "Invalid configuration '%s' - ignored.");
             continue;
         }
         std::string name;
@@ -329,7 +329,7 @@ bool DeviceConfig::load(const XMLNode *config)
         }
         if (binding_id == -1)
         {
-            Log::warn("DeviceConfig",
+            logwarn("DeviceConfig",
                       "DeviceConfig::deserializeAction : action '%s' is unknown.",
                       name.c_str());
             error=true;
@@ -338,7 +338,7 @@ bool DeviceConfig::load(const XMLNode *config)
 
         if(!m_bindings[binding_id].load(action))
         {
-            Log::error("Device manager",
+            logerror("Device manager",
                        "Ignoring an ill-formed keyboard action in input config.");
             error=true;
         }

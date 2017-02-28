@@ -37,6 +37,10 @@
 #include <imm.h>
 #pragma comment(lib, "imm32.lib")
 
+#ifdef _UNICODE
+
+#endif
+
 namespace irr
 {
 	namespace video
@@ -403,7 +407,7 @@ void setJoystickName(int index, const JOYCAPS &caps, SJoystickInfo *joystick)
 
     /* find the size for the OEM name text */
     regsize = sizeof(regvalue);
-    regresult = RegQueryValueExA(hKey, REGSTR_VAL_JOYOEMNAME, 0, 0,
+    regresult = RegQueryValueEx(hKey, REGSTR_VAL_JOYOEMNAME, 0, 0,
                                  NULL, &regsize);
     if (regresult == ERROR_SUCCESS)
     {
@@ -413,7 +417,7 @@ void setJoystickName(int index, const JOYCAPS &caps, SJoystickInfo *joystick)
         if (name)
         {
             /* ... and read it from the registry */
-            regresult = RegQueryValueExA(hKey, REGSTR_VAL_JOYOEMNAME, 0, 0,
+            regresult = RegQueryValueEx(hKey, REGSTR_VAL_JOYOEMNAME, 0, 0,
                                          (LPBYTE)name, &regsize            );
             joystick->Name = name;
             joystick->HasGenericName = false;
@@ -1123,9 +1127,8 @@ CIrrDeviceWin32::CIrrDeviceWin32(const SIrrlichtCreationParameters& params)
 		}
 
 		// create window
-
 		HWnd = CreateWindow( ClassName, __TEXT(""), style, windowLeft, windowTop,
-					realWidth, realHeight, NULL, NULL, hInstance, NULL);
+			realWidth, realHeight, NULL, NULL, hInstance, NULL);
 		CreationParams.WindowId = HWnd;
 //		CreationParams.WindowSize.Width = realWidth;
 //		CreationParams.WindowSize.Height = realHeight;

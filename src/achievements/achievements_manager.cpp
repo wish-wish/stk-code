@@ -50,7 +50,7 @@ AchievementsManager::AchievementsManager()
         m_achievements_info[achievement_info->getID()] = achievement_info;
     }
     if (num_nodes != m_achievements_info.size())
-        Log::error("AchievementsManager",
+        logerror("AchievementsManager",
                    "Multiple achievements with the same id!");
 
     delete root;

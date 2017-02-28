@@ -300,10 +300,10 @@ namespace Online
         // and otherwise mark the player logged out internally.
         if (!success)
         {
-            Log::warn("OnlinePlayerProfile::signOut",
+            logwarn("OnlinePlayerProfile::signOut",
                       "There were some connection issues while logging out. "
                       "Report a bug if this caused issues.");
-            Log::warn("OnlinePlayerProfile::signOut", core::stringc(info.c_str()).c_str());
+            logwarn("OnlinePlayerProfile::signOut", core::stringc(info.c_str()).c_str());
             if (user_screen)
                 user_screen->logoutError(info);
         }
@@ -344,7 +344,7 @@ namespace Online
         // connection error
         if (!isSuccess())
         {
-            Log::error("Online Player Profile", "Poll request failed");
+            logerror("Online Player Profile", "Poll request failed");
             return;
         }
 

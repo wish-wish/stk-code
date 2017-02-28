@@ -297,7 +297,7 @@ void World::reset()
     if(!history->replayHistory()) history->initRecording();
     if(race_manager->isRecordingRace())
     {
-        Log::info("World", "Start Recording race.");
+        loginfo("World", "Start Recording race.");
         ReplayRecorder::get()->init();
     }
     if((NetworkConfig::get()->isServer() && !ProfileWorld::isNoGraphics()) ||
@@ -420,7 +420,7 @@ Controller* World::loadAIController(AbstractKart *kart)
             controller = new SoccerAI(kart);
             break;
         default:
-            Log::warn("[World]", "Unknown AI, using default.");
+            logwarn("[World]", "Unknown AI, using default.");
             controller = new SkiddingAI(kart);
             break;
     }
@@ -700,13 +700,13 @@ void World::resetAllKarts()
 
         if (!kart_over_ground)
         {
-            Log::error("World",
+            logerror("World",
                        "No valid starting position for kart %d on track %s.",
                        (int)(i - m_karts.begin()),
                        Track::getCurrentTrack()->getIdent().c_str());
             if (UserConfigParams::m_artist_debug_mode)
             {
-                Log::warn("World", "Activating fly mode.");
+                logwarn("World", "Activating fly mode.");
                 (*i)->flyUp();
                 continue;
             }
@@ -904,7 +904,7 @@ void World::updateWorld(float dt)
 
                 if (!kart_properties_manager->getKart(UserConfigParams::m_default_kart))
                 {
-                    Log::warn("[World]",
+                    logwarn("[World]",
                               "Cannot find kart '%s', will revert to default.",
                               UserConfigParams::m_default_kart.c_str());
                     UserConfigParams::m_default_kart.revertToDefaults();
@@ -1113,10 +1113,10 @@ void World::updateHighscores(int* best_highscore_rank)
             // the kart location data is wrong
 
 #ifdef DEBUG
-            Log::error("[World]", "Incorrect kart positions:");
+            logerror("[World]", "Incorrect kart positions:");
             for (unsigned int i=0; i<m_karts.size(); i++ )
             {
-                Log::error("[World]", "i=%d position %d.",i,
+                logerror("[World]", "i=%d position %d.",i,
                            m_karts[i]->getPosition());
             }
 #endif

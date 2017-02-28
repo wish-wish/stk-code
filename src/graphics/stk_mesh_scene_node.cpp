@@ -199,7 +199,7 @@ void STKMeshSceneNode::updateNoGL()
             if (!isObject(type))
             {
 #ifdef DEBUG
-                Log::warn("material", "Unhandled (static) material type : %d", type);
+                logwarn("material", "Unhandled (static) material type : %d", type);
 #endif
                 continue;
             }

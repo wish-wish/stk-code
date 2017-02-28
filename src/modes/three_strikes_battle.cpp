@@ -578,9 +578,9 @@ void ThreeStrikesBattle::enterRaceOverState()
     if (UserConfigParams::m_arena_ai_stats)
     {
         float runtime = (irr_driver->getRealTime()-m_start_time)*0.001f;
-        Log::verbose("Battle AI profiling", "Number of frames: %d, Average FPS: %f",
+        logverbose("Battle AI profiling", "Number of frames: %d, Average FPS: %f",
             m_frame_count, (float)m_frame_count/runtime);
-        Log::verbose("Battle AI profiling", "Total rescue: %d , hits %d in %f seconds",
+        logverbose("Battle AI profiling", "Total rescue: %d , hits %d in %f seconds",
             m_total_rescue, m_total_hit, runtime);
         delete this;
         main_loop->abort();
@@ -742,7 +742,7 @@ void ThreeStrikesBattle::loadCustomModels()
             }
             unsigned int sta_num = race_manager->getNumSpareTireKarts();
             assert(m_spare_tire_karts.size() == sta_num);
-            Log::info("ThreeStrikesBattle","%d spare tire kart(s) created.",
+            loginfo("ThreeStrikesBattle","%d spare tire kart(s) created.",
                 sta_num);
         }
     }

@@ -43,7 +43,7 @@ AbstractKart::AbstractKart(const std::string& ident,
     const KartProperties* kp = kart_properties_manager->getKart(ident);
     if (kp == NULL)
     {
-        Log::warn("Abstract_Kart", "Unknown kart %s, fallback to tux",
+        logwarn("Abstract_Kart", "Unknown kart %s, fallback to tux",
             ident.c_str());
         kp = kart_properties_manager->getKart(std::string("tux"));
     }
@@ -120,13 +120,13 @@ void AbstractKart::setKartAnimation(AbstractKartAnimation *ka)
 #ifdef DEBUG
     if( ( (ka!=NULL) ^ (m_kart_animation!=NULL) ) ==0)
     {
-        if(ka) Log::debug("Abstract_Kart", "Setting kart animation to '%s'.",
+        if(ka) logdebug("Abstract_Kart", "Setting kart animation to '%s'.",
                           ka->getName().c_str());
-        else   Log::debug("Abstract_Kart", "Setting kart animation to NULL.");
-        if(m_kart_animation) Log::info("Abstract_Kart", "Current kart"
+        else   logdebug("Abstract_Kart", "Setting kart animation to NULL.");
+        if(m_kart_animation) loginfo("Abstract_Kart", "Current kart"
                                        "animation is '%s'.",
                                         m_kart_animation->getName().c_str());
-        else   Log::debug("Abstract_Kart", "Current kart animation is NULL.");
+        else   logdebug("Abstract_Kart", "Current kart animation is NULL.");
     }
 #endif
     // Make sure that the either the current animation is NULL and a new (!=0)

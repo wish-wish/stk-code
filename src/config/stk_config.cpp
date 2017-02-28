@@ -90,8 +90,8 @@ void STKConfig::load(const std::string &filename)
 
     catch(std::exception& err)
     {
-        Log::error("StkConfig", "FATAL ERROR while reading '%s':", filename.c_str());
-        Log::fatal("StkConfig", "    %s", err.what());
+        logerror("StkConfig", "FATAL ERROR while reading '%s':", filename.c_str());
+        logfatal("StkConfig", "    %s", err.what());
     }
     delete root;
 
@@ -99,22 +99,22 @@ void STKConfig::load(const std::string &filename)
     // -----------------------------------------------
 
 #define CHECK_NEG(  a,strA) if(a<=UNDEFINED) {                   \
-        Log::fatal("StkConfig", "Missing default value for '%s' in '%s'.",    \
+        logfatal("StkConfig", "Missing default value for '%s' in '%s'.",    \
                    strA,filename.c_str());              \
     }
 
     if(m_score_increase.size()==0)
     {
-        Log::fatal("StkConfig", "Not or not enough scores defined in stk_config");
+        logfatal("StkConfig", "Not or not enough scores defined in stk_config");
     }
     if(m_leader_intervals.size()==0)
     {
-        Log::fatal("StkConfig", "No follow leader interval(s) defined in stk_config");
+        logfatal("StkConfig", "No follow leader interval(s) defined in stk_config");
     }
 
     if(m_switch_items.size()!=Item::ITEM_LAST-Item::ITEM_FIRST+1)
     {
-        Log::fatal("StkConfig", "Wrong number of item switches defined in stk_config");
+        logfatal("StkConfig", "Wrong number of item switches defined in stk_config");
     }
 
     CHECK_NEG(m_max_karts,                 "<karts max=..."             );
@@ -218,15 +218,15 @@ void STKConfig::getAllData(const XMLNode * root)
             pn->get("points", &points);
             if(points<0)
             {
-                Log::error("StkConfig", "Incorrect GP point specification:");
-                Log::fatal("StkConfig", "points: %d",
+                logerror("StkConfig", "Incorrect GP point specification:");
+                logfatal("StkConfig", "points: %d",
                         points);
             }
             m_score_increase.push_back(points);
         }
         if (m_max_karts > int(gp_node->getNumNodes()))
         {
-            Log::error("StkConfig", "Not enough grand-prix ranking nodes:");
+            logerror("StkConfig", "Not enough grand-prix ranking nodes:");
             m_score_increase.resize(m_max_karts, 0);
         }
     }
@@ -276,7 +276,7 @@ void STKConfig::getAllData(const XMLNode * root)
         title_music = file_manager->getAsset(FileManager::MUSIC, title_music);
         m_title_music = MusicInformation::create(title_music);
         if(!m_title_music)
-            Log::error("StkConfig", "Cannot load title music : %s", title_music.c_str());
+            logerror("StkConfig", "Cannot load title music : %s", title_music.c_str());
     }
 
     if(const XMLNode *skidmarks_node = root->getNode("skid-marks"))
@@ -313,7 +313,7 @@ void STKConfig::getAllData(const XMLNode * root)
             m_same_powerup_mode = POWERUP_MODE_ONLY_IF_SAME;
         else
         {
-            Log::warn("StkConfig", "Invalid item mode '%s' - ignored.",
+            logwarn("StkConfig", "Invalid item mode '%s' - ignored.",
                     s.c_str());
         }
     }

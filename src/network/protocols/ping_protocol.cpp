@@ -53,6 +53,6 @@ void PingProtocol::asynchronousUpdate()
         BareNetworkString data;
         data.addUInt8(0);
         STKHost::get()->sendRawPacket(data, m_ping_dst);
-        Log::info("PingProtocol", "Ping message sent");
+        loginfo("PingProtocol", "Ping message sent");
     }
 }   // asynchronousUpdate

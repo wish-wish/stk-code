@@ -72,13 +72,13 @@ void NetworkKartSelectionScreen::init()
     GameSetup* setup = STKHost::get()->getGameSetup();
     if (!setup)
     {
-        Log::error("NetworkKartSelectionScreen",
+        logerror("NetworkKartSelectionScreen",
                    "No network game setup registered.");
         return;
     }
     std::vector<NetworkPlayerProfile*> players = setup->getPlayers();
 
-    Log::info("NKSS", "There are %d players", players.size());
+    loginfo("NKSS", "There are %d players", players.size());
     // ---- Get available area for karts
     // make a copy of the area, ands move it to be outside the screen
     Widget* kartsAreaWidget = getWidget("playerskarts");
@@ -157,7 +157,7 @@ void NetworkKartSelectionScreen::playerSelected(uint8_t player_id,
     int widget_id = -1;
     for (unsigned int i = 0; i < m_id_mapping.size(); i++)
     {
-        Log::info("NKSS", "Checking race id %d : mapped of %d is %d",
+        loginfo("NKSS", "Checking race id %d : mapped of %d is %d",
                    player_id, i, m_id_mapping[i]);
         if (m_id_mapping[i] == player_id)
             widget_id = i;

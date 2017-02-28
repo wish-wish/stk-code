@@ -212,10 +212,10 @@ void Highscores::getEntry(int number, std::string &kart_name,
 {
     if(number<0 || number>getNumberEntries())
     {
-        Log::warn("Highscores", "Accessing undefined highscore entry:");
-        Log::warn("Highscores", "Number %d, but %d entries are defined.", number,
+        logwarn("Highscores", "Accessing undefined highscore entry:");
+        logwarn("Highscores", "Number %d, but %d entries are defined.", number,
                   getNumberEntries());
-        Log::warn("Highscores", "This error can be ignored, but no highscores are available.");
+        logwarn("Highscores", "This error can be ignored, but no highscores are available.");
         return;
     }
     kart_name = m_kart_name[number];

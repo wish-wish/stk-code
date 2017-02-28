@@ -81,7 +81,7 @@ ConnectToServer::~ConnectToServer()
  */
 void ConnectToServer::setup()
 {
-    Log::info("ConnectToServer", "SETUP");
+    loginfo("ConnectToServer", "SETUP");
     m_current_protocol = NULL;
     // In case of LAN we already have the server's and our ip address,
     // so we can immediately start requesting a connection.
@@ -105,7 +105,7 @@ void ConnectToServer::asynchronousUpdate()
     {
         case NONE:
         {
-            Log::info("ConnectToServer", "Protocol starting");
+            loginfo("ConnectToServer", "Protocol starting");
             // This protocol will write the public address of this
             // instance to STKHost.
             m_current_protocol = new GetPublicAddress(this);
@@ -141,13 +141,13 @@ void ConnectToServer::asynchronousUpdate()
             assert(!m_quick_join);
             delete m_current_protocol;
             m_current_protocol = NULL;
-            Log::info("ConnectToServer", "Server's address known");
+            loginfo("ConnectToServer", "Server's address known");
 
             // we're in the same lan (same public ip address) !!
             if (m_server_address.getIP() ==
                 NetworkConfig::get()->getMyAddress().getIP())
             {
-                Log::info("ConnectToServer",
+                loginfo("ConnectToServer",
                     "Server appears to be in the same LAN.");
             }
             m_state = REQUESTING_CONNECTION;
@@ -163,13 +163,13 @@ void ConnectToServer::asynchronousUpdate()
                 delete m_current_protocol;
                 m_current_protocol = NULL;
                 // Server knows we want to connect
-                Log::info("ConnectToServer", "Connection request made");
+                loginfo("ConnectToServer", "Connection request made");
                 if (m_server_address.getIP() == 0 ||
                     m_server_address.getPort() == 0  )
                 { 
                     // server data not correct, hide address and stop
                     m_state = HIDING_ADDRESS;
-                    Log::error("ConnectToServer", "Server address is %s",
+                    logerror("ConnectToServer", "Server address is %s",
                                m_server_address.toString().c_str());
                     m_current_protocol = new HidePublicAddress();
                     m_current_protocol->requestStart();
@@ -199,14 +199,14 @@ void ConnectToServer::asynchronousUpdate()
                 {
                     STKHost::get()->connect(m_server_address);
                     timer = StkTime::getRealTime();
-                    Log::info("ConnectToServer", "Trying to connect to %s",
+                    loginfo("ConnectToServer", "Trying to connect to %s",
                               m_server_address.toString().c_str());
                 }
                 break;
             }
         case CONNECTED:
         {
-            Log::info("ConnectToServer", "Connected");
+            loginfo("ConnectToServer", "Connected");
             if(m_current_protocol)
             {
                 // Kill the ping protocol because we're connected
@@ -232,7 +232,7 @@ void ConnectToServer::asynchronousUpdate()
                 {
                     delete m_current_protocol;
                     m_current_protocol = NULL;
-                    Log::info("ConnectToServer", "Address hidden");
+                    loginfo("ConnectToServer", "Address hidden");
                 }
                 m_state = DONE;
                 // lobby room protocol if we're connected only
@@ -267,7 +267,7 @@ void ConnectToServer::callback(Protocol *protocol)
             requestUnpause();
             break;
         default:
-            Log::error("ConnectToServer",
+            logerror("ConnectToServer",
                        "Received unexpected callback while in state %d.",
                        m_state);
     }   // case m_state
@@ -289,7 +289,7 @@ void ConnectToServer::registerWithSTKServer()
     request->addParameter("private_port",
                           NetworkConfig::get()->getClientPort());
 
-    Log::info("ConnectToServer", "Registering addr %s",
+    loginfo("ConnectToServer", "Registering addr %s",
               addr.toString().c_str());
 
     // This can be done blocking: till we are registered with the
@@ -302,11 +302,11 @@ void ConnectToServer::registerWithSTKServer()
     std::string success;
     if(result->get("success", &success) && success == "yes")
     {
-        Log::debug("ConnectToServer", "Address registered successfully.");
+        logdebug("ConnectToServer", "Address registered successfully.");
     }
     else
     {
-        Log::error("ConnectToServer", "Failed to register address.");
+        logerror("ConnectToServer", "Failed to register address.");
     }
     delete request;
 
@@ -344,11 +344,11 @@ void ConnectToServer::handleQuickConnect()
 
         m_server_address.setPort(port);
 
-        Log::debug("GetPeerAddress", "Address gotten successfully.");
+        logdebug("GetPeerAddress", "Address gotten successfully.");
     }
     else
     {
-        Log::error("GetPeerAddress", "Failed to get address.");
+        logerror("GetPeerAddress", "Failed to get address.");
     }
 }   // handleQuickConnect
 
@@ -363,7 +363,7 @@ void ConnectToServer::handleSameLAN()
     STKHost* host = STKHost::get();
     host->stopListening(); // stop the listening
 
-    Log::info("ConnectToServer", "Waiting broadcast message.");
+    loginfo("ConnectToServer", "Waiting broadcast message.");
 
     TransportAddress sender;
     // get the sender
@@ -372,7 +372,7 @@ void ConnectToServer::handleSameLAN()
     int len = host->receiveRawPacket(buffer, LEN, &sender, 2000);
     if(len<0)
     {
-        Log::warn("ConnectToServer",
+        logwarn("ConnectToServer",
                   "Received invalid server information message.");
         return;
     }
@@ -384,7 +384,7 @@ void ConnectToServer::handleSameLAN()
     std::string aloha("aloha_stk");
     if (received==aloha)
     {
-        Log::info("ConnectToServer", "LAN Server found : %s",
+        loginfo("ConnectToServer", "LAN Server found : %s",
                    sender.toString().c_str());
 #ifndef WIN32
         // just check if the ip is ours : if so, 
@@ -450,7 +450,7 @@ bool ConnectToServer::notifyEventAsynchronous(Event* event)
 {
     if (event->getType() == EVENT_TYPE_CONNECTED)
     {
-        Log::info("ConnectToServer", "The Connect To Server protocol has "
+        loginfo("ConnectToServer", "The Connect To Server protocol has "
             "received an event notifying that he's connected to the peer.");
         m_state = CONNECTED; // we received a message, we are connected
         Server *server = ServersManager::get()->getJoinedServer();

@@ -27,6 +27,11 @@
 #include <irrString.h>
 #include "utils/types.hpp"
 #include "utils/log.hpp"
+#include "path.h"
+
+#if defined(WIN32) && defined(UNICODE) && defined(_MSC_VER)
+//TODO:do sth for unicode
+#endif
 
 namespace StringUtils
 {
@@ -37,6 +42,7 @@ namespace StringUtils
 
     /** Return the filename part of a path */
     std::string getBasename(const std::string& filename);
+	irr::io::path getBasename(const irr::io::path& filename);
 
     /** Return the path ( i.e. up to the last / )  */
     std::string getPath(const std::string& filename);

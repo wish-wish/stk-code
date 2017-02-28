@@ -37,8 +37,8 @@ STKTexture* STKTexManager::findTextureInFileSystem(const std::string& filename,
     if (relative_path.empty())
     {
         if (!m_texture_error_message.empty())
-            Log::error("STKTexManager", "%s", m_texture_error_message.c_str());
-        Log::error("STKTexManager", "Failed to load %s.", filename.c_str());
+            logerror("STKTexManager", "%s", m_texture_error_message.c_str());
+        logerror("STKTexManager", "Failed to load %s.", filename.c_str());
         return NULL;
     }
     *full_path =
@@ -86,10 +86,10 @@ video::ITexture* STKTexManager::getTexture(const std::string& path, bool srgb,
             const char* name = new_texture->getName().getPtr();
             if (!m_texture_error_message.empty())
             {
-                Log::error("STKTexManager", "%s",
+                logerror("STKTexManager", "%s",
                     m_texture_error_message.c_str());
             }
-            Log::error("STKTexManager", "Texture %s not found or invalid.",
+            logerror("STKTexManager", "Texture %s not found or invalid.",
                 name);
             m_all_textures[name] = NULL;
             delete new_texture;
@@ -141,7 +141,7 @@ void STKTexManager::removeTexture(STKTexture* texture, bool remove_all)
     if (!remove_all) return;
     for (const std::string& s : undeleted_texture)
     {
-        Log::error("STKTexManager", "%s undeleted!", s.c_str());
+        logerror("STKTexManager", "%s undeleted!", s.c_str());
     }
 #endif
 }   // removeTexture
@@ -153,7 +153,7 @@ void STKTexManager::dumpAllTexture(bool mesh_texture)
     {
         if (!p.second || (mesh_texture && !p.second->isMeshTexture()))
             continue;
-        Log::info("STKTexManager", "%s size: %0.2fK", p.first.c_str(),
+        loginfo("STKTexManager", "%s size: %0.2fK", p.first.c_str(),
             float(p.second->getTextureSize()) / 1024);
     }
 }   // dumpAllTexture
@@ -168,7 +168,7 @@ int STKTexManager::dumpTextureUsage()
             continue;
         size += p.second->getTextureSize() / 1024 / 1024;
     }
-    Log::info("STKTexManager", "Total %dMB", size);
+    loginfo("STKTexManager", "Total %dMB", size);
     return size;
 }   // dumpAllTexture
 
@@ -204,7 +204,7 @@ core::stringw STKTexManager::reloadTexture(const irr::core::stringw& name)
             if (p.second == NULL || !p.second->isMeshTexture())
                 continue;
             p.second->reload();
-            Log::info("STKTexManager", "%s reloaded",
+            loginfo("STKTexManager", "%s reloaded",
                 p.second->getName().getPtr());
         }
         return L"All textures reloaded.";

@@ -38,7 +38,7 @@ void renderMeshes1stPass()
         if (mesh.VAOType != T::VertexType)
         {
 #ifdef DEBUG
-            Log::error("Materials", "Wrong vertex Type associed to pass 1 (hint texture : %s)", mesh.textures[0]->getName().getPath().c_str());
+            logerror("Materials", "Wrong vertex Type associed to pass 1 (hint texture : %s)", mesh.textures[0]->getName().getPath().c_str());
 #endif
             continue;
         }
@@ -69,8 +69,7 @@ void renderMeshes2ndPass( const std::vector<uint64_t> &Prefilled_Handle,
         if (mesh.VAOType != T::VertexType)
         {
 #ifdef DEBUG
-            Log::error("Materials", "Wrong vertex Type associed to pass 2 "
-                                    "(hint texture : %s)", 
+            logerror("Materials", "Wrong vertex Type associed to pass 2 (hint texture : %s)", 
                        mesh.textures[0]->getName().getPath().c_str());
 #endif
             continue;
@@ -108,8 +107,7 @@ void renderMeshes2ndPass<GrassMat, 4, 3, 1>
         if (mesh.VAOType != GrassMat::VertexType)
         {
 #ifdef DEBUG
-            Log::error("Materials", "Wrong vertex Type associed to pass 2 "
-                                    "(hint texture : %s)",
+            logerror("Materials", "Wrong vertex Type associed to pass 2 (hint texture : %s)",
                        mesh.textures[0]->getName().getPath().c_str());
 #endif
             continue;

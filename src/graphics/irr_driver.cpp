@@ -243,7 +243,7 @@ Window get_toplevel_parent(Display* display, Window window)
          if (0 == XQueryTree(display, window, &root,
                    &parent, &children, &num_children))
          {
-             Log::fatal("irr_driver", "XQueryTree error\n");
+             logfatal("irr_driver", "XQueryTree error\n");
          }
          if (children) { //must test for null
              XFree(children);
@@ -289,7 +289,7 @@ void IrrDriver::updateConfigIfRelevant()
             // corresponding edge.
             if(x<0) x = 0;
             if(y<0) y = 0;
-            Log::verbose("irr_driver",
+            logverbose("irr_driver",
                        "Retrieved window location for config : %i %i\n", x, y);
 
             if (UserConfigParams::m_window_x != x || UserConfigParams::m_window_y != y)
@@ -300,7 +300,7 @@ void IrrDriver::updateConfigIfRelevant()
         }
         else
         {
-            Log::warn("irr_driver", "Could not retrieve window location\n");
+            logwarn("irr_driver", "Could not retrieve window location\n");
         }
 #elif defined(__linux__) && !defined(ANDROID)
         const video::SExposedVideoData& videoData =
@@ -311,7 +311,7 @@ void IrrDriver::updateConfigIfRelevant()
                                        videoData.OpenGLLinux.X11Window), &xwa);
         int wx = xwa.x;
         int wy = xwa.y;
-        Log::verbose("irr_driver",
+        logverbose("irr_driver",
                      "Retrieved window location for config : %i %i\n", wx, wy);
 
 
@@ -375,12 +375,10 @@ void IrrDriver::initDevice()
             // mode. So we use this to print a warning to the user.
             if(m_device->getDebugName())
             {
-                Log::warn("irr_driver",
-                          "!!!!! Performance warning: Irrlicht compiled with "
-                          "debug mode.!!!!!\n");
-                Log::warn("irr_driver",
-                          "!!!!! This can have a significant performance "
-                          "impact         !!!!!\n");
+                logwarn("irr_driver",
+                          "!!!!! Performance warning: Irrlicht compiled with debug mode.!!!!!\n");
+                logwarn("irr_driver",
+                          "!!!!! This can have a significant performance impact         !!!!!\n");
             }
 
         } // end if firstTime
@@ -390,13 +388,12 @@ void IrrDriver::initDevice()
 
         if (ssize.Width < 1 || ssize.Height < 1)
         {
-            Log::warn("irr_driver", "Unknown desktop resolution.");
+            logwarn("irr_driver", "Unknown desktop resolution.");
         }
         else if (UserConfigParams::m_width > (int)ssize.Width ||
                  UserConfigParams::m_height > (int)ssize.Height)
         {
-            Log::warn("irr_driver", "The window size specified in "
-                      "user config is larger than your screen!");
+            logwarn("irr_driver", "The window size specified in user config is larger than your screen!");
             UserConfigParams::m_width = (int)ssize.Width;
             UserConfigParams::m_height = (int)ssize.Height;
         }
@@ -415,16 +412,14 @@ void IrrDriver::initDevice()
             }
             else
             {
-                Log::warn("irr_driver", "Cannot get information about "
-                          "resolutions. Disable fullscreen.");
+                logwarn("irr_driver", "Cannot get information about resolutions. Disable fullscreen.");
                 UserConfigParams::m_fullscreen = false;
             }
         }
 
         if (UserConfigParams::m_width < 1 || UserConfigParams::m_height < 1)
         {
-            Log::warn("irr_driver", "Invalid window size. "
-                         "Try to use the default one.");
+            logwarn("irr_driver", "Invalid window size. Try to use the default one.");
             UserConfigParams::m_width = MIN_SUPPORTED_WIDTH;
             UserConfigParams::m_height = MIN_SUPPORTED_HEIGHT;
         }
@@ -452,7 +447,7 @@ void IrrDriver::initDevice()
         for (int bits=32; bits>15; bits -=8)
         {
             if(UserConfigParams::logMisc())
-                Log::verbose("irr_driver", "Trying to create device with "
+                logverbose("irr_driver", "Trying to create device with "
                              "%i bits\n", bits);
 
 #if defined(USE_GLES2)
@@ -491,7 +486,7 @@ void IrrDriver::initDevice()
                 params.AntiAlias = 8;
                 break;
             default:
-                Log::error("irr_driver",
+                logerror("irr_driver",
                            "[IrrDriver] WARNING: Invalid value for "
                            "anti-alias setting : %i\n",
                            (int)UserConfigParams::m_antialiasing);
@@ -526,15 +521,14 @@ void IrrDriver::initDevice()
                                     );
             if (m_device)
             {
-                Log::verbose("irr_driver", "An invalid resolution was set in "
-                             "the config file, reverting to saner values\n");
+                logverbose("irr_driver", "An invalid resolution was set in the config file, reverting to saner values\n");
             }
         }
     }
 
     if(!m_device)
     {
-        Log::fatal("irr_driver", "Couldn't initialise irrlicht device. Quitting.\n");
+        logfatal("irr_driver", "Couldn't initialise irrlicht device. Quitting.\n");
     }
 #ifndef SERVER_ONLY 
 
@@ -549,7 +543,7 @@ void IrrDriver::initDevice()
     if (!ProfileWorld::isNoGraphics() &&
         GraphicsRestrictions::isDisabled(GraphicsRestrictions::GR_FORCE_LEGACY_DEVICE))
     {
-        Log::warn("irr_driver", "Driver doesn't support shader-based pipeline. "
+        logwarn("irr_driver", "Driver doesn't support shader-based pipeline. "
                                 "Re-creating device to workaround the issue.");
 
         params.ForceLegacyDevice = true;
@@ -565,7 +559,7 @@ void IrrDriver::initDevice()
 #ifndef SERVER_ONLY
     else if (CVS->needsSRGBCapableVisualWorkaround())
     {
-        Log::warn("irr_driver", "Created visual is not sRGB-capable. "
+        logwarn("irr_driver", "Created visual is not sRGB-capable. "
                                 "Re-creating device to workaround the issue.");
 
         params.WithAlphaChannel = true;
@@ -583,7 +577,7 @@ void IrrDriver::initDevice()
 
         if(!m_device)
         {
-            Log::fatal("irr_driver", "Couldn't initialise irrlicht device. Quitting.\n");
+            logfatal("irr_driver", "Couldn't initialise irrlicht device. Quitting.\n");
         }
 
         CVS->init();
@@ -609,7 +603,7 @@ void IrrDriver::initDevice()
         (UserConfigParams::m_shadows_resolution < 512 ||
          UserConfigParams::m_shadows_resolution > 2048))
     {
-        Log::warn("irr_driver",
+        logwarn("irr_driver",
                "Invalid value for UserConfigParams::m_shadows_resolution : %i",
             (int)UserConfigParams::m_shadows_resolution);
         UserConfigParams::m_shadows_resolution = 0;
@@ -625,7 +619,7 @@ void IrrDriver::initDevice()
 #ifndef SERVER_ONLY
     if (CVS->isGLSL())
     {
-        Log::info("irr_driver", "GLSL supported.");
+        loginfo("irr_driver", "GLSL supported.");
     }
 
 /*    if (!supportGeometryShader())
@@ -647,8 +641,7 @@ void IrrDriver::initDevice()
     }
     else
     {
-        Log::warn("irr_driver", "Using the fixed pipeline (old GPU, or "
-                                "shaders disabled in options)");
+        logwarn("irr_driver", "Using the fixed pipeline (old GPU, or shaders disabled in options)");
     }
 #endif
 
@@ -834,7 +827,7 @@ bool IrrDriver::moveWindow(int x, int y)
     }
     else
     {
-        Log::warn("irr_driver", "Could not set window location\n");
+        logwarn("irr_driver", "Could not set window location\n");
         return false;
     }
 #elif defined(__linux__) && !defined(ANDROID)
@@ -1009,7 +1002,7 @@ void IrrDriver::cancelResChange()
 void IrrDriver::printRenderStats()
 {
     io::IAttributes * attr = m_scene_manager->getParameters();
-    Log::verbose("irr_driver",
+    logverbose("irr_driver",
            "[%ls], FPS:%3d Tri:%.03fm Cull %d/%d nodes (%d,%d,%d)\n",
            m_video_driver->getName(),
            m_video_driver->getFPS (),
@@ -1039,7 +1032,7 @@ scene::IAnimatedMesh *IrrDriver::getAnimatedMesh(const std::string &filename)
                                          /*ignoreCase*/false,
                                          /*ignorePath*/true, io::EFAT_ZIP))
         {
-            Log::error("irr_driver",
+            logerror("irr_driver",
                        "getMesh: Failed to open zip file <%s>\n",
                        filename.c_str());
             return NULL;
@@ -1076,7 +1069,7 @@ scene::IMesh *IrrDriver::getMesh(const std::string &filename)
     scene::IAnimatedMesh* am = getAnimatedMesh(filename);
     if (am == NULL)
     {
-        Log::error("irr_driver", "Cannot load mesh <%s>\n",
+        logerror("irr_driver", "Cannot load mesh <%s>\n",
                    filename.c_str());
         return NULL;
     }
@@ -1483,7 +1476,7 @@ scene::ISceneNode *IrrDriver::addSkyDome(video::ITexture *texture,
                                          float texture_percent,
                                          float sphere_percent)
 {
-    Log::error("skybox", "Using deprecated SkyDome");
+    logerror("skybox", "Using deprecated SkyDome");
     return m_scene_manager->addSkyDomeSceneNode(texture, hori_res, vert_res,
                                                 texture_percent,
                                                 sphere_percent);
@@ -1755,7 +1748,7 @@ void IrrDriver::doScreenShot()
     video::IImage* image = m_video_driver->createScreenShot();
     if(!image)
     {
-        Log::error("irr_driver", "Could not create screen shot.");
+        logerror("irr_driver", "Could not create screen shot.");
         return;
     }
 
@@ -1913,7 +1906,7 @@ bool IrrDriver::OnEvent(const irr::SEvent &event)
         // Ignore 'normal' messages
         if (event.LogEvent.Level > 1)
         {
-            Log::warn("[IrrDriver Temp Logger]", "Level %d: %s\n",
+            logwarn("[IrrDriver Temp Logger]", "Level %d: %s\n",
                    event.LogEvent.Level,event.LogEvent.Text);
         }
         return true;

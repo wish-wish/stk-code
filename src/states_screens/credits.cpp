@@ -85,7 +85,7 @@ bool CreditsScreen::getLineAsWide(std::ifstream& file, core::stringw* out)
 {
     if (!file.good())
     {
-        Log::error("CreditsScreen", "getLineAsWide: File is not good!");
+        logerror("CreditsScreen", "getLineAsWide: File is not good!");
         return false;
     }
 
@@ -122,7 +122,7 @@ void CreditsScreen::loadedFromFile()
 
     if (file.fail() || !file.is_open() || file.eof())
     {
-        Log::error("CreditsScreen", "Failed to open file at '%s'.",
+        logerror("CreditsScreen", "Failed to open file at '%s'.",
                    creditsfile.c_str());
         return;
     }
@@ -172,7 +172,7 @@ void CreditsScreen::loadedFromFile()
 
     if (lineCount == 0)
     {
-        Log::error("CreditsScreen", "Could not read anything from CREDITS file!");
+        logerror("CreditsScreen", "Could not read anything from CREDITS file!");
         return;
     }
 

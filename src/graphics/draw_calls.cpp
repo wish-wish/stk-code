@@ -263,8 +263,7 @@ void DrawCalls::handleSTKCommon(scene::ISceneNode *Node,
         if (skinning_offset + am->getTotalJoints() >
             SharedGPUObjects::getMaxMat4Size())
         {
-            Log::error("DrawCalls", "Don't have enough space to render skinned"
-                " mesh %s! Max joints can hold: %d",
+            logerror("DrawCalls", "Don't have enough space to render skinned mesh %s! Max joints can hold: %d",
                 am->getMeshDebugName().c_str(),
                 SharedGPUObjects::getMaxMat4Size());
             return;
@@ -385,7 +384,7 @@ void DrawCalls::handleSTKCommon(scene::ISceneNode *Node,
                     case Material::SHADERTYPE_WATER:
                         break;
                     default:
-                        Log::warn("DrawCalls", "Unknown material type: %d", Mat);
+                        logwarn("DrawCalls", "Unknown material type: %d", Mat);
                     }
                 }
             }
@@ -463,7 +462,7 @@ void DrawCalls::handleSTKCommon(scene::ISceneNode *Node,
                     case Material::SHADERTYPE_WATER:
                         break;
                     default:
-                        Log::warn("DrawCalls", "Unknown material type: %d", Mat);
+                        logwarn("DrawCalls", "Unknown material type: %d", Mat);
                     }
                 }
             }
@@ -539,7 +538,7 @@ void DrawCalls::handleSTKCommon(scene::ISceneNode *Node,
                     case Material::SHADERTYPE_WATER:
                         break;
                     default:
-                        Log::warn("DrawCalls", "Unknown material type: %d", Mat);
+                        logwarn("DrawCalls", "Unknown material type: %d", Mat);
                     }
                 }
             }

@@ -143,7 +143,7 @@ GLuint ShaderFilesManager::loadShader(const std::string &file, unsigned type)
                 std::size_t pos = line.find("\"");
                 if (pos == std::string::npos)
                 {
-                    Log::error("ShaderFilesManager", "Invalid #stk_include"
+                    logerror("ShaderFilesManager", "Invalid #stk_include"
                         " line: '%s'.", line.c_str());
                     continue;
                 }
@@ -154,7 +154,7 @@ GLuint ShaderFilesManager::loadShader(const std::string &file, unsigned type)
                 pos = filename.find("\"");
                 if (pos == std::string::npos)
                 {
-                    Log::error("ShaderFilesManager", "Invalid #stk_include"
+                    logerror("ShaderFilesManager", "Invalid #stk_include"
                         " line: '%s'.", line.c_str());
                     continue;
                 }
@@ -165,7 +165,7 @@ GLuint ShaderFilesManager::loadShader(const std::string &file, unsigned type)
                 std::ifstream include_stream(file_manager->getShader(filename), std::ios::in);
                 if (!include_stream.is_open())
                 {
-                    Log::error("ShaderFilesManager", "Couldn't open included"
+                    logerror("ShaderFilesManager", "Couldn't open included"
                         " shader: '%s'.", filename.c_str());
                     continue;
                 }
@@ -187,10 +187,10 @@ GLuint ShaderFilesManager::loadShader(const std::string &file, unsigned type)
     }
     else
     {
-        Log::error("ShaderFilesManager", "Can not open '%s'.", file.c_str());
+        logerror("ShaderFilesManager", "Can not open '%s'.", file.c_str());
     }
 
-    Log::info("ShaderFilesManager", "Compiling shader : %s", file.c_str());
+    loginfo("ShaderFilesManager", "Compiling shader : %s", file.c_str());
     const std::string &source  = code.str();
     char const *source_pointer = source.c_str();
     int len                    = source.size();
@@ -203,14 +203,14 @@ GLuint ShaderFilesManager::loadShader(const std::string &file, unsigned type)
     {
         // failed to compile
         int info_length;
-        Log::error("ShaderFilesManager", "Error in shader %s", file.c_str());
+        logerror("ShaderFilesManager", "Error in shader %s", file.c_str());
         glGetShaderiv(id, GL_INFO_LOG_LENGTH, &info_length);
         if (info_length < 0)
             info_length = 1024;
         char *error_message = new char[info_length];
         error_message[0] = 0;
         glGetShaderInfoLog(id, info_length, NULL, error_message);
-        Log::error("ShaderFilesManager", error_message);
+        logerror("ShaderFilesManager", error_message);
         delete[] error_message;
     }
     glGetError();

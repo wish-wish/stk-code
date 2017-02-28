@@ -597,7 +597,7 @@ void ParticleEmitter::setParticleType(const ParticleKind* type)
             }
             default:
             {
-                Log::error("ParticleEmitter", "Unknown shape");
+                logerror("ParticleEmitter", "Unknown shape");
                 return;
             }
         }

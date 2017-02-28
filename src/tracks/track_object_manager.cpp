@@ -56,7 +56,7 @@ void TrackObjectManager::add(const XMLNode &xml_node, scene::ISceneNode* parent,
     }
     catch (std::exception& e)
     {
-        Log::warn("TrackObjectManager", "Could not load track object. Reason : %s",
+        logwarn("TrackObjectManager", "Could not load track object. Reason : %s",
                   e.what());
     }
 }   // add
@@ -93,9 +93,9 @@ TrackObject* TrackObjectManager::getTrackObject(const std::string& libraryInstan
     for (TrackObject* curr : m_all_objects)
     {
         //if (curr->getParentLibrary() != NULL)
-        //    Log::info("TrackObjectManager", "Found %s::%s", curr->getParentLibrary()->getID().c_str(), curr->getID().c_str());
+        //    loginfo("TrackObjectManager", "Found %s::%s", curr->getParentLibrary()->getID().c_str(), curr->getID().c_str());
         //else
-        //    Log::info("TrackObjectManager", "Found ::%s", curr->getID().c_str());
+        //    loginfo("TrackObjectManager", "Found ::%s", curr->getID().c_str());
 
         if (curr->getParentLibrary() == NULL)
         {
@@ -114,7 +114,7 @@ TrackObject* TrackObjectManager::getTrackObject(const std::string& libraryInstan
         }
     }
     //object not found
-    Log::warn("TrackObjectManager", "Object not found : %s::%s", libraryInstance.c_str(), name.c_str());
+    logwarn("TrackObjectManager", "Object not found : %s::%s", libraryInstance.c_str(), name.c_str());
     return NULL;
 }
 /** Handles an explosion, i.e. it makes sure that all physical objects are

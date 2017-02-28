@@ -525,7 +525,7 @@ bool TrackObject::castRay(const btVector3 &from,
 {
     if(!m_physical_object)
     {
-        Log::warn("TrackObject", "Can't raycast on non-physical object.");
+        logwarn("TrackObject", "Can't raycast on non-physical object.");
         return false;
     }
     return m_physical_object->castRay(from, to, hit_point, material, normal,

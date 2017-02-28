@@ -173,7 +173,7 @@ GUIEngine::EventPropagation SelectChallengeDialog::processEvent(const std::strin
 
         if (challenge == NULL)
         {
-            Log::error("SelectChallenge", "Cannot find challenge <%s>\n",
+            logerror("SelectChallenge", "Cannot find challenge <%s>\n",
                        m_challenge_id.c_str());
             return GUIEngine::EVENT_LET;
         }
@@ -231,7 +231,7 @@ GUIEngine::EventPropagation SelectChallengeDialog::processEvent(const std::strin
         }
         else
         {
-            Log::error("SelectChallenge", "Unknown widget <%s>\n",
+            logerror("SelectChallenge", "Unknown widget <%s>\n",
                         eventSource.c_str());
             //assert(false);
             return GUIEngine::EVENT_LET;

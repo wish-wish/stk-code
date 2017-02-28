@@ -73,7 +73,7 @@ void HelpScreen1::eventCallback(Widget* widget, const std::string& name, const i
 
         if (kart_properties_manager->getKart(UserConfigParams::m_default_kart) == NULL)
         {
-            Log::warn("HelpScreen1", "Cannot find kart '%s', will revert to default",
+            logwarn("HelpScreen1", "Cannot find kart '%s', will revert to default",
                       UserConfigParams::m_default_kart.c_str());
             UserConfigParams::m_default_kart.revertToDefaults();
         }

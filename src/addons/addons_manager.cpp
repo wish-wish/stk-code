@@ -122,13 +122,13 @@ void AddonsManager::init(const XMLNode *xml,
     
     if (download)
     {
-        Log::info("addons", "Downloading updated addons.xml.");
+        loginfo("addons", "Downloading updated addons.xml.");
         Online::HTTPRequest *download_request = new Online::HTTPRequest("addons.xml");
         download_request->setURL(addon_list_url);
         download_request->executeNow();
         if(download_request->hadDownloadError())
         {
-            Log::error("addons", "Error on download addons.xml: %s.",
+            logerror("addons", "Error on download addons.xml: %s.",
                        download_request->getDownloadErrorMessage());
             delete download_request;
             return;
@@ -137,12 +137,12 @@ void AddonsManager::init(const XMLNode *xml,
         UserConfigParams::m_addons_last_updated=StkTime::getTimeSinceEpoch();
     }
     else
-        Log::info("addons", "Using cached addons.xml.");
+        loginfo("addons", "Using cached addons.xml.");
         
     const XMLNode *xml_addons = new XMLNode(filename);
     addons_manager->initAddons(xml_addons);   // will free xml_addons
     if(UserConfigParams::logAddons())
-        Log::info("addons", "Addons manager list downloaded.");
+        loginfo("addons", "Addons manager list downloaded.");
 }   // init
 
 // ----------------------------------------------------------------------------
@@ -203,7 +203,7 @@ void AddonsManager::initAddons(const XMLNode *xml)
                 if(file_manager->fileExists(full_path))
                 {
                     if(UserConfigParams::logAddons())
-                        Log::warn("addons", "Removing cached icon '%s'.",
+                        logwarn("addons", "Removing cached icon '%s'.",
                                addon.getIconBasename().c_str());
                     file_manager->removeFile(full_path);
                 }
@@ -234,9 +234,9 @@ void AddonsManager::initAddons(const XMLNode *xml)
         }
         else
         {
-            Log::error("addons", "Found invalid node '%s' while downloading addons.",
+            logerror("addons", "Found invalid node '%s' while downloading addons.",
                     node->getName().c_str());
-            Log::error("addons", "Ignored.");
+            logerror("addons", "Ignored.");
         }
     }   // for i<xml->getNumNodes
     delete xml;
@@ -261,7 +261,7 @@ void AddonsManager::initAddons(const XMLNode *xml)
         // This addon is not on the server anymore, and not installed. Remove
         // it from the list.
         if(UserConfigParams::logAddons())
-            Log::warn(
+            logwarn(
                 "addons", "Removing '%s' which is not on the server anymore.",
                 m_addons_list.getData()[i].getId().c_str() );
         const std::string &icon = m_addons_list.getData()[i].getIconBasename();
@@ -319,7 +319,7 @@ void AddonsManager::checkInstalledAddons()
         if(n<0) continue;
         if(!m_addons_list.getData()[n].isInstalled())
         {
-            Log::info("addons", "Marking '%s' as being installed.",
+            loginfo("addons", "Marking '%s' as being installed.",
                    kp->getIdent().c_str());
             m_addons_list.getData()[n].setInstalled(true);
             something_was_changed = true;
@@ -338,7 +338,7 @@ void AddonsManager::checkInstalledAddons()
         if(n<0) continue;
         if(!m_addons_list.getData()[n].isInstalled())
         {
-            Log::info("addons", "Marking '%s' as being installed.",
+            loginfo("addons", "Marking '%s' as being installed.",
                    track->getIdent().c_str());
             m_addons_list.getData()[n].setInstalled(true);
             something_was_changed = true;
@@ -369,7 +369,7 @@ void AddonsManager::downloadIcons()
             if(icon=="")
             {
                 if(UserConfigParams::logAddons())
-                    Log::error("addons", "No icon or image specified for '%s'.",
+                    logerror("addons", "No icon or image specified for '%s'.",
                                 addon.getId().c_str());
                 continue;
             }
@@ -408,7 +408,7 @@ void AddonsManager::loadInstalledAddons()
     /* checking for installed addons */
     if(UserConfigParams::logAddons())
     {
-        Log::info("addons", "Loading an xml file for installed addons: %s.",
+        loginfo("addons", "Loading an xml file for installed addons: %s.",
                     m_file_installed.c_str());
     }
     const XMLNode *xml = file_manager->createXMLTree(m_file_installed);
@@ -485,15 +485,15 @@ bool AddonsManager::install(const Addon &addon)
     if (!success)
     {
         // TODO: show a message in the interface
-        Log::error("addons", "Failed to unzip '%s' to '%s'.",
+        logerror("addons", "Failed to unzip '%s' to '%s'.",
                     from.c_str(), to.c_str());
-        Log::error("addons", "Zip file will not be removed.");
+        logerror("addons", "Zip file will not be removed.");
         return false;
     }
 
     if(!file_manager->removeFile(from))
     {
-        Log::error("addons", "Problems removing temporary file '%s'.",
+        logerror("addons", "Problems removing temporary file '%s'.",
                     from.c_str());
     }
 
@@ -527,7 +527,7 @@ bool AddonsManager::install(const Addon &addon)
         }
         catch (std::exception& e)
         {
-            Log::error("addons", "Cannot load track '%s' : %s.",
+            logerror("addons", "Cannot load track '%s' : %s.",
                         addon.getDataDir().c_str(), e.what());
         }
     }
@@ -542,7 +542,7 @@ bool AddonsManager::install(const Addon &addon)
  */
 bool AddonsManager::uninstall(const Addon &addon)
 {
-    Log::info("addons", "Uninstalling '%s'.",
+    loginfo("addons", "Uninstalling '%s'.",
                core::stringc(addon.getName()).c_str());
 
     // addon is a const reference, and to avoid removing the const, we

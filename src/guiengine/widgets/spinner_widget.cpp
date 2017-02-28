@@ -65,7 +65,7 @@ void SpinnerWidget::add()
     {
         if (!StringUtils::parseString<int>(min_s, &m_min))
         {
-            Log::warn("invalid value for spinner widget minimum value : %s", min_s.c_str());
+            logwarn("invalid value for spinner widget minimum value : %s", min_s.c_str());
         }
     }
 
@@ -73,7 +73,7 @@ void SpinnerWidget::add()
     {
         if (!StringUtils::parseString<int>(max_s, &m_max))
         {
-            Log::warn("invalid value for spinner widget maximum value : %s", max_s.c_str());
+            logwarn("invalid value for spinner widget maximum value : %s", max_s.c_str());
         }
     }
 
@@ -233,7 +233,7 @@ EventPropagation SpinnerWidget::rightPressed(const int playerID)
     // if widget is deactivated, do nothing
     if (m_deactivated) return EVENT_BLOCK;
 
-    //Log::info("SpinnerWidget", "Right pressed");
+    //loginfo("SpinnerWidget", "Right pressed");
     if (m_value+1 <= m_max)
     {
         setValue(m_value+1);
@@ -255,7 +255,7 @@ EventPropagation SpinnerWidget::leftPressed(const int playerID)
     // if widget is deactivated, do nothing
     if (m_deactivated) return EVENT_BLOCK;
 
-    //Log::info("SpinnerWidget", "Left pressed");
+    //loginfo("SpinnerWidget", "Left pressed");
     if (m_value-1 >= m_min)
     {
         setValue(m_value-1);
@@ -389,7 +389,7 @@ void SpinnerWidget::setValue(irr::core::stringw new_value)
         }
     }
 
-    Log::fatal("SpinnerWidget::setValue", "Cannot find element named '%s'",
+    logfatal("SpinnerWidget::setValue", "Cannot find element named '%s'",
         irr::core::stringc(new_value.c_str()).c_str());
 }
 

@@ -391,9 +391,9 @@ void AddonsLoading::doUninstall()
     bool error = !addons_manager->uninstall(m_addon);
     if(error)
     {
-        Log::warn("Addons", "Directory '%s' can not be removed.",
+        logwarn("Addons", "Directory '%s' can not be removed.",
                   m_addon.getDataDir().c_str());
-        Log::warn("Addons", "Please remove this directory manually.");
+        logwarn("Addons", "Please remove this directory manually.");
         const core::stringw &name = m_addon.getName();
         core::stringw msg = _("Problems removing the addon '%s'.", name);
         getWidget<BubbleWidget>("description")->setText(msg.c_str());

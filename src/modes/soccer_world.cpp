@@ -113,7 +113,7 @@ void SoccerWorld::init()
         break;
     }
     if (!m_ball)
-        Log::fatal("SoccerWorld","Ball is missing in soccer field, abort.");
+        logfatal("SoccerWorld","Ball is missing in soccer field, abort.");
 
     m_bgd.init(m_ball->getPhysicalObject()->getRadius());
 
@@ -620,7 +620,7 @@ void SoccerWorld::enterRaceOverState()
 
     if (UserConfigParams::m_arena_ai_stats)
     {
-        Log::verbose("Soccer AI profiling", "Total frames elapsed for a team"
+        logverbose("Soccer AI profiling", "Total frames elapsed for a team"
             " to win with 30 goals: %d", m_frame_count);
 
         // Goal time statistics
@@ -648,7 +648,7 @@ void SoccerWorld::enterRaceOverState()
             median = m_goal_frame[m_goal_frame.size() / 2];
         }
 
-        Log::verbose("Soccer AI profiling", "Frames elapsed for each goal:"
+        logverbose("Soccer AI profiling", "Frames elapsed for each goal:"
             " min: %d max: %d mean: %d median: %d standard deviation: %d",
             m_goal_frame.front(), m_goal_frame.back(), mean, median, stdev);
 
@@ -673,14 +673,14 @@ void SoccerWorld::enterRaceOverState()
         int blue_goal = ((int(m_blue_scorers.size()) - red_own_goal) >= 0 ?
             m_blue_scorers.size() - red_own_goal : 0);
 
-        Log::verbose("Soccer AI profiling", "Red goal: %d, Red own goal: %d,"
+        logverbose("Soccer AI profiling", "Red goal: %d, Red own goal: %d,"
             "Blue goal: %d, Blue own goal: %d", red_goal, red_own_goal,
             blue_goal, blue_own_goal);
 
         if (getScore(SOCCER_TEAM_BLUE) >= m_goal_target)
-            Log::verbose("Soccer AI profiling", "Blue team wins");
+            logverbose("Soccer AI profiling", "Blue team wins");
         else
-            Log::verbose("Soccer AI profiling", "Red team wins");
+            logverbose("Soccer AI profiling", "Red team wins");
 
         delete this;
         main_loop->abort();
@@ -733,6 +733,6 @@ void SoccerWorld::setAITeam()
             available_ai--;
         }
     }
-    Log::debug("SoccerWorld","blue AI: %d red AI: %d", m_blue_ai, m_red_ai);
+    logdebug("SoccerWorld","blue AI: %d red AI: %d", m_blue_ai, m_red_ai);
 
 }   // setAITeam

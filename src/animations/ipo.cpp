@@ -43,7 +43,7 @@ Ipo::IpoData::IpoData(const XMLNode &curve, float fps, bool reverse)
 {
     if(curve.getName()!="curve")
     {
-        Log::warn("Animations", "Expected 'curve' for animation, got '%s' --> Ignored.",
+        logwarn("Animations", "Expected 'curve' for animation, got '%s' --> Ignored.",
                   curve.getName().c_str());
         return;
     }
@@ -60,7 +60,7 @@ Ipo::IpoData::IpoData(const XMLNode &curve, float fps, bool reverse)
     }
     if(m_channel==IPO_MAX)
     {
-        Log::error("Animation", "Unknown animation channel: '%s' --> Ignored",
+        logerror("Animation", "Unknown animation channel: '%s' --> Ignored",
                 channel.c_str());
         return;
     }
@@ -78,7 +78,7 @@ Ipo::IpoData::IpoData(const XMLNode &curve, float fps, bool reverse)
     else
     {
         // For now extrap and cyclic_extrap do not work
-        Log::warn("Animation", "Unsupported extend '%s' - defaulting to CONST.",
+        logwarn("Animation", "Unsupported extend '%s' - defaulting to CONST.",
                   extend.c_str());
         m_extend = ET_CONST;
     }

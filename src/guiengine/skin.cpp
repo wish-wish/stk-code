@@ -65,14 +65,14 @@ namespace SkinConfig
 
         if (node->get("type", &type) == 0)
         {
-            Log::error("skin", "All elements must have a type\n");
+            logerror("skin", "All elements must have a type\n");
             return;
         }
         node->get("state", &state);
 
         if (node->get("image", &image) == 0)
         {
-            Log::error("skin", "All elements must have an image\n");
+            logerror("skin", "All elements must have an image\n");
             return;
         }
 
@@ -129,7 +129,7 @@ namespace SkinConfig
 
         if(node->get("type", &type) == 0)
         {
-            Log::error("skin", "All elements must have a type\n");
+            logerror("skin", "All elements must have a type\n");
             return;
         }
         node->get("state", &state);
@@ -155,7 +155,7 @@ namespace SkinConfig
         XMLNode* root = file_manager->createXMLTree(file);
         if(!root)
         {
-            Log::error("skin", "Could not read XML file '%s'.",
+            logerror("skin", "Could not read XML file '%s'.",
                        file.c_str());
             throw std::runtime_error("Invalid skin file");
         }
@@ -175,7 +175,7 @@ namespace SkinConfig
             }
             else
             {
-                Log::error("skin", "Unknown node in XML file '%s'.",
+                logerror("skin", "Unknown node in XML file '%s'.",
                            node->getName().c_str());
             }
         }// nend for
@@ -211,7 +211,7 @@ void BoxRenderParams::setTexture(ITexture* image)
 {
     if (image == NULL)
     {
-        Log::error("skin", "/!\\ WARNING: missing image in skin\n");
+        logerror("skin", "/!\\ WARNING: missing image in skin\n");
         return;
     }
 
@@ -1275,7 +1275,7 @@ void Skin::drawSpinnerBody(const core::recti &rect, Widget* widget,
             params=&SkinConfig::m_render_params["spinner4::neutral"];
         else
         {
-            Log::fatal("Skin::drawSpinnerBody", "Unknown playerID (more than 4 players?)");
+            logfatal("Skin::drawSpinnerBody", "Unknown playerID (more than 4 players?)");
             // Silence compiler warning
             params = NULL;
         }
@@ -1754,7 +1754,7 @@ void Skin::renderSections(PtrVector<Widget>* within_vector)
                 {
                     tex = irr_driver->getTexture(FileManager::GUI, "main_help.png");
                     if(!tex)
-                        Log::fatal("Skin",
+                        logfatal("Skin",
                         "Can't find fallback texture 'main_help.png, aborting.");
                 }
                 core::recti r1(0, (int)(widget.m_y - 40*y_size),

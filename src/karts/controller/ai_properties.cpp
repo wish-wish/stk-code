@@ -84,7 +84,7 @@ void AIProperties::load(const XMLNode *ai_node)
         m_nitro_usage = NITRO_ALL;
     else
     {
-        Log::fatal("AIProperties",
+        logfatal("AIProperties",
                 "Incorrect nitro-usage '%s' in AI '%s'.",s.c_str(),
                 m_ident.c_str());
     }
@@ -101,7 +101,7 @@ void AIProperties::load(const XMLNode *ai_node)
 void AIProperties::checkAllSet(const std::string &filename) const
 {
 #define CHECK_NEG(  a,str_a) if(a<=UNDEFINED) {                     \
-        Log::fatal("AIProperties","Missing default value for"       \
+        logfatal("AIProperties","Missing default value for"       \
                     " '%s' in '%s' 'for AI '%s'.",                \
                     str_a, filename.c_str(), m_ident.c_str());      \
     }
@@ -118,17 +118,17 @@ void AIProperties::checkAllSet(const std::string &filename) const
 
     if(m_skid_probability.size()==0)
     {
-        Log::fatal("AIProperties", "No skid probability defined.");
+        logfatal("AIProperties", "No skid probability defined.");
     }
 
     if(m_speed_cap.size()==0)
     {
-        Log::fatal("AIProperties", "No speed cap defined.");
+        logfatal("AIProperties", "No speed cap defined.");
     }
 
     if(m_collect_item_probability.size()==0)
     {
-        Log::fatal("AIProperties", "No collect-item-probability defined.");
+        logfatal("AIProperties", "No collect-item-probability defined.");
     }
 
 }   // checkAllSet

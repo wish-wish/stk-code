@@ -193,7 +193,7 @@ bool ArenaAI::updateAimingPosition(Vec3* target_point)
     if (forward == Graph::UNKNOWN_SECTOR ||
         m_target_node == Graph::UNKNOWN_SECTOR)
     {
-        Log::error("ArenaAI", "Next node is unknown, path finding failed!");
+        logerror("ArenaAI", "Next node is unknown, path finding failed!");
         return false;
     }
 
@@ -209,7 +209,7 @@ bool ArenaAI::updateAimingPosition(Vec3* target_point)
 
     if (next_node == Graph::UNKNOWN_SECTOR)
     {
-        Log::error("ArenaAI", "Next node is unknown, did you forget to link"
+        logerror("ArenaAI", "Next node is unknown, did you forget to link"
                    " adjacent face in navmesh?");
         return false;
     }
@@ -221,7 +221,7 @@ bool ArenaAI::updateAimingPosition(Vec3* target_point)
         next_node = m_graph->getNextNode(previous_node, m_target_node);
         if (next_node == Graph::UNKNOWN_SECTOR)
         {
-            Log::error("ArenaAI", "Next node is unknown, did you forget to"
+            logerror("ArenaAI", "Next node is unknown, did you forget to"
                        " link adjacent face in navmesh?");
             return false;
         }
@@ -560,7 +560,7 @@ void ArenaAI::useItems(const float dt)
         break;
 
     default:
-        Log::error("ArenaAI",
+        logerror("ArenaAI",
                 "Invalid or unhandled powerup '%d' in default AI.",
                 m_kart->getPowerup()->getType());
         assert(false);
@@ -709,7 +709,7 @@ void ArenaAI::determinePath(int forward, std::vector<int>* path)
                 }
                 if (chosen_node == Graph::UNKNOWN_SECTOR)
                 {
-                    Log::debug("ArenaAI", "Too many bad items to avoid!");
+                    logdebug("ArenaAI", "Too many bad items to avoid!");
                     failed_avoid = true;
                     break;
                 }

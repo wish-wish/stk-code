@@ -75,13 +75,13 @@ RaceGUIBase::RaceGUIBase()
                                                             /*full path*/false,
                                                             /*permanent*/true);
     if(!m_music_icon->getTexture())
-        Log::fatal("RaceGuiBase", "Can't find 'notes.png' texture, aborting.");
+        logfatal("RaceGuiBase", "Can't find 'notes.png' texture, aborting.");
 
     m_plunger_face          = material_manager->getMaterial("plungerface.png",
                                                             /*full path*/false,
                                                             /*permanent*/true);
     if(!m_plunger_face->getTexture())
-        Log::fatal("RaceGuiBase",
+        logfatal("RaceGuiBase",
                    "Can't find 'plungerface.png' texture, aborting.");
 
     //read frame picture for icons in the mini map.
@@ -89,7 +89,7 @@ RaceGUIBase::RaceGUIBase()
                                                             /*full_path*/false,
                                                             /*permanent*/true);
     if(!m_icons_frame->getTexture())
-        Log::fatal("RaceGuiBase",
+        logfatal("RaceGuiBase",
                    "Can't find 'icons-frame.png' texture, aborting.");
 
     m_gauge_full            = irr_driver->getTexture(file_manager->getAsset(FileManager::GUI,"gauge_full.png"));

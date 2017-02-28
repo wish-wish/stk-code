@@ -54,7 +54,7 @@ Network::Network(int peer_count, int channel_limit,
     m_host = enet_host_create(address, peer_count, channel_limit, 0, 0);
     if (!m_host)
     {
-        Log::fatal("Network", "An error occurred while trying to create an "
+        logfatal("Network", "An error occurred while trying to create an "
                    "ENet client host.");
     }
 }   // Network
@@ -97,7 +97,7 @@ void Network::sendRawPacket(const BareNetworkString &buffer,
 
     sendto(m_host->socket, buffer.getData(), buffer.size(), 0,
            (sockaddr*)&to, to_len);
-    Log::verbose("Network", "Raw packet sent to %s",
+    logverbose("Network", "Raw packet sent to %s",
                  dst.toString().c_str());
     Network::logPacket(buffer, false);
 }   // sendRawPacket
@@ -150,7 +150,7 @@ int Network::receiveRawPacket(char *buffer, int buf_len,
     sender->setPort( ntohs(addr.sin_port) );
     if (addr.sin_family == AF_INET)
     {
-        Log::info("Network", "IPv4 Address of the sender was %s",
+        loginfo("Network", "IPv4 Address of the sender was %s",
                   sender->toString().c_str());
     }
     return len;
@@ -179,7 +179,7 @@ void Network::openLog()
         m_log_file.setAtomic(fopen(s.c_str(), "w+"));
     }
     if (!m_log_file.getData())
-        Log::warn("STKHost", "Network packets won't be logged: no file.");
+        logwarn("STKHost", "Network packets won't be logged: no file.");
 }   // openLog
 
 // ----------------------------------------------------------------------------
@@ -211,7 +211,7 @@ void Network::closeLog()
     {
         m_log_file.lock();
         fclose(m_log_file.getData());
-        Log::warn("STKHost", "Packet logging file has been closed.");
+        logwarn("STKHost", "Packet logging file has been closed.");
         m_log_file.getData() = NULL;
         m_log_file.unlock();
     }

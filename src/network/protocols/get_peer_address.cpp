@@ -72,11 +72,11 @@ void GetPeerAddress::asynchronousUpdate()
                 result->get("port", &port);
             m_address.setPort(port);
 
-            Log::debug("GetPeerAddress", "Peer address retrieved.");
+            logdebug("GetPeerAddress", "Peer address retrieved.");
         }
         else
         {
-            Log::error("GetPeerAddress", "Failed to get peer address.");
+            logerror("GetPeerAddress", "Failed to get peer address.");
         }
         requestTerminate();
 

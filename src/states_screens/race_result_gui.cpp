@@ -170,7 +170,7 @@ void RaceResultGUI::enableAllButtons()
     // If we're in a network world, change the buttons text
     if (World::getWorld()->isNetworkWorld())
     {
-        Log::info("This work was networked", "This is a network world.");
+        loginfo("This work was networked", "This is a network world.");
         top->setVisible(false);
         middle->setText(_("Continue."));
         middle->setVisible(true);
@@ -184,7 +184,7 @@ void RaceResultGUI::enableAllButtons()
         }
         return;
     }
-    Log::info("This work was NOT networked", "This is NOT a network world.");
+    loginfo("This work was NOT networked", "This is NOT a network world.");
 
     // If something was unlocked
     // -------------------------
@@ -330,7 +330,7 @@ void RaceResultGUI::eventCallback(GUIEngine::Widget* widget,
             }
             return;
         }
-        Log::fatal("RaceResultGUI", "Incorrect event '%s' when things are unlocked.",
+        logfatal("RaceResultGUI", "Incorrect event '%s' when things are unlocked.",
             name.c_str());
     }
 
@@ -374,7 +374,7 @@ void RaceResultGUI::eventCallback(GUIEngine::Widget* widget,
         }
         else if (!getWidget(name.c_str())->isVisible())
         {
-            Log::warn("RaceResultGUI", "Incorrect event '%s' when things are unlocked.",
+            logwarn("RaceResultGUI", "Incorrect event '%s' when things are unlocked.",
                 name.c_str());
         }
         return;
@@ -408,7 +408,7 @@ void RaceResultGUI::eventCallback(GUIEngine::Widget* widget,
         }
     }
     else
-        Log::fatal("RaceResultGUI", "Incorrect event '%s' for normal race.",
+        logfatal("RaceResultGUI", "Incorrect event '%s' for normal race.",
             name.c_str());
     return;
 }   // eventCallback
@@ -647,7 +647,7 @@ void RaceResultGUI::backToLobby()
             }
             catch (std::exception& e)
             {
-                Log::error("RaceResultGUI", "Exception caught when "
+                logerror("RaceResultGUI", "Exception caught when "
                     "trying to load music: %s", e.what());
             }
         }

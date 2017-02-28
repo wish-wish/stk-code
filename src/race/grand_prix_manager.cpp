@@ -65,7 +65,7 @@ void GrandPrixManager::loadFiles()
 // ----------------------------------------------------------------------------
 void GrandPrixManager::loadDir(const std::string& dir, enum GrandPrixData::GPGroupType group)
 {
-    Log::info("GrandPrixManager",
+    loginfo("GrandPrixManager",
               "Loading Grand Prix files from %s", dir.c_str());
     assert(!dir.empty() && dir[dir.size() - 1] == '/');
 
@@ -87,7 +87,7 @@ void GrandPrixManager::load(const std::string& filename, enum GrandPrixData::GPG
     {
         gp = new GrandPrixData(filename, group);
         m_gp_data.push_back(gp);
-        Log::debug("GrandPrixManager",
+        logdebug("GrandPrixManager",
                    "Grand Prix '%s' loaded from %s",
                    gp->getId().c_str(), filename.c_str());
     }
@@ -95,7 +95,7 @@ void GrandPrixManager::load(const std::string& filename, enum GrandPrixData::GPG
     {
         if (gp != NULL)
             delete gp;
-        Log::error("GrandPrixManager",
+        logerror("GrandPrixManager",
                    "Ignoring Grand Prix %s (%s)\n", filename.c_str(), e.what());
     }
 }   // load
@@ -234,7 +234,7 @@ void GrandPrixManager::remove(const std::string& id)
     }
     else
     {
-        Log::warn("GrandPrixManager",
+        logwarn("GrandPrixManager",
                   "Grand Prix '%s' can not be removed", gp->getId().c_str());
     }
 }   // remove

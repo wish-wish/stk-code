@@ -70,7 +70,7 @@ Material::Material(const XMLNode *node, bool deprecated)
 
     std::string relativePath = file_manager->searchTexture(m_texname);
     if (relativePath.size() == 0)
-        Log::warn("Material", "Cannot determine texture full path : <%s>", m_texname.c_str());
+        logwarn("Material", "Cannot determine texture full path : <%s>", m_texname.c_str());
     else
         m_full_path = file_manager->getFileSystem()->getAbsolutePath(relativePath.c_str()).c_str();
     init();
@@ -123,7 +123,7 @@ Material::Material(const XMLNode *node, bool deprecated)
     }
     else if (creaction.size() > 0)
     {
-        Log::warn("Material","Unknown collision reaction '%s'",
+        logwarn("Material","Unknown collision reaction '%s'",
                   creaction.c_str());
     }
 
@@ -216,7 +216,7 @@ Material::Material(const XMLNode *node, bool deprecated)
         }
         else
         {
-            Log::warn("Material", "Unknown shader type <%s> for <%s>", s.c_str(), m_texname.c_str());
+            logwarn("Material", "Unknown shader type <%s> for <%s>", s.c_str(), m_texname.c_str());
         }
     }
     else
@@ -258,7 +258,7 @@ Material::Material(const XMLNode *node, bool deprecated)
             else if (s == "additive") m_shader_type = SHADERTYPE_ADDITIVE;
             else if (s == "coverage") m_shader_type = SHADERTYPE_ALPHA_TEST;
             else if (s != "none")
-                Log::warn("material", "Unknown compositing mode '%s'", s.c_str());
+                logwarn("material", "Unknown compositing mode '%s'", s.c_str());
         }
 
         s = "";
@@ -304,7 +304,7 @@ Material::Material(const XMLNode *node, bool deprecated)
         }
         else if (s != "")
         {
-            Log::warn("material",
+            logwarn("material",
                 "Invalid graphical effect specification: '%s' - ignored.",
                 s.c_str());
         }
@@ -320,7 +320,7 @@ Material::Material(const XMLNode *node, bool deprecated)
             }
             else
             {
-                Log::warn("material",
+                logwarn("material",
                     "Could not find normal map image in materials.xml");
             }
         }
@@ -351,7 +351,7 @@ Material::Material(const XMLNode *node, bool deprecated)
 
     if (m_disable_z_write && m_shader_type != SHADERTYPE_ALPHA_BLEND && m_shader_type != SHADERTYPE_ADDITIVE)
     {
-        Log::debug("material", "Disabling writes to z buffer only makes sense when compositing is blending or additive (for %s)", m_texname.c_str());
+        logdebug("material", "Disabling writes to z buffer only makes sense when compositing is blending or additive (for %s)", m_texname.c_str());
         m_disable_z_write = false;
     }
 
@@ -388,7 +388,7 @@ Material::Material(const XMLNode *node, bool deprecated)
         }
         else
         {
-            Log::warn("material", "Unknown node type '%s' for texture "
+            logwarn("material", "Unknown node type '%s' for texture "
                       "'%s' - ignored.",
                       child_node->getName().c_str(), m_texname.c_str());
         }
@@ -499,7 +499,7 @@ void Material::install(bool srgb, bool premul_alpha)
     {
         if (m_complain_if_not_found)
         {
-            Log::error("material", "Cannot find texture '%s'.",
+            logerror("material", "Cannot find texture '%s'.",
                 m_texname.c_str());
         }
         m_texture = NULL;
@@ -562,7 +562,7 @@ void Material::initCustomSFX(const XMLNode *sfx)
 
     if (filename.empty())
     {
-        Log::warn("material", "Sfx node has no 'filename' "
+        logwarn("material", "Sfx node has no 'filename' "
                   "attribute, sound effect will be ignored.");
         return;
     }
@@ -616,7 +616,7 @@ void Material::initParticlesEffect(const XMLNode *node)
     node->get("base", &base);
     if (base.size() < 1)
     {
-        Log::warn("Material::initParticlesEffect"
+        logwarn("Material::initParticlesEffect"
                   "Invalid particle settings for material '%s'\n",
                   m_texname.c_str());
         return;
@@ -629,14 +629,14 @@ void Material::initParticlesEffect(const XMLNode *node)
 
         if (particles == NULL)
         {
-            Log::warn("Material::initParticlesEffect",
+            logwarn("Material::initParticlesEffect",
                       "Error loading particles '%s' for material '%s'\n",
                       base.c_str(), m_texname.c_str());
         }
     }
     catch (...)
     {
-        Log::warn("Material::initParticlesEffect",
+        logwarn("Material::initParticlesEffect",
                   "Cannot find particles '%s' for material '%s'\n",
                   base.c_str(), m_texname.c_str());
         return;
@@ -649,7 +649,7 @@ void Material::initParticlesEffect(const XMLNode *node)
 
     if (count == 0)
     {
-        Log::warn("material", "initParticlesEffect: Particles "
+        logwarn("material", "initParticlesEffect: Particles "
                   "'%s' for material '%s' are declared but not used "
                   "(no emission condition set).",
                   base.c_str(), m_texname.c_str());
@@ -667,7 +667,7 @@ void Material::initParticlesEffect(const XMLNode *node)
         }
         else
         {
-            Log::warn("material", "initParticlesEffect: Unknown "
+            logwarn("material", "initParticlesEffect: Unknown "
                             "condition '%s' for material '%s'",
                     conditions[c].c_str(), m_texname.c_str());
         }
@@ -731,7 +731,7 @@ void  Material::setMaterialProperties(video::SMaterial *m, scene::IMeshBuffer* m
         (m->getTexture(0) != NULL &&
          ((core::stringc)m->getTexture(0)->getName()).find("deprecated") != -1))
     {
-        Log::warn("material", "Track uses deprecated texture '%s'",
+        logwarn("material", "Track uses deprecated texture '%s'",
                   m_texname.c_str());
     }
 

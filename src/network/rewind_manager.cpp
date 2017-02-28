@@ -192,13 +192,13 @@ unsigned int RewindManager::findFirstIndex(float target_time) const
 
     if(index_last_state<0)
     {
-        Log::fatal("RewindManager",
+        logfatal("RewindManager",
                    "Can't find any state when rewinding to %f - aborting.",
                    target_time);
     }
 
     // Otherwise use the last found state - not much we can do in this case.
-    Log::error("RewindManager",
+    logerror("RewindManager",
                "Can't find state to rewind to for time %f, using %f.",
                target_time, m_rewind_info[index_last_state]->getTime());
     return index_last_state;  // avoid compiler warning
@@ -216,7 +216,7 @@ void RewindManager::addEvent(EventRewinder *event_rewinder,
     if(m_is_rewinding) 
     {
         delete buffer;
-        Log::error("RewindManager", "Adding event when rewinding");
+        logerror("RewindManager", "Adding event when rewinding");
         return;
     }
     RewindInfo *ri = new RewindInfoEvent(getCurrentTime(), event_rewinder,
@@ -262,7 +262,7 @@ void RewindManager::saveStates()
             delete buffer;   // NULL or 0 byte buffer
     }
 
-    Log::verbose("RewindManager", "%f allocated %ld bytes search %d/%d=%f",
+    logverbose("RewindManager", "%f allocated %ld bytes search %d/%d=%f",
                  World::getWorld()->getTime(), m_overall_state_size,
                  m_count_of_comparisons, m_count_of_searches,
                  float(m_count_of_comparisons)/ float(m_count_of_searches) );
@@ -278,7 +278,7 @@ void RewindManager::rewindTo(float rewind_time)
 {
     assert(!m_is_rewinding);
     m_is_rewinding = true;
-    Log::info("rewind", "Rewinding to %f", rewind_time);
+    loginfo("rewind", "Rewinding to %f", rewind_time);
     history->doReplayHistory(History::HISTORY_NONE);
 
     // First find the state to which we need to rewind
@@ -287,7 +287,7 @@ void RewindManager::rewindTo(float rewind_time)
 
     if(!m_rewind_info[index]->isState())
     {
-        Log::error("RewindManager", "No state for rewind to %f, state %d.",
+        logerror("RewindManager", "No state for rewind to %f, state %d.",
                    rewind_time, index);
         return;
     }

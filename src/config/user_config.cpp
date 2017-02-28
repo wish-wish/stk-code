@@ -140,7 +140,7 @@ void GroupUserConfigParam::findYourDataInAChildOf(const XMLNode* node)
     const XMLNode* child = node->getNode( m_param_name );
     if (child == NULL)
     {
-        //Log::error("User Config", "Couldn't find parameter group %s", m_param_name.c_str());
+        //logerror("User Config", "Couldn't find parameter group %s", m_param_name.c_str());
         return;
     }
 
@@ -270,7 +270,7 @@ void ListUserConfigParam<T, U>::findYourDataInAChildOf(const XMLNode* node)
     const XMLNode* child = node->getNode( m_param_name );
     if (child == NULL)
     {
-        //Log::error("User Config", "Couldn't find parameter group %s", m_param_name.c_str());
+        //logerror("User Config", "Couldn't find parameter group %s", m_param_name.c_str());
         return;
     }
 
@@ -372,12 +372,12 @@ void IntUserConfigParam::findYourDataInAChildOf(const XMLNode* node)
     const XMLNode* child = node->getNode( m_param_name );
     if(child == NULL)
     {
-        //Log::error("UserConfigParam", "Couldn't find int parameter %s", m_param_name.c_str());
+        //logerror("UserConfigParam", "Couldn't find int parameter %s", m_param_name.c_str());
         return;
     }
 
     child->get( "value", &m_value );
-    //Log::info("UserConfigParam", "Read int %s ,value = %d", m_param_name.c_str(), value);
+    //loginfo("UserConfigParam", "Read int %s ,value = %d", m_param_name.c_str(), value);
 }   // findYourDataInAChildOf
 
 // ----------------------------------------------------------------------------
@@ -440,7 +440,7 @@ void TimeUserConfigParam::findYourDataInAChildOf(const XMLNode* node)
     const XMLNode* child = node->getNode( m_param_name );
     if(child == NULL)
     {
-        //Log::error("UserConfigParam", "Couldn't find int parameter %s", m_param_name.c_str());
+        //logerror("UserConfigParam", "Couldn't find int parameter %s", m_param_name.c_str());
         return;
     }
 
@@ -562,7 +562,7 @@ void BoolUserConfigParam::findYourDataInAChildOf(const XMLNode* node)
     }
     else
     {
-        Log::error("User Config", "Unknown value for %s; expected true or false", m_param_name.c_str());
+        logerror("User Config", "Unknown value for %s; expected true or false", m_param_name.c_str());
     }
 }   // findYourDataInAChildOf
 
@@ -582,7 +582,7 @@ void BoolUserConfigParam::findYourDataInAnAttributeOf(const XMLNode* node)
     }
     else
     {
-        Log::error("User Config", "Unknown value for %s; expected true or false", m_param_name.c_str());
+        logerror("User Config", "Unknown value for %s; expected true or false", m_param_name.c_str());
     }
 }   // findYourDataInAnAttributeOf
 
@@ -683,7 +683,7 @@ bool UserConfig::loadConfig()
     XMLNode* root = file_manager->createXMLTree(filename);
     if(!root || root->getName() != "stkconfig")
     {
-        Log::info("UserConfig",
+        loginfo("UserConfig",
                    "Could not read user config file '%s'.  A new file will be created.", filename.c_str());
         if(root) delete root;
         // Create a default config file - just in case that stk crashes later
@@ -698,7 +698,7 @@ bool UserConfig::loadConfig()
     if(root->get("version", &config_file_version) < 1)
     {
         GUIEngine::showMessage( _("Your config file was malformed, so it was deleted and a new one will be created."), 10.0f);
-        Log::error("UserConfig",
+        logerror("UserConfig",
                    "Warning, malformed user config file! Contains no version");
     }
     if (config_file_version < m_current_config_version)
@@ -709,7 +709,7 @@ bool UserConfig::loadConfig()
         // format instead of overwriting it.
 
         GUIEngine::showMessage(_("Your config file was too old, so it was deleted and a new one will be created."), 10.0f);
-        Log::info("UserConfig", "Your config file was too old, so it was deleted and a new one will be created.");
+        loginfo("UserConfig", "Your config file was too old, so it was deleted and a new one will be created.");
         delete root;
         return false;
 
@@ -756,7 +756,7 @@ void UserConfig::saveConfig()
         const int paramAmount = all_params.size();
         for(int i=0; i<paramAmount; i++)
         {
-            //Log::info("UserConfig", "Saving parameter %d to file", i);
+            //loginfo("UserConfig", "Saving parameter %d to file", i);
             all_params[i].write(configfile);
         }
 
@@ -765,7 +765,7 @@ void UserConfig::saveConfig()
     }
     catch (std::runtime_error& e)
     {
-        Log::error("UserConfig::saveConfig", "Failed to write config to %s, because %s",
+        logerror("UserConfig::saveConfig", "Failed to write config to %s, because %s",
             filename.c_str(), e.what());
     }
 

@@ -92,7 +92,7 @@ void DriveGraph::load(const std::string &quad_file_name,
     XMLNode *quad = file_manager->createXMLTree(quad_file_name);
     if (!quad || quad->getName() != "quads")
     {
-        Log::error("DriveGraph : Quad xml '%s' not found.", filename.c_str());
+        logerror("DriveGraph : Quad xml '%s' not found.", filename.c_str());
         delete quad;
         return;
     }
@@ -103,7 +103,7 @@ void DriveGraph::load(const std::string &quad_file_name,
         const XMLNode *xml_node = quad->getNode(i);
         if (xml_node->getName() != "quad")
         {
-            Log::warn("DriveGraph: Unsupported node type '%s' found in '%s' - ignored.",
+            logwarn("DriveGraph: Unsupported node type '%s' found in '%s' - ignored.",
                 xml_node->getName().c_str(), filename.c_str());
             continue;
         }
@@ -159,7 +159,7 @@ void DriveGraph::load(const std::string &quad_file_name,
         }
         else
         {
-            Log::error("DriveGraph", "No node in driveline graph.");
+            logerror("DriveGraph", "No node in driveline graph.");
             m_lap_length = 10.0f;
         }
 
@@ -218,7 +218,7 @@ void DriveGraph::load(const std::string &quad_file_name,
         }   // edge
         else
         {
-            Log::error("DriveGraph", "Incorrect specification in '%s': '%s' ignored.",
+            logerror("DriveGraph", "Incorrect specification in '%s': '%s' ignored.",
                     filename.c_str(), xml_node->getName().c_str());
             continue;
         }   // incorrect specification
@@ -511,9 +511,9 @@ void DriveGraph::updateDistancesForAllSuccessors(unsigned int indx, float delta,
 {
     if(recursive_count>getNumNodes())
     {
-        Log::error("DriveGraph",
+        logerror("DriveGraph",
                    "DriveGraph contains a loop (without start node).");
-        Log::fatal("DriveGraph",
+        logfatal("DriveGraph",
                    "Fix graph, check for directions of all shortcuts etc.");
     }
     recursive_count++;
@@ -659,7 +659,7 @@ void DriveGraph::spatialToTrack(Vec3 *dst, const Vec3& xyz,
 {
     if(sector == UNKNOWN_SECTOR )
     {
-        Log::warn("Drive Graph", "UNKNOWN_SECTOR in spatialToTrack().");
+        logwarn("Drive Graph", "UNKNOWN_SECTOR in spatialToTrack().");
         return;
     }
 

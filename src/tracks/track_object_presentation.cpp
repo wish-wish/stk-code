@@ -228,14 +228,14 @@ TrackObjectPresentationLibraryNode::TrackObjectPresentationLibraryNode(
         }
         else
         {
-            Log::error("TrackObjectPresentationLibraryNode",
+            logerror("TrackObjectPresentationLibraryNode",
                 "Cannot find library '%s'", lib_node_path.c_str());
             return;
         }
 
         if (libroot == NULL)
         {
-            Log::error("TrackObjectPresentationLibraryNode",
+            logerror("TrackObjectPresentationLibraryNode",
                        "Cannot find library '%s'", lib_node_path.c_str());
             return;
         }
@@ -758,7 +758,7 @@ TrackObjectPresentationSound::TrackObjectPresentationSound(
         }
     }
     else
-        Log::error("TrackObject", "Sound emitter object could not be created.");
+        logerror("TrackObject", "Sound emitter object could not be created.");
 
     if (trigger_when_near)
     {
@@ -868,7 +868,7 @@ TrackObjectPresentationBillboard::TrackObjectPresentationBillboard(
 
     if (texture == NULL)
     {
-        Log::warn("TrackObjectPresentation", "Billboard texture '%s' not found",
+        logwarn("TrackObjectPresentation", "Billboard texture '%s' not found",
                   texture_name.c_str());
     }
     m_node = irr_driver->addBillboard(core::dimension2df(width, height),
@@ -970,7 +970,7 @@ TrackObjectPresentationParticles::TrackObjectPresentationParticles(
     }
     catch (std::runtime_error& e)
     {
-        Log::warn ("Track", "Could not load particles '%s'; cause :\n    %s",
+        logwarn ("Track", "Could not load particles '%s'; cause :\n    %s",
                    path.c_str(), e.what());
     }
 #endif
@@ -1119,7 +1119,7 @@ TrackObjectPresentationActionTrigger::TrackObjectPresentationActionTrigger(
     m_action_active = true;
 
     if (m_action.size() == 0)
-        Log::warn("TrackObject", "Action-trigger has no action defined.");
+        logwarn("TrackObject", "Action-trigger has no action defined.");
 
     if (m_type == TRIGGER_TYPE_POINT)
     {

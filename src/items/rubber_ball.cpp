@@ -163,7 +163,7 @@ void RubberBall::computeTarget()
             if(m_target==m_owner && m_delete_timer < 0)
             {
 #ifdef PRINT_BALL_REMOVE_INFO
-                Log::debug("[RubberBall]",
+                logdebug("[RubberBall]",
                            "ball %d removed because owner is target.", m_id);
 #endif
                 m_delete_timer = m_st_delete_time;
@@ -176,7 +176,7 @@ void RubberBall::computeTarget()
     // aim at the owner (the ball is unlikely to hit it), and
     // this will trigger the usage of the delete time in updateAndDelete
 #ifdef PRINT_BALL_REMOVE_INFO
-    Log::debug("[RubberBall]" "ball %d removed because no more active target.",
+    logdebug("[RubberBall]" "ball %d removed because no more active target.",
                m_id);
 #endif
     m_delete_timer = m_st_delete_time;
@@ -262,39 +262,39 @@ void RubberBall::init(const XMLNode &node, scene::IMesh *rubberball)
     m_time_between_balls            = 15;
 
     if(!node.get("interval", &m_st_interval))
-        Log::warn("powerup", "No interval specified for rubber ball.");
+        logwarn("powerup", "No interval specified for rubber ball.");
     if(!node.get("squash-duration", &m_st_squash_duration))
-        Log::warn("powerup",
+        logwarn("powerup",
                   "No squash-duration specified for rubber ball.");
     if(!node.get("squash-slowdown", &m_st_squash_slowdown))
-        Log::warn("powerup", "No squash-slowdown specified for rubber ball.");
+        logwarn("powerup", "No squash-slowdown specified for rubber ball.");
     if(!node.get("min-interpolation-distance",
                  &m_st_min_interpolation_distance))
-        Log::warn("powerup", "No min-interpolation-distance specified "
+        logwarn("powerup", "No min-interpolation-distance specified "
                              "for rubber ball.");
     if(!node.get("target-distance", &m_st_target_distance))
-        Log::warn("powerup",
+        logwarn("powerup",
                   "No target-distance specified for rubber ball.");
     if(!node.get("delete-time", &m_st_delete_time))
-        Log::warn("powerup", "No delete-time specified for rubber ball.");
+        logwarn("powerup", "No delete-time specified for rubber ball.");
     if(!node.get("target-max-angle", &m_st_target_max_angle))
-        Log::warn("powerup", "No target-max-angle specified for rubber ball.");
+        logwarn("powerup", "No target-max-angle specified for rubber ball.");
     m_st_target_max_angle *= DEGREE_TO_RAD;
     if(!node.get("max-height-difference", &m_st_max_height_difference))
-        Log::warn("powerup",
+        logwarn("powerup",
                   "No max-height-difference specified for rubber ball.");
     if(!node.get("fast-ping-distance", &m_st_fast_ping_distance))
-        Log::warn("powerup",
+        logwarn("powerup",
                   "No fast-ping-distance specified for rubber ball.");
     if(m_st_fast_ping_distance < m_st_target_distance)
-        Log::warn("powerup",
+        logwarn("powerup",
                    "Ping-distance is smaller than target distance.\n"
                    "That should not happen, but is ignored for now.");
     if(!node.get("early-target-factor", &m_st_early_target_factor))
-        Log::warn("powerup",
+        logwarn("powerup",
                   "No early-target-factor specified for rubber ball.");
     if(!node.get("time-between-balls", &m_time_between_balls))
-        Log::warn("powerup",
+        logwarn("powerup",
                   "No time-between-balls specified for rubber ball.");
     Flyable::init(node, rubberball, PowerupManager::POWERUP_RUBBERBALL);
 }   // init
@@ -317,7 +317,7 @@ bool RubberBall::updateAndDelete(float dt)
         {
             hit(NULL);
 #ifdef PRINT_BALL_REMOVE_INFO
-            Log::debug("[RubberBall]", "ball %d deleted.", m_id);
+            logdebug("[RubberBall]", "ball %d deleted.", m_id);
 #endif
             return true;
         }
@@ -355,7 +355,7 @@ bool RubberBall::updateAndDelete(float dt)
     float height    = updateHeight()+m_extend.getY()*0.5f;
     
     if(UserConfigParams::logFlyable())
-        Log::debug("[RubberBall]", "ball %d: %f %f %f height %f gethot %f ",
+        logdebug("[RubberBall]", "ball %d: %f %f %f height %f gethot %f ",
                 m_id, next_xyz.getX(), next_xyz.getY(), next_xyz.getZ(), height, getHoT());
 
     // No need to check for terrain height if the ball is low to the ground
@@ -376,7 +376,7 @@ bool RubberBall::updateAndDelete(float dt)
     }
 
     if(UserConfigParams::logFlyable())
-        Log::verbose("RubberBall", "newy2 %f gmth %f", height,
+        logverbose("RubberBall", "newy2 %f gmth %f", height,
                      getTunnelHeight(next_xyz,vertical_offset));
 
     next_xyz = next_xyz + getNormal()*(height);
@@ -505,7 +505,7 @@ bool RubberBall::checkTunneling()
         if(m_tunnel_count > 3)
         {
 #ifdef PRINT_BALL_REMOVE_INFO
-            Log::debug("[RubberBall]",
+            logdebug("[RubberBall]",
                        "Ball %d nearly tunneled at %f %f %f -> %f %f %f",
                         m_id, m_previous_xyz.getX(),m_previous_xyz.getY(),
                         m_previous_xyz.getZ(),
@@ -627,7 +627,7 @@ void RubberBall::updateDistanceToTarget()
         m_distance_to_target += Track::getCurrentTrack()->getTrackLength();
     }
     if(UserConfigParams::logFlyable())
-        Log::debug("[RubberBall]", "ball %d: target %f %f %f distance_2_target %f",
+        logdebug("[RubberBall]", "ball %d: target %f %f %f distance_2_target %f",
         m_id, m_target->getXYZ().getX(),m_target->getXYZ().getY(),
         m_target->getXYZ().getZ(),m_distance_to_target
         );
@@ -657,7 +657,7 @@ void RubberBall::updateDistanceToTarget()
         {
             m_delete_timer = m_st_delete_time;
 #ifdef PRINT_BALL_REMOVE_INFO
-            Log::debug("[RubberBall]", "ball %d lost target (overtook?).",
+            logdebug("[RubberBall]", "ball %d lost target (overtook?).",
                         m_id);
 #endif
 
@@ -690,7 +690,7 @@ bool RubberBall::hit(AbstractKart* kart, PhysicalObject* object)
 {
 #ifdef PRINT_BALL_REMOVE_INFO
     if(kart)
-        Log::debug("[RuberBall]", "ball %d hit kart.", m_id);
+        logdebug("[RuberBall]", "ball %d hit kart.", m_id);
 #endif
     if(kart && kart!=m_target)
     {

@@ -71,7 +71,7 @@ ScreenKeyboard::ScreenKeyboard(float percent_width, float percent_height,
     if (m_screen_keyboard != NULL)
     {
         delete m_screen_keyboard;
-        Log::warn("GUIEngine", "Showing a screen keyboard while the previous "
+        logwarn("GUIEngine", "Showing a screen keyboard while the previous "
                   "one is still open. Destroying the previous keyboard.");
     }
     

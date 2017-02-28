@@ -80,7 +80,7 @@ void NewsManager::init(bool force_refresh)
             &NewsManager::downloadNews, this);
         if (error)
         {
-            Log::warn("news", "Could not create thread, error=%d", error);
+            logwarn("news", "Could not create thread, error=%d", error);
             // In this case just execute the downloading code with this thread
             downloadNews(this);
         }
@@ -151,7 +151,7 @@ void* NewsManager::downloadNews(void *obj)
 
         // Initialise the online portion of the addons manager.
         if(UserConfigParams::logAddons())
-            Log::info("addons", "Downloading news.");
+            loginfo("addons", "Downloading news.");
         download_req->executeNow();
 
         if(download_req->hadDownloadError())
@@ -181,7 +181,7 @@ void* NewsManager::downloadNews(void *obj)
                 error_message = StringUtils::insertValues(error_message, curl_error);
                 addons_manager->setErrorState();
                 me->setErrorMessage(error_message);
-                Log::error("news", core::stringc(error_message).c_str());
+                logerror("news", core::stringc(error_message).c_str());
             }   // hadDownloadError
         }   // hadDownloadError
 
@@ -229,7 +229,7 @@ void NewsManager::checkRedirect(const XMLNode *xml)
     {
         if(UserConfigParams::logAddons())
         {
-            Log::info("[Addons]", "Current server: '%s'\n [Addons] New server: '%s'",
+            loginfo("[Addons]", "Current server: '%s'\n [Addons] New server: '%s'",
                         UserConfigParams::m_server_addons.c_str(), new_server.c_str());
         }
         UserConfigParams::m_server_addons = new_server;
@@ -238,7 +238,7 @@ void NewsManager::checkRedirect(const XMLNode *xml)
     std::string hw_report_server;
     if(xml->get("hw-report-server", &hw_report_server)==1 && hw_report_server.size()>0)
     {
-        Log::info("hw report", "New server at '%s'.", hw_report_server.c_str());
+        loginfo("hw report", "New server at '%s'.", hw_report_server.c_str());
         UserConfigParams::m_server_hw_report = hw_report_server;
     }
 
@@ -433,7 +433,7 @@ bool NewsManager::conditionFulfilled(const std::string &cond)
         std::vector<std::string> cond = StringUtils::split(cond_list[i],' ');
         if(cond.size()!=3)
         {
-            Log::warn("NewsManager", "Invalid condition '%s' - assumed to "
+            logwarn("NewsManager", "Invalid condition '%s' - assumed to "
                                      "be true.", cond_list[i].c_str());
             continue;
         }
@@ -458,7 +458,7 @@ bool NewsManager::conditionFulfilled(const std::string &cond)
                 if(stk_version<=news_version) return false;
                 continue;
             }
-            Log::warn("NewsManager", "Invalid comparison in condition '%s' - "
+            logwarn("NewsManager", "Invalid comparison in condition '%s' - "
                                      "assumed true.", cond_list[i].c_str());
         }
         // Check for addons not installed
@@ -480,8 +480,7 @@ bool NewsManager::conditionFulfilled(const std::string &cond)
         }
         else
         {
-            Log::warn("NewsManager", "Invalid condition '%s' - assumed to "
-                                     "be true.", cond_list[i].c_str());
+            logwarn("NewsManager", "Invalid condition '%s' - assumed to be true.", cond_list[i].c_str());
             continue;
         }
 

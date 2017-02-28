@@ -102,7 +102,7 @@ SFXManager::SFXManager()
         delete m_thread_id.getData();
         m_thread_id.unlock();
         m_thread_id.setAtomic(0);
-        Log::error("SFXManager", "Could not create thread, error=%d.",
+        logerror("SFXManager", "Could not create thread, error=%d.",
                    errno);
     }
     pthread_attr_destroy(&attr);
@@ -262,7 +262,7 @@ void SFXManager::queueCommand(SFXCommand *command)
             static int count_messages = 0;
             if(count_messages < 5)
             {
-                Log::warn("SFXManager", "Throttling sfx - queue size %d",
+                logwarn("SFXManager", "Throttling sfx - queue size %d",
                          m_sfx_commands.getData().size());
                 count_messages++;
             }
@@ -477,7 +477,7 @@ void SFXManager::loadSfx()
     XMLNode* root = file_manager->createXMLTree(sfx_config_name);
     if (!root || root->getName()!="sfx-config")
     {
-        Log::fatal("SFXManager", "Could not read sound effects XML file '%s'.",
+        logfatal("SFXManager", "Could not read sound effects XML file '%s'.",
                    sfx_config_name.c_str());
     }
 
@@ -494,7 +494,7 @@ void SFXManager::loadSfx()
         }
         else
         {
-            Log::warn("SFXManager", "Unknown node '%s' in sfx XML file '%s'.",
+            logwarn("SFXManager", "Unknown node '%s' in sfx XML file '%s'.",
                       node->getName().c_str(), sfx_config_name.c_str());
             throw std::runtime_error("Unknown node in sfx XML file");
         }
@@ -555,7 +555,7 @@ SFXBuffer* SFXManager::addSingleSfx(const std::string &sfx_name,
     }
 
     if (UserConfigParams::logMisc())
-        Log::debug("SFXManager", "Loading SFX %s", sfx_file.c_str());
+        logdebug("SFXManager", "Loading SFX %s", sfx_file.c_str());
 
     if (load && buffer->load()) return buffer;
 
@@ -574,7 +574,7 @@ SFXBuffer* SFXManager::loadSingleSfx(const XMLNode* node,
 
     if (node->get("filename", &filename) == 0)
     {
-        Log::error("SFXManager",
+        logerror("SFXManager",
                 "The 'filename' attribute is mandatory in the SFX XML file!");
         return NULL;
     }
@@ -583,7 +583,7 @@ SFXBuffer* SFXManager::loadSingleSfx(const XMLNode* node,
     
     if(m_all_sfx_types.find(sfx_name)!=m_all_sfx_types.end())
     {
-        Log::error("SFXManager",
+        logerror("SFXManager",
                 "There is already a sfx named '%s' installed - new one is ignored.",
                 sfx_name.c_str());
         return NULL;
@@ -650,9 +650,8 @@ SFXBase* SFXManager::createSoundSource(const std::string &name,
     std::map<std::string, SFXBuffer*>::iterator i = m_all_sfx_types.find(name);
     if ( i == m_all_sfx_types.end() )
     {
-        Log::error("SFXManager", 
-                   "SFXManager::createSoundSource could not find the "
-                   "requested sound effect : '%s'.", name.c_str());
+        logerror("SFXManager", 
+                   "SFXManager::createSoundSource could not find the requested sound effect : '%s'.", name.c_str());
         return NULL;
     }
 
@@ -680,7 +679,7 @@ void SFXManager::deleteSFXMapping(const std::string &name)
 
     if (i == m_all_sfx_types.end())
     {
-        Log::warn("SFXManager",
+        logwarn("SFXManager",
              "SFXManager::deleteSFXMapping : Warning: sfx not found in list.");
         return;
     }
@@ -762,7 +761,7 @@ void SFXManager::deleteSFX(SFXBase *sfx)
 
     if(i==m_all_sfx.getData().end())
     {
-        Log::warn("SFXManager", 
+        logwarn("SFXManager", 
                   "SFXManager::deleteSFX : Warning: sfx '%s' %lx not found in list.",
                   sfx->getBuffer()->getFileName().c_str(), sfx);
         m_all_sfx.unlock();
@@ -840,7 +839,7 @@ bool SFXManager::checkError(const std::string &context)
 
     if(error != AL_NO_ERROR)
     {
-        Log::error("SFXManager", "SFXOpenAL OpenAL error while %s: %s",
+        logerror("SFXManager", "SFXOpenAL OpenAL error while %s: %s",
                    context.c_str(), SFXManager::getErrorString(error).c_str());
         return false;
     }

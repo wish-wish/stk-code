@@ -85,14 +85,14 @@ void IconButtonWidget::add()
     {
         if (m_properties[PROP_ICON].size() > 0)
         {
-            Log::error("icon_button",
+            logerror("icon_button",
                 "add() : error, cannot find texture '%s' in iconbutton '%s'.",
                 m_properties[PROP_ICON].c_str(), m_properties[PROP_ID].c_str());
         }
         std::string file = file_manager->getAsset(FileManager::GUI,"main_help.png");
         setTexture(irr_driver->getTexture(file));
         if(!m_texture)
-            Log::fatal("IconButtonWidget",
+            logfatal("IconButtonWidget",
                   "Can't find fallback texture 'gui/main_help.png, aborting.");
     }
 
@@ -258,7 +258,7 @@ void IconButtonWidget::setImage(const char* path_to_texture, IconPathType pathTy
 
     if (!m_texture)
     {
-        Log::error("icon_button", "Texture '%s' not found!\n",
+        logerror("icon_button", "Texture '%s' not found!\n",
                    m_properties[PROP_ICON].c_str());
         std::string file = file_manager->getAsset(FileManager::GUI,"main_help.png");
         setTexture(irr_driver->getTexture(file));
@@ -275,7 +275,7 @@ void IconButtonWidget::setImage(ITexture* texture)
     }
     else
     {
-        Log::error("icon_button",
+        logerror("icon_button",
                    "setImage invoked with NULL image pointer\n");
         std::string file = file_manager->getAsset(FileManager::GUI,"main_help.png");
         setTexture(irr_driver->getTexture(file));

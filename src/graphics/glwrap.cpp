@@ -97,62 +97,62 @@ debugCallback(GLenum source, GLenum type, GLuint id, GLenum severity, GLsizei le
     switch(source)
     {
     case GL_DEBUG_SOURCE_API_ARB:
-        Log::warn("GLWrap", "OpenGL debug callback - API");
+        logwarn("GLWrap", "OpenGL debug callback - API");
         break;
     case GL_DEBUG_SOURCE_WINDOW_SYSTEM_ARB:
-        Log::warn("GLWrap", "OpenGL debug callback - WINDOW_SYSTEM");
+        logwarn("GLWrap", "OpenGL debug callback - WINDOW_SYSTEM");
         break;
     case GL_DEBUG_SOURCE_SHADER_COMPILER_ARB:
-        Log::warn("GLWrap", "OpenGL debug callback - SHADER_COMPILER");
+        logwarn("GLWrap", "OpenGL debug callback - SHADER_COMPILER");
         break;
     case GL_DEBUG_SOURCE_THIRD_PARTY_ARB:
-        Log::warn("GLWrap", "OpenGL debug callback - THIRD_PARTY");
+        logwarn("GLWrap", "OpenGL debug callback - THIRD_PARTY");
         break;
     case GL_DEBUG_SOURCE_APPLICATION_ARB:
-        Log::warn("GLWrap", "OpenGL debug callback - APPLICATION");
+        logwarn("GLWrap", "OpenGL debug callback - APPLICATION");
         break;
     case GL_DEBUG_SOURCE_OTHER_ARB:
-        Log::warn("GLWrap", "OpenGL debug callback - OTHER");
+        logwarn("GLWrap", "OpenGL debug callback - OTHER");
         break;
     }
 
     switch(type)
     {
     case GL_DEBUG_TYPE_ERROR_ARB:
-        Log::warn("GLWrap", "    Error type : ERROR");
+        logwarn("GLWrap", "    Error type : ERROR");
         break;
     case GL_DEBUG_TYPE_DEPRECATED_BEHAVIOR_ARB:
-        Log::warn("GLWrap", "    Error type : DEPRECATED_BEHAVIOR");
+        logwarn("GLWrap", "    Error type : DEPRECATED_BEHAVIOR");
         break;
     case GL_DEBUG_TYPE_UNDEFINED_BEHAVIOR_ARB:
-        Log::warn("GLWrap", "    Error type : UNDEFINED_BEHAVIOR");
+        logwarn("GLWrap", "    Error type : UNDEFINED_BEHAVIOR");
         break;
     case GL_DEBUG_TYPE_PORTABILITY_ARB:
-        Log::warn("GLWrap", "    Error type : PORTABILITY");
+        logwarn("GLWrap", "    Error type : PORTABILITY");
         break;
     case GL_DEBUG_TYPE_PERFORMANCE_ARB:
-        Log::warn("GLWrap", "    Error type : PERFORMANCE");
+        logwarn("GLWrap", "    Error type : PERFORMANCE");
         break;
     case GL_DEBUG_TYPE_OTHER_ARB:
-        Log::warn("GLWrap", "    Error type : OTHER");
+        logwarn("GLWrap", "    Error type : OTHER");
         break;
     }
 
     switch(severity)
     {
     case GL_DEBUG_SEVERITY_HIGH_ARB:
-        Log::warn("GLWrap", "    Severity : HIGH");
+        logwarn("GLWrap", "    Severity : HIGH");
         break;
     case GL_DEBUG_SEVERITY_MEDIUM_ARB:
-        Log::warn("GLWrap", "    Severity : MEDIUM");
+        logwarn("GLWrap", "    Severity : MEDIUM");
         break;
     case GL_DEBUG_SEVERITY_LOW_ARB:
-        Log::warn("GLWrap", "    Severity : LOW");
+        logwarn("GLWrap", "    Severity : LOW");
         break;
     }
     
     if (msg)
-        Log::warn("GLWrap", "    Message : %s", msg);
+        logwarn("GLWrap", "    Message : %s", msg);
 }
 #endif
 
@@ -168,7 +168,7 @@ void initGL()
 #endif
     GLenum err = glewInit();
     if (GLEW_OK != err)
-        Log::fatal("GLEW", "Glew initialisation failed with error %s", glewGetErrorString(err));
+        logfatal("GLEW", "Glew initialisation failed with error %s", glewGetErrorString(err));
 #else
 #ifdef ARB_DEBUG_OUTPUT
     glDebugMessageCallbackARB = (PFNGLDEBUGMESSAGECALLBACKKHRPROC)eglGetProcAddress("glDebugMessageCallbackKHR");
@@ -779,30 +779,30 @@ bool checkGLError()
     case GL_NO_ERROR:
         break;
     case GL_INVALID_ENUM:
-        Log::warn("GLWrap", "glGetError: GL_INVALID_ENUM");
+        logwarn("GLWrap", "glGetError: GL_INVALID_ENUM");
         break;
     case GL_INVALID_VALUE:
-        Log::warn("GLWrap", "glGetError: GL_INVALID_VALUE");
+        logwarn("GLWrap", "glGetError: GL_INVALID_VALUE");
         break;
     case GL_INVALID_OPERATION:
-        Log::warn("GLWrap", "glGetError: GL_INVALID_OPERATION");
+        logwarn("GLWrap", "glGetError: GL_INVALID_OPERATION");
         break;
     case GL_INVALID_FRAMEBUFFER_OPERATION:
-        Log::warn("GLWrap", "glGetError: GL_INVALID_FRAMEBUFFER_OPERATION");
+        logwarn("GLWrap", "glGetError: GL_INVALID_FRAMEBUFFER_OPERATION");
         break;
     case GL_OUT_OF_MEMORY:
-        Log::warn("GLWrap", "glGetError: GL_OUT_OF_MEMORY");
+        logwarn("GLWrap", "glGetError: GL_OUT_OF_MEMORY");
         break;
 #if !defined(USE_GLES2)
     case GL_STACK_UNDERFLOW:
-        Log::warn("GLWrap", "glGetError: GL_STACK_UNDERFLOW");
+        logwarn("GLWrap", "glGetError: GL_STACK_UNDERFLOW");
         break;
     case GL_STACK_OVERFLOW:
-        Log::warn("GLWrap", "glGetError: GL_STACK_OVERFLOW");
+        logwarn("GLWrap", "glGetError: GL_STACK_OVERFLOW");
         break;
 #endif
     default:
-        Log::warn("GLWrap", "glGetError: %i", (int)err);
+        logwarn("GLWrap", "glGetError: %i", (int)err);
         break;
     }
     

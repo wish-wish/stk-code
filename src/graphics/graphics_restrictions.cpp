@@ -215,7 +215,7 @@ public:
             return;
         }
 
-        Log::warn("Graphics", "Can not find version for '%s' '%s' - ignored.",
+        logwarn("Graphics", "Can not find version for '%s' '%s' - ignored.",
             driver_version.c_str(), card_name.c_str());
 
     }   // Version
@@ -330,7 +330,7 @@ public:
             }
             else
             {
-                Log::warn("Graphics", "Invalid verison '%s' found - ignored.",
+                logwarn("Graphics", "Invalid verison '%s' found - ignored.",
                           s.c_str());
             }
             m_driver_version = Version(s);
@@ -480,13 +480,13 @@ void init(const std::string &driver_version,
     const XMLNode *rules = file_manager->createXMLTree(filename);
     if (!rules)
     {
-        Log::warn("Graphics", "Could not find graphical_restrictions.xm");
+        logwarn("Graphics", "Could not find graphical_restrictions.xm");
         return;
     }
     if (rules->getName() != "graphical-restrictions")
     {
         delete rules;
-        Log::warn("Graphics", "'%s' did not contain graphical-restrictions tag",
+        logwarn("Graphics", "'%s' did not contain graphical-restrictions tag",
             filename.c_str());
         return;
     }
@@ -497,7 +497,7 @@ void init(const std::string &driver_version,
         const XMLNode *xml_rule = rules->getNode(i);
         if (xml_rule->getName() != "card")
         {
-            Log::warn("Graphics", "Incorrect node '%s' found in '%s' - ignored.",
+            logwarn("Graphics", "Incorrect node '%s' found in '%s' - ignored.",
                       xml_rule->getName().c_str(), filename.c_str());
             continue;
         }

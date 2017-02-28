@@ -117,7 +117,7 @@ float History::updateReplayAndGetDT()
     World *world = World::getWorld();
     if(m_current>=(int)m_all_deltas.size())
     {
-        Log::info("History", "Replay finished");
+        loginfo("History", "Replay finished");
         m_current = 0;
         // This is useful to use a reproducable rewind problem:
         // replay it with history, for debugging only
@@ -157,18 +157,18 @@ void History::Save()
 {
     FILE *fd = fopen("history.dat","w");
     if(fd)
-        Log::info("History", "Saved in ./history.dat.");
+        loginfo("History", "Saved in ./history.dat.");
     else
     {
         std::string fn = file_manager->getUserConfigFile("history.dat");
         fd = fopen(fn.c_str(), "w");
         if(fd)
-            Log::info("History", "Saved in '%s'.", fn.c_str());
+            loginfo("History", "Saved in '%s'.", fn.c_str());
     }
     if(!fd)
     {
-        Log::info("History", "Can't open history.dat file for writing - can't save history.");
-        Log::info("History", "Make sure history.dat in the current directory "
+        loginfo("History", "Can't open history.dat file for writing - can't save history.");
+        loginfo("History", "Make sure history.dat in the current directory "
                              "or the config directory is writable.");
         return;
     }
@@ -231,41 +231,41 @@ void History::Load()
 
     FILE *fd = fopen("history.dat","r");
     if(fd)
-        Log::info("History", "Reading ./history.dat");
+        loginfo("History", "Reading ./history.dat");
     else
     {
         std::string fn = file_manager->getUserConfigFile("history.dat");
         fd = fopen(fn.c_str(), "r");
         if(fd)
-            Log::info("History", "Reading '%s'.", fn.c_str());
+            loginfo("History", "Reading '%s'.", fn.c_str());
     }
     if(!fd)
-        Log::fatal("History", "Could not open history.dat");
+        logfatal("History", "Could not open history.dat");
 
     if (fgets(s, 1023, fd) == NULL)
-        Log::fatal("History", "Could not read history.dat.");
+        logfatal("History", "Could not read history.dat.");
 
     if (sscanf(s,"Version: %1023s",s1)!=1)
-        Log::fatal("History", "No Version information found in history file (bogus history file).");
+        logfatal("History", "No Version information found in history file (bogus history file).");
     else if (strcmp(s1,STK_VERSION))
-        Log::warn("History", "History is version '%s', STK version is '%s'.", s1, STK_VERSION);
+        logwarn("History", "History is version '%s', STK version is '%s'.", s1, STK_VERSION);
 
     if (fgets(s, 1023, fd) == NULL)
-        Log::fatal("History", "Could not read history.dat.");
+        logfatal("History", "Could not read history.dat.");
 
     unsigned int num_karts;
     if(sscanf(s, "numkarts: %u", &num_karts)!=1)
-        Log::fatal("History", "No number of karts found in history file.");
+        logfatal("History", "No number of karts found in history file.");
     race_manager->setNumKarts(num_karts);
 
     fgets(s, 1023, fd);
     if(sscanf(s, "numplayers: %d",&n)!=1)
-        Log::fatal("History", "No number of players found in history file.");
+        logfatal("History", "No number of players found in history file.");
     race_manager->setNumPlayers(n);
 
     fgets(s, 1023, fd);
     if(sscanf(s, "difficulty: %d",&n)!=1)
-        Log::fatal("History", "No difficulty found in history file.");
+        logfatal("History", "No difficulty found in history file.");
     race_manager->setDifficulty((RaceManager::Difficulty)n);
 
 
@@ -280,7 +280,7 @@ void History::Load()
 
 
     if(sscanf(s, "track: %1023s",s1)!=1)
-        Log::warn("History", "Track not found in history file.");
+        logwarn("History", "Track not found in history file.");
     race_manager->setTrack(s1);
     // This value doesn't really matter, but should be defined, otherwise
     // the racing phase can switch to 'ending'
@@ -290,7 +290,7 @@ void History::Load()
     {
         fgets(s, 1023, fd);
         if(sscanf(s, "model %d: %1023s",&n, s1) != 2)
-            Log::fatal("History", "No model information for kart %d found.", i);
+            logfatal("History", "No model information for kart %d found.", i);
         m_kart_ident.push_back(s1);
         if(i<race_manager->getNumPlayers())
         {
@@ -300,7 +300,7 @@ void History::Load()
     // FIXME: The model information is currently ignored
     fgets(s, 1023, fd);
     if(sscanf(s,"size: %d",&m_size)!=1)
-        Log::fatal("History", "Number of records not found in history file.");
+        logfatal("History", "Number of records not found in history file.");
 
     allocateMemory(m_size);
     m_current = -1;

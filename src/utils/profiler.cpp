@@ -395,7 +395,7 @@ void Profiler::draw()
         float curr_val = 0;
         for (unsigned i = 0; i < Q_LAST; i++)
         {
-            //Log::info("GPU Perf", "Phase %d : %d us\n", i, irr_driver->getGPUTimer(i).elapsedTimeus());
+            //loginfo("GPU Perf", "Phase %d : %d us\n", i, irr_driver->getGPUTimer(i).elapsedTimeus());
 
             float elapsed = float(gpu_timers[i]);
             core::rect<s32> pos((s32)(x_offset + (curr_val / total)*profiler_width),

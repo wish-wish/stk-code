@@ -65,7 +65,7 @@ void CheckManager::load(const XMLNode &node)
             m_all_checks.push_back(cs);
         }   // checksphere
         else
-            Log::warn("CheckManager", "Unknown check structure '%s' - ignored.", type.c_str());
+            logwarn("CheckManager", "Unknown check structure '%s' - ignored.", type.c_str());
     }   // for i<node.getNumNodes
 
     // Now set all 'successors', i.e. check structures that need to get a
@@ -155,15 +155,15 @@ unsigned int CheckManager::getLapLineIndex() const
 
         if (dynamic_cast<CheckLap*>(c) != NULL) return i;
     }
-    Log::warn("CheckManager", "No check-lap structure found! This can cause incorrect kart");
-    Log::warn("CheckManager", "ranking when crossing the line, but can otherwise be ignored.");
+    logwarn("CheckManager", "No check-lap structure found! This can cause incorrect kart");
+    logwarn("CheckManager", "ranking when crossing the line, but can otherwise be ignored.");
     for (unsigned int i=0; i<getCheckStructureCount(); i++)
     {
         if(getCheckStructure(i)->getType()==CheckStructure::CT_NEW_LAP)
             return i;
     }
 
-    Log::fatal("CheckManager", "Error, no kind of lap line for track found, aborting.");
+    logfatal("CheckManager", "Error, no kind of lap line for track found, aborting.");
     return -1;
 }   // getLapLineIndex
 

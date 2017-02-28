@@ -105,7 +105,7 @@ ParticleKind::ParticleKind(const std::string &file)
     }
     else
     {
-        Log::warn("ParticleKind", "<particles> main node has unknown value for attribute 'emitter'.");
+        logwarn("ParticleKind", "<particles> main node has unknown value for attribute 'emitter'.");
         m_shape = EMITTER_POINT;
     }
 
@@ -265,7 +265,7 @@ Material* ParticleKind::getMaterial() const
     }
     else
     {
-        Log::warn("ParticleKind", "Particle image '%s' does not appear in the list of "
+        logwarn("ParticleKind", "Particle image '%s' does not appear in the list of "
                   "currently known materials.", m_material_file.c_str());
         return NULL;
     }

@@ -137,7 +137,7 @@ irr::core::stringw Achievement::getProgressAsString() const
         }
         break;
     default:
-        Log::fatal("Achievement", "Missing getProgressAsString for type %d.",
+        logfatal("Achievement", "Missing getProgressAsString for type %d.",
                    m_achievement_info->getCheckType());
     }
     return StringUtils::toWString(progress) + "/" + getInfo()->toString();

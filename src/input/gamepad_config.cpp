@@ -72,7 +72,7 @@ bool GamepadConfig::load(const XMLNode *config)
 
     if(getName()=="")
     {
-        Log::error("DeviceConfig", "Unnamed joystick in config file.");
+        logerror("DeviceConfig", "Unnamed joystick in config file.");
         return false;
     }
     detectType();
@@ -260,7 +260,7 @@ core::stringw GamepadConfig::getBindingAsString(const PlayerAction action) const
     }   // xbox
 
     // Offer a fallback ... just in case
-    Log::warn("GamepadConfig", "Missing action string for pad '%s' action '%d'",
+    logwarn("GamepadConfig", "Missing action string for pad '%s' action '%d'",
               getName().c_str(), action);
     return DeviceConfig::getBindingAsString(action);
 }   // getBindingAsString

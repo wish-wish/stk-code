@@ -138,7 +138,7 @@ void ArenasScreen::eventCallback(Widget* widget, const std::string& name, const 
 
         const std::string selection = w2->getSelectionIDString(PLAYER_ID_GAME_MASTER);
         if (UserConfigParams::logGUI())
-            Log::info("ArenasScreen", "Clicked on arena %s", selection.c_str());
+            loginfo("ArenasScreen", "Clicked on arena %s", selection.c_str());
 
 
         if (selection == "random_track")

@@ -59,7 +59,7 @@ void CheckGoal::update(float dt)
         {
             if (UserConfigParams::m_check_debug)
             {
-                Log::info("CheckGoal", "Goal check structure"
+                loginfo("CheckGoal", "Goal check structure"
                           "%d triggered for ball.", m_index);
             }
             trigger(0);
@@ -76,7 +76,7 @@ void CheckGoal::trigger(unsigned int i)
     SoccerWorld* world = dynamic_cast<SoccerWorld*>(World::getWorld());
     if(!world)
     {
-        Log::warn("CheckGoal",
+        logwarn("CheckGoal",
                   "No soccer world found, cannot count the points.");
         return;
     }

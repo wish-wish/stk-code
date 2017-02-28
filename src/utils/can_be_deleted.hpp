@@ -51,23 +51,22 @@ public:
     {
         if (m_can_be_deleted.getAtomic()) return true;
         double start = StkTime::getRealTime();
-        Log::verbose("Thread", "Start waiting %lf", start);
+        logverbose("Thread", "Start waiting %lf", start);
         while(1)
         {
             if(m_can_be_deleted.getAtomic())
             {
-                Log::verbose("Thread",
+                logverbose("Thread",
                          "Waited %lf seconds for thread to become deleteable.",
                          StkTime::getRealTime()-start);
-                Log::verbose("Thread", "Stop waiting %lf", StkTime::getRealTime());
+                logverbose("Thread", "Stop waiting %lf", StkTime::getRealTime());
                 return true;
             }
             StkTime::sleep(10);
             if(StkTime::getRealTime() - start > waiting_time)
             {
-                Log::verbose("Thread", "Stop waiting %lf", StkTime::getRealTime());
-                Log::verbose("Thread", "Waited for more than %f seconds for "
-                                       "thread to become deleteable",
+                logverbose("Thread", "Stop waiting %lf", StkTime::getRealTime());
+                logverbose("Thread", "Waited for more than %f seconds for thread to become deleteable",
                                        waiting_time);
                 return false;
             }

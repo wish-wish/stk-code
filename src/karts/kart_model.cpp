@@ -76,7 +76,7 @@ void SpeedWeightedObject::Properties::checkAllSet()
 {
 #define CHECK_NEG(  a,strA) if(a<=SPEED_WEIGHTED_OBJECT_PROPERTY_UNDEFINED)  \
         {                                                                    \
-            Log::fatal("SpeedWeightedObject",                                \
+            logfatal("SpeedWeightedObject",                                \
                        "Missing default value for '%s'.",                    \
                        strA);                                                \
         }
@@ -562,7 +562,7 @@ bool KartModel::loadModels(const KartProperties &kart_properties)
     m_mesh                 = irr_driver->getAnimatedMesh(full_path);
     if(!m_mesh)
     {
-        Log::error("Kart_Model", "Problems loading mesh '%s' - kart '%s' will"
+        logerror("Kart_Model", "Problems loading mesh '%s' - kart '%s' will"
                    "not be available.",
                    full_path.c_str(), kart_properties.getIdent().c_str());
         return false;
@@ -710,9 +710,9 @@ void KartModel::loadNitroEmitterInfo(const XMLNode &node,
         // stk_config file is read (which has no model information).
         if(m_model_filename!="")
         {
-            Log::error("Kart_Model", "Missing nitro emitter information for model"
+            logerror("Kart_Model", "Missing nitro emitter information for model"
                        "'%s'.", m_model_filename.c_str());
-            Log::error("Kart_Model", "This can be ignored, but the nitro particles will not work");
+            logerror("Kart_Model", "This can be ignored, but the nitro particles will not work");
         }
         return;
     }
@@ -775,7 +775,7 @@ void KartModel::loadHeadlights(const XMLNode &node)
         }
         else
         {
-            Log::warn("KartModel", "Unknown XML node in the headlights section");
+            logwarn("KartModel", "Unknown XML node in the headlights section");
         }
     }
 }
@@ -898,7 +898,7 @@ void KartModel::OnAnimationEnd(scene::IAnimatedMeshSceneNode *node)
     if(m_current_animation==AF_DEFAULT ||
         m_animation_frame[m_current_animation]<=-1)
     {
-        Log::debug("Kart_Model", "OnAnimationEnd for '%s': current %d frame %d",
+        logdebug("Kart_Model", "OnAnimationEnd for '%s': current %d frame %d",
                m_model_filename.c_str(),
                m_current_animation, m_animation_frame[m_current_animation]);
         assert(false);

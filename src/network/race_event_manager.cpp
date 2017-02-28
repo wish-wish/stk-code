@@ -37,7 +37,7 @@ void RaceEventManager::update(float dt)
     {
         // consider the world finished.
         stop();
-        Log::info("RaceEventManager", "The game is considered finish.");
+        loginfo("RaceEventManager", "The game is considered finish.");
     }
 }   // update
 

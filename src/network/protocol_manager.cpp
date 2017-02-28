@@ -202,7 +202,7 @@ void ProtocolManager::startProtocol(Protocol *protocol)
     // add the protocol to the protocol vector so that it's updated
     m_protocols.lock();
     pthread_mutex_lock(&m_asynchronous_protocols_mutex);
-    Log::info("ProtocolManager",
+    loginfo("ProtocolManager",
         "A %s protocol with id=%u has been started. There are %ld protocols running.", 
               typeid(*protocol).name(), protocol->getId(),
               m_protocols.getData().size()+1);
@@ -260,7 +260,7 @@ void ProtocolManager::terminateProtocol(Protocol *protocol)
             offset++;
         }
     }
-    Log::info("ProtocolManager",
+    loginfo("ProtocolManager",
               "A %s protocol has been terminated. There are %ld protocols running.",
               protocol_type.c_str(), m_protocols.getData().size());
     pthread_mutex_unlock(&m_asynchronous_protocols_mutex);

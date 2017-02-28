@@ -48,7 +48,7 @@ ServerInfoDialog::ServerInfoDialog(uint32_t server_id, uint32_t host_id,
                 : ModalDialog(0.8f,0.8f), m_server_id(server_id)
                 , m_host_id(host_id)
 {
-    Log::info("ServerInfoDialog", "Server id is %d, Host id is %d",
+    loginfo("ServerInfoDialog", "Server id is %d, Host id is %d",
                server_id, host_id);
     m_self_destroy = false;
     m_enter_lobby = false;

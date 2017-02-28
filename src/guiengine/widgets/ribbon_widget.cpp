@@ -115,7 +115,7 @@ void RibbonWidget::add()
         if (m_active_children[i].m_type != WTYPE_ICON_BUTTON &&
             m_active_children[i].m_type != WTYPE_BUTTON)
         {
-            Log::warn("RiggonWidget", "Ribbon widgets can only have "
+            logwarn("RiggonWidget", "Ribbon widgets can only have "
                             "(icon)button widgets as children");
             continue;
         }
@@ -270,7 +270,7 @@ void RibbonWidget::add()
             }
             else
             {
-                Log::error("RibbonWidget", "Invalid tab bar contents");
+                logerror("RibbonWidget", "Invalid tab bar contents");
             }
 
             m_active_children[i].m_element = subbtn;
@@ -309,7 +309,7 @@ void RibbonWidget::add()
                 std::string file = file_manager->getAsset(FileManager::GUI,"main_help.png");
                 image = irr_driver->getTexture(file);
                 if(!image)
-                    Log::fatal("RibbonWidget",
+                    logfatal("RibbonWidget",
                         "Can't find fallback texture 'gui/main_help.png, aborting.");
             }
 
@@ -358,7 +358,7 @@ void RibbonWidget::add()
         }
         else
         {
-            Log::warn("RiggonWidget", "Invalid contents type in ribbon");
+            logwarn("RiggonWidget", "Invalid contents type in ribbon");
         }
 
 
@@ -600,7 +600,7 @@ EventPropagation RibbonWidget::mouseHovered(Widget* child,
 
     if (m_ribbon_type == RIBBON_COMBO || m_ribbon_type == RIBBON_TABS)
     {
-        //Log::info("RibbonWidget", "Setting m_mouse_focus");
+        //loginfo("RibbonWidget", "Setting m_mouse_focus");
         m_mouse_focus = child;
     }
 

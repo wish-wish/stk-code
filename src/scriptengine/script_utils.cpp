@@ -139,19 +139,19 @@ namespace Scripting
         /** Log to the console */
         void logInfo(std::string* log)
         {
-            Log::info("Script", "%s", log->c_str());
+            loginfo("Script", "%s", log->c_str());
         }
 
         /** Log warning to the console */
         void logWarning(std::string* log)
         {
-            Log::warn("Script", "%s", log->c_str());
+            logwarn("Script", "%s", log->c_str());
         }
 
         /** Log error to the console */
         void logError(std::string* log)
         {
-            Log::error("Script", "%s", log->c_str());
+            logerror("Script", "%s", log->c_str());
         }
         /** @}*/
         /** @}*/

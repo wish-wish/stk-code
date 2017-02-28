@@ -56,16 +56,16 @@ void HidePublicAddress::asynchronousUpdate()
         {
             if(rec_success == "yes")
             {
-                Log::debug("HidePublicAddress", "Address hidden successfully.");
+                logdebug("HidePublicAddress", "Address hidden successfully.");
             }
             else
             {
-                Log::error("HidePublicAddress", "Fail to hide address.");
+                logerror("HidePublicAddress", "Fail to hide address.");
             }
         }
         else
         {
-            Log::error("HidePublicAddress", "Fail to hide address.");
+            logerror("HidePublicAddress", "Fail to hide address.");
         }
         m_state = DONE;
     }

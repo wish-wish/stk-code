@@ -91,14 +91,14 @@ float MainLoop::getLimitedDt()
             const LinearWorld *lw = dynamic_cast<const LinearWorld*>(world);
             if (lw)
             {
-                Log::verbose("fps", "time %f distance %f dt %f fps %f",
+                logverbose("fps", "time %f distance %f dt %f fps %f",
                              lw->getTime(),
                              lw->getDistanceDownTrackForKart(0),
                              dt*0.001f, 1000.0f / dt);
             }
             else
             {
-                Log::verbose("fps", "time %f dt %f fps %f",
+                logverbose("fps", "time %f dt %f fps %f",
                              world->getTime(), dt*0.001f, 1000.0f / dt);
             }
 

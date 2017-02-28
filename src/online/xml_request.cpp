@@ -60,7 +60,7 @@ namespace Online
         m_xml_data = file_manager->createXMLTreeFromString(getData());
         if (hadDownloadError())
         {
-            Log::error("XMLRequest::afterOperation",
+            logerror("XMLRequest::afterOperation",
                        "curl_easy_perform() failed: %s",
                        getDownloadErrorMessage());
         }
@@ -74,7 +74,7 @@ namespace Online
 
             if (!m_success)
             {
-                Log::debug("XMLRequest::afterOperation",
+                logdebug("XMLRequest::afterOperation",
                            "Request returned error: %ls", m_info.c_str());
             }
         }

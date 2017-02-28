@@ -118,7 +118,7 @@ void TriangleMesh::createCollisionShape(bool create_collision_object, const char
         btOptimizedBvh* bhv = btOptimizedBvh::deSerializeInPlace(bytes, pos, !IS_LITTLE_ENDIAN);
         if (bhv == NULL)
         {
-            Log::warn("TriangleMesh", "Failed to load serialized BHV");
+            logwarn("TriangleMesh", "Failed to load serialized BHV");
             bhv_triangle_mesh = new btBvhTriangleMeshShape(&m_mesh, false /* useQuantizedAabbCompression */);
         }
         else

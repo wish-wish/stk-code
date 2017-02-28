@@ -139,7 +139,7 @@ void STKTexture::reload(bool no_upload, uint8_t* preload_data,
                 file_manager->fileIsNewer(compressed_texture, orig_file)) &&
                 loadCompressedTexture(compressed_texture))
             {
-                Log::debug("STKTexture", "Compressed %s for texture %s",
+                logdebug("STKTexture", "Compressed %s for texture %s",
                     compressed_texture.c_str(), orig_file.c_str());
                 return;
             }
@@ -148,7 +148,7 @@ void STKTexture::reload(bool no_upload, uint8_t* preload_data,
         }
         else
         {
-            Log::warn("STKTexture", "Cannot find container_id for texture %s",
+            logwarn("STKTexture", "Cannot find container_id for texture %s",
                 orig_file.c_str());
         }
     }
@@ -353,7 +353,7 @@ void STKTexture::applyMask(video::IImage* orig_img)
             ->createImageFromFile(m_material->getAlphaMask().c_str());
         if (converted_mask == NULL)
         {
-            Log::warn("STKTexture", "Applying mask failed for '%s'!",
+            logwarn("STKTexture", "Applying mask failed for '%s'!",
                 m_material->getAlphaMask().c_str());
             return;
         }
@@ -397,7 +397,7 @@ bool STKTexture::loadCompressedTexture(const std::string& file_name)
     ifs.read((char*)&cache_verison, sizeof(uint8_t));
     if (cache_verison != CACHE_VERSION)
     {
-        Log::warn("STKTexture", "%s version %d is not supported!",
+        logwarn("STKTexture", "%s version %d is not supported!",
             file_name.c_str(), cache_verison);
         ifs.close();
         // Remove the file later if we have more version

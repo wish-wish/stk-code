@@ -40,9 +40,9 @@ AchievementInfo::AchievementInfo(const XMLNode * input)
           input->get("description",      &m_description     );
     if (!all)
     {
-        Log::error("AchievementInfo",
+        logerror("AchievementInfo",
                    "Not all necessary values for achievement defined.");
-        Log::error("AchievementInfo",
+        logerror("AchievementInfo",
                    "ID %d name '%s' description '%s'", m_id, m_name.c_str(),
                                                         m_description.c_str());
     }
@@ -55,7 +55,7 @@ AchievementInfo::AchievementInfo(const XMLNode * input)
     else if (s == "lap")
         m_reset_type = AFTER_LAP;
     else if (s != "never")
-        Log::warn("AchievementInfo", "Achievement check type '%s' unknown.",
+        logwarn("AchievementInfo", "Achievement check type '%s' unknown.",
             s.c_str());
 
     // Load check-type
@@ -66,7 +66,7 @@ AchievementInfo::AchievementInfo(const XMLNode * input)
     else if (s == "one-at-least")
         m_check_type = AC_ONE_AT_LEAST;
     else
-        Log::warn("AchievementInfo", "Achievement check type '%s' unknown.",
+        logwarn("AchievementInfo", "Achievement check type '%s' unknown.",
                   s.c_str());
     input->get("secret", &m_is_secret);
 
@@ -80,13 +80,13 @@ AchievementInfo::AchievementInfo(const XMLNode * input)
         m_goal_values[key] = goal;
     }
     if (m_goal_values.size() != input->getNumNodes())
-        Log::fatal("AchievementInfo",
+        logfatal("AchievementInfo",
                   "Duplicate keys for the entries of a MapAchievement found.");
 
     if (m_check_type == AC_ONE_AT_LEAST)
     {
         if (m_goal_values.size() != 1)
-            Log::fatal("AchievementInfo",
+            logfatal("AchievementInfo",
                      "A one-at-least achievement must have exactly one goal.");
     }
 }   // AchievementInfo
@@ -113,7 +113,7 @@ irr::core::stringw AchievementInfo::toString() const
         count = m_goal_values.begin()->second;
         break;
     default:
-        Log::fatal("AchievementInfo", "Missing toString for type %d.",
+        logfatal("AchievementInfo", "Missing toString for type %d.",
                    m_check_type);
     }
     return StringUtils::toWString(count);
@@ -147,7 +147,7 @@ bool AchievementInfo::checkCompletion(Achievement * achievement) const
         return false;
     }
     default:
-        Log::fatal("AchievementInfo", "Missing check for type %d.",
+        logfatal("AchievementInfo", "Missing check for type %d.",
                    m_check_type);
     }   // switch
 

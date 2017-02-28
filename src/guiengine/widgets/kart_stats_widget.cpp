@@ -62,7 +62,7 @@ KartStatsWidget::KartStatsWidget(core::recti area, const int player_id,
         }
 
         if(!props)
-            Log::fatal("KartSelectionScreen", "Can't find default "
+            logfatal("KartSelectionScreen", "Can't find default "
                        "kart '%s' nor any other kart.",
                        default_kart.c_str());
     }

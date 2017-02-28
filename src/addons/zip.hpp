@@ -18,10 +18,13 @@
 #ifndef HEADER_ZIP_HPP
 #define HEADER_ZIP_HPP
 
+#include "path.h"
+
+using namespace irr::io;
 /**
   * Extract a zip.
   * \ingroup addonsgroup
   */
-bool extract_zip(const std::string &from, const std::string &to);
+bool extract_zip(const path &from, const path &to);
 
 #endif

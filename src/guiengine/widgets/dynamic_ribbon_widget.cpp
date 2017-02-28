@@ -205,7 +205,7 @@ void DynamicRibbonWidget::add()
 
     if (m_child_width <= 0 || m_child_height <= 0)
     {
-        Log::warn("DynamicRibbonWidget", "Ribbon grid widgets require 'child_width' and 'child_height' arguments");
+        logwarn("DynamicRibbonWidget", "Ribbon grid widgets require 'child_width' and 'child_height' arguments");
         m_child_width = 256;
         m_child_height = 256;
     }
@@ -221,7 +221,7 @@ void DynamicRibbonWidget::add()
 
         if (m_h - m_label_height < 0)
         {
-            Log::warn("DynamicRibbonWidget", "The widget is too small for anything to fit in it!!");
+            logwarn("DynamicRibbonWidget", "The widget is too small for anything to fit in it!!");
             m_row_amount = 1;
         }
         else
@@ -268,7 +268,7 @@ void DynamicRibbonWidget::add()
                 const float score = log(2.0f*visible_items) *
                                       std::min(ratio, 1.0f) * std::min(taken_area/total_area, 1.0f);
 
-                //Log::info("DynamicRibbonWidget", "%d rown: %d visible items; area = %f; "
+                //loginfo("DynamicRibbonWidget", "%d rown: %d visible items; area = %f; "
                 //    "size penalty = %f; score = %f", row_count, visible_items, taken_area,
                 //    std::min((float)item_height / (float)m_child_height, 1.0f), score);
 
@@ -286,7 +286,7 @@ void DynamicRibbonWidget::add()
             const int max_rows = atoi(m_properties[PROP_MAX_ROWS].c_str());
             if (max_rows < 1)
             {
-                Log::warn("DynamicRibbonWidget", "The 'max_rows' property must be an integer greater than zero; "
+                logwarn("DynamicRibbonWidget", "The 'max_rows' property must be an integer greater than zero; "
                     "Ignoring current value '%s'", m_properties[PROP_MAX_ROWS].c_str());
             }
             else
@@ -310,7 +310,7 @@ void DynamicRibbonWidget::add()
     for (int i=0; i<m_row_amount; i++)
     {
         m_ids[i] = getNewID();
-        //Log::info("DynamicRibbonWidget", "getNewID returns %d", m_ids[i]);
+        //loginfo("DynamicRibbonWidget", "getNewID returns %d", m_ids[i]);
     }
 
     buildInternalStructure();
@@ -344,11 +344,11 @@ void DynamicRibbonWidget::buildInternalStructure()
 
     // ajust column amount to not add more item slots than we actually need
     const int item_count = (int) m_items.size();
-    //Log::info("DynamicRibbonWidget", "%d items; %d cells", item_count, row_amount * m_col_amount);
+    //loginfo("DynamicRibbonWidget", "%d items; %d cells", item_count, row_amount * m_col_amount);
     if (m_row_amount*m_col_amount > item_count)
     {
         m_col_amount = (int)ceil((float)item_count/(float)m_row_amount);
-        //Log::info("DynamicRibbonWidget", "Adjusting m_col_amount to be %d", m_col_amount);
+        //loginfo("DynamicRibbonWidget", "Adjusting m_col_amount to be %d", m_col_amount);
     }
 
     assert( m_left_widget->ok() );
@@ -421,7 +421,7 @@ void DynamicRibbonWidget::buildInternalStructure()
             // it will assume there is no label and none will be created (FIXME: that's ugly)
             if (m_properties[PROP_LABELS_LOCATION] == "each") icon->m_text = " ";
 
-            //Log::info("DynamicRibbonWidget", "Ribbon text = %s", m_properties[PROP_TEXT].c_str());
+            //loginfo("DynamicRibbonWidget", "Ribbon text = %s", m_properties[PROP_TEXT].c_str());
 
             ribbon->m_children.push_back( icon );
             added_item_count++;
@@ -623,12 +623,12 @@ EventPropagation DynamicRibbonWidget::rightPressed(const int playerID)
                                                     getSelectedRibbon(playerID)->getSelectionText(playerID), playerID);
         }
     }
-    //Log::info("DynamicRibbonWidget", "Rightpressed %s", m_properties[PROP_ID].c_str());
+    //loginfo("DynamicRibbonWidget", "Rightpressed %s", m_properties[PROP_ID].c_str());
 
     assert(m_rows.size() >= 1);
     if (m_rows[0].m_ribbon_type == RIBBON_TOOLBAR) return EVENT_BLOCK;
 
-    //Log::info("DynamicRibbonWidget", "Rightpressed returning EVENT_LET");
+    //loginfo("DynamicRibbonWidget", "Rightpressed returning EVENT_LET");
 
     return EVENT_LET;
 }
@@ -693,7 +693,7 @@ EventPropagation DynamicRibbonWidget::transmitEvent(Widget* w,
 EventPropagation DynamicRibbonWidget::mouseHovered(Widget* child, const int playerID)
 {
     if (m_deactivated) return EVENT_LET;
-    //Log::info("DynamicRibbonWidget", "mouseHovered %d", playerID);
+    //loginfo("DynamicRibbonWidget", "mouseHovered %d", playerID);
 
     updateLabel();
     propagateSelection();
@@ -1104,14 +1104,14 @@ bool DynamicRibbonWidget::setSelection(int item_id, const int playerID,
 
         if (iterations > 50)
         {
-            Log::error("DynamicRibbonWidget::setSelection", "Cannot find item %d (%s)", item_id, name.c_str());
+            logerror("DynamicRibbonWidget::setSelection", "Cannot find item %d (%s)", item_id, name.c_str());
             return false;
         }
 
         iterations++;
     }
 
-    //Log::info("DynamicRibbonWidget", "Player %d has item %d (%s) in row %d", playerID, item_id, name.c_str(), row);
+    //loginfo("DynamicRibbonWidget", "Player %d has item %d (%s) in row %d", playerID, item_id, name.c_str(), row);
     m_rows[row].setSelection(id, playerID);
     if (focusIt)
     {

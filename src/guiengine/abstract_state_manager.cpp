@@ -93,7 +93,7 @@ void AbstractStateManager::pushMenu(std::string name)
 
     if (UserConfigParams::logGUI())
     {
-        Log::info("AbstractStateManager::pushMenu", "Switching to screen %s",
+        loginfo("AbstractStateManager::pushMenu", "Switching to screen %s",
             name.c_str());
     }
 
@@ -125,7 +125,7 @@ void AbstractStateManager::pushScreen(Screen* screen)
 
     if (UserConfigParams::logGUI())
     {
-        Log::info("AbstractStateManager::pushScreen", "Switching to screen %s",
+        loginfo("AbstractStateManager::pushScreen", "Switching to screen %s",
             screen->getName().c_str());
     }
 
@@ -152,7 +152,7 @@ void AbstractStateManager::replaceTopMostScreen(Screen* screen, GUIEngine::GameS
 
     if (UserConfigParams::logGUI())
     {
-        Log::info("AbstractStateManager::replaceTopMostScreen", "Switching to screen %s",
+        loginfo("AbstractStateManager::replaceTopMostScreen", "Switching to screen %s",
             name.c_str());
     }
 
@@ -215,7 +215,7 @@ void AbstractStateManager::popMenu()
 
     if (UserConfigParams::logGUI())
     {
-        Log::info("AbstractStateManager::popMenu", "Switching to screen %s",
+        loginfo("AbstractStateManager::popMenu", "Switching to screen %s",
             m_menu_stack[m_menu_stack.size()-1].c_str());
     }
 
@@ -247,7 +247,7 @@ void AbstractStateManager::resetAndGoToScreen(Screen* screen)
     std::string name = screen->getName();
 
     if (UserConfigParams::logGUI())
-        Log::info("AbstractStateManager::resetAndGoToScreen", "Switching to screen %s",
+        loginfo("AbstractStateManager::resetAndGoToScreen", "Switching to screen %s",
             name.c_str());
 
     if (m_game_mode != GAME) getCurrentScreen()->tearDown();

@@ -119,9 +119,7 @@ void UnlockManager::readAllChallengesInDirs(const std::vector<std::string>* all_
                 }
                 catch (std::runtime_error& ex)
                 {
-                    Log::warn("unlock_manager", "An error occurred while "
-                              "loading challenge file '%s' : %s.\n"
-                              "Challenge will be ignored.",
+                    logwarn("unlock_manager", "An error occurred while loading challenge file '%s' : %s.\nChallenge will be ignored.",
                               filename.c_str(), ex.what());
                     continue;
                 }
@@ -146,7 +144,7 @@ void UnlockManager::addOrFreeChallenge(ChallengeData *c)
     }
     else
     {
-        Log::warn("Challenge", "Challenge '%s' is not supported - ignored.",
+        logwarn("Challenge", "Challenge '%s' is not supported - ignored.",
                  c->getId().c_str());
         delete c;
     }
@@ -167,8 +165,7 @@ void UnlockManager::addChallenge(const std::string& filename)
     }
     catch (std::runtime_error& ex)
     {
-        Log::warn("unlock_manager", "An error occurred while loading "
-                   "challenge file '%s' : %s challenge will be ignored.",
+        logwarn("unlock_manager", "An error occurred while loading challenge file '%s' : %s challenge will be ignored.",
                    filename.c_str(), ex.what());
         if (new_challenge) delete new_challenge;
         return;

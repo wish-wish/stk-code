@@ -120,7 +120,7 @@ void DriveNode::setupPathsToNode()
     for(unsigned int i = 0; i < m_path_to_node.size(); ++i)
     {
         if(m_path_to_node[i] == -1)
-            Log::warn("DriveNode", "No path to node %d found on drive node %d.",
+            logwarn("DriveNode", "No path to node %d found on drive node %d.",
                    i, m_index);
     }
 #endif

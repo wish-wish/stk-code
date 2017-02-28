@@ -140,7 +140,7 @@ void CameraNormal::smoothMoveCamera(float dt)
     current_position = m_kart_camera_position_with_offset.toIrrVector();
 
 
-    //Log::info("CAM_DEBUG", "OFFSET: %f %f %f TRANSFORMED %f %f %f TARGET %f %f %f",
+    //loginfo("CAM_DEBUG", "OFFSET: %f %f %f TRANSFORMED %f %f %f TARGET %f %f %f",
     //    wanted_camera_offset.x(), wanted_camera_offset.y(), wanted_camera_offset.z(),
     //    m_kart_camera_position_with_offset.x(), m_kart_camera_position_with_offset.y(),
     //    m_kart_camera_position_with_offset.z(), current_target.x(), current_target.y(),

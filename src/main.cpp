@@ -502,7 +502,7 @@ void setupRaceStart()
 
     if (!kart_properties_manager->getKart(UserConfigParams::m_default_kart))
     {
-        Log::warn("main", "Kart '%s' is unknown so will use the "
+        logwarn("main", "Kart '%s' is unknown so will use the "
             "default kart.",
             UserConfigParams::m_default_kart.c_str());
         race_manager->setPlayerKart(0,
@@ -649,13 +649,13 @@ int handleCmdLineOutputModifier()
 
     if(CommandLine::has("--version") || CommandLine::has("-v"))
     {
-        Log::info("main", "==============================");
-        Log::info("main", "SuperTuxKart, %s.", STK_VERSION ) ;
+        loginfo("main", "==============================");
+        loginfo("main", "SuperTuxKart, %s.", STK_VERSION ) ;
         // IRRLICHT_VERSION_SVN
-        Log::info("main", "Irrlicht version %i.%i.%i (%s)",
+        loginfo("main", "Irrlicht version %i.%i.%i (%s)",
                           IRRLICHT_VERSION_MAJOR , IRRLICHT_VERSION_MINOR,
                           IRRLICHT_VERSION_REVISION, IRRLICHT_SDK_VERSION );
-        Log::info("main", "==============================");
+        loginfo("main", "==============================");
         cleanUserConfig();
         exit(0);
     }
@@ -667,7 +667,7 @@ int handleCmdLineOutputModifier()
     if(CommandLine::has("--log=nocolor"))
     {
         Log::disableColor();
-        Log::verbose("main", "Colours disabled.");
+        logverbose("main", "Colours disabled.");
     }
 
     if(CommandLine::has("--console"))
@@ -711,7 +711,7 @@ int handleCmdLinePreliminary()
     if(CommandLine::has("--stk-config", &s))
     {
         stk_config->load(file_manager->getAsset(s));
-        Log::info("main", "STK config will be read from %s.",s.c_str());
+        loginfo("main", "STK config will be read from %s.",s.c_str());
     }
     if(CommandLine::has("--trackdir", &s))
         TrackManager::addTrackSearchDir(s);
@@ -744,17 +744,17 @@ int handleCmdLinePreliminary()
                     UserConfigParams::m_width = width;
                 UserConfigParams::m_prev_height =
                     UserConfigParams::m_height = height;
-                Log::verbose("main", "You choose to use %dx%d.",
+                logverbose("main", "You choose to use %dx%d.",
                     (int)UserConfigParams::m_width,
                     (int)UserConfigParams::m_height );
             }
             else
-                Log::warn("main", "Resolution %s has been blacklisted, so "
+                logwarn("main", "Resolution %s has been blacklisted, so "
                 "it is not available!", res.c_str());
         }
         else
         {
-            Log::fatal("main", "Error: --screensize argument must be "
+            logfatal("main", "Error: --screensize argument must be "
                 "given as WIDTHxHEIGHT");
         }
     }
@@ -770,7 +770,7 @@ int handleCmdLinePreliminary()
                    == UserConfigParams::m_blacklist_res.end())
             UserConfigParams::m_fullscreen = true;
         else
-            Log::warn("main", "Resolution %s has been blacklisted, so it "
+            logwarn("main", "Resolution %s has been blacklisted, so it "
             "is not available!", res.c_str());
     }
 
@@ -852,7 +852,7 @@ int handleCmdLinePreliminary()
         else
             UserConfigParams::m_additional_gp_directory = s + "/";
 
-        Log::info("main", "Additional Grand Prix's will be loaded from %s",
+        loginfo("main", "Additional Grand Prix's will be loaded from %s",
                            UserConfigParams::m_additional_gp_directory.c_str());
     }
 
@@ -1000,7 +1000,7 @@ int handleCmdLine()
         NetworkConfig::get()->setIsLAN();
         NetworkConfig::get()->setIsServer(false);
         NetworkConfig::get()->setMyAddress(me);
-        Log::info("main", "Try to connect to server '%s'.",
+        loginfo("main", "Try to connect to server '%s'.",
                   ip.toString().c_str()                    );
         irr::core::stringw name = StringUtils::utf8ToWide(ip.toString());
         ServersManager::get()->addServer(new Server(name, /*lan*/true,
@@ -1015,7 +1015,7 @@ int handleCmdLine()
         NetworkConfig::get()->setIsServer(true);
         NetworkConfig::get()->setIsWAN();
         STKHost::create();
-        Log::info("main", "Creating a WAN server '%s'.", s.c_str());
+        loginfo("main", "Creating a WAN server '%s'.", s.c_str());
     }
     if (CommandLine::has("--lan-server", &s))
     {
@@ -1023,7 +1023,7 @@ int handleCmdLine()
         NetworkConfig::get()->setIsServer(true);
         NetworkConfig::get()->setIsLAN();
         STKHost::create();
-        Log::info("main", "Creating a LAN server '%s'.", s.c_str());
+        loginfo("main", "Creating a LAN server '%s'.", s.c_str());
     }
     if (CommandLine::has("--server-password", &s))
     {
@@ -1061,7 +1061,7 @@ int handleCmdLine()
         {
             const KartProperties *km =
                 kart_properties_manager->getKartById(i);
-            Log::info("main", "%s:\t%swidth: %f length: %f height: %f "
+            loginfo("main", "%s:\t%swidth: %f length: %f height: %f "
                       "mesh-buffer count %d",
                       km->getIdent().c_str(),
                       (km->getIdent().size()<7) ? "\t" : "",
@@ -1087,12 +1087,12 @@ int handleCmdLine()
             {
                 race_manager->setPlayerKart(0, s);
             }
-            Log::verbose("main", "You chose to use kart '%s'.",
+            logverbose("main", "You chose to use kart '%s'.",
                          s.c_str());
         }
         else
         {
-            Log::warn("main", "Kart '%s' not found, ignored.",
+            logwarn("main", "Kart '%s' not found, ignored.",
                       s.c_str());
         }
     }   // if --kart
@@ -1109,7 +1109,7 @@ int handleCmdLine()
     {
         int n = atoi(s.c_str());
         if(n<0 || n>RaceManager::DIFFICULTY_LAST)
-            Log::warn("main", "Invalid difficulty '%s' - ignored.\n",
+            logwarn("main", "Invalid difficulty '%s' - ignored.\n",
                       s.c_str());
         else
             race_manager->setDifficulty(RaceManager::Difficulty(n));
@@ -1126,20 +1126,20 @@ int handleCmdLine()
         case 2: race_manager->setMinorMode(RaceManager::MINOR_MODE_FOLLOW_LEADER);
                 break;
         default:
-                Log::warn("main", "Invalid race type '%d' - ignored.", n);
+                logwarn("main", "Invalid race type '%d' - ignored.", n);
         }
     }   // --type
 
     if(CommandLine::has("--track", &s) || CommandLine::has("-t", &s))
     {
         race_manager->setTrack(s);
-        Log::verbose("main", "You choose to start in track '%s'.",
+        logverbose("main", "You choose to start in track '%s'.",
                      s.c_str());
 
         Track* t = track_manager->getTrack(s);
         if (!t)
         {
-            Log::warn("main", "Can't find track named '%s'.", s.c_str());
+            logwarn("main", "Can't find track named '%s'.", s.c_str());
         }
         else if (t->isArena())
         {
@@ -1179,7 +1179,7 @@ int handleCmdLine()
 
         if (!gp)
         {
-            Log::warn("main", "There is no GP named '%s'.", s.c_str());
+            logwarn("main", "There is no GP named '%s'.", s.c_str());
             return 0;
         }
         race_manager->setGrandPrix(*gp);
@@ -1190,12 +1190,12 @@ int handleCmdLine()
         UserConfigParams::m_num_karts = n;
         if(UserConfigParams::m_num_karts > stk_config->m_max_karts)
         {
-            Log::warn("main", "Number of karts reset to maximum number %d.",
+            logwarn("main", "Number of karts reset to maximum number %d.",
                       stk_config->m_max_karts);
             UserConfigParams::m_num_karts = stk_config->m_max_karts;
         }
         race_manager->setNumKarts( UserConfigParams::m_num_karts );
-        Log::verbose("main", "%d karts will be used.",
+        logverbose("main", "%d karts will be used.",
                      (int)UserConfigParams::m_num_karts);
     }   // --numkarts
 
@@ -1213,12 +1213,12 @@ int handleCmdLine()
         int laps = atoi(s.c_str());
         if (laps < 0)
         {
-            Log::error("main", "Invalid number of laps: %s.\n", s.c_str());
+            logerror("main", "Invalid number of laps: %s.\n", s.c_str());
             return 0;
         }
         else
         {
-            Log::verbose("main", "You choose to have %d laps.", laps);
+            logverbose("main", "You choose to have %d laps.", laps);
             race_manager->setNumLaps(laps);
         }
     }   // --laps
@@ -1227,12 +1227,12 @@ int handleCmdLine()
     {
         if (n < 0)
         {
-            Log::error("main", "Invalid number of profile-laps: %i.", n );
+            logerror("main", "Invalid number of profile-laps: %i.", n );
             return 0;
         }
         else
         {
-            Log::verbose("main", "Profiling %d laps.",n);
+            logverbose("main", "Profiling %d laps.",n);
             UserConfigParams::m_no_start_screen = true;
             ProfileWorld::setProfileModeLaps(n);
             race_manager->setNumLaps(n);
@@ -1241,7 +1241,7 @@ int handleCmdLine()
 
     if(CommandLine::has("--profile-time",  &n))
     {
-        Log::verbose("main", "Profiling: %d seconds.", n);
+        logverbose("main", "Profiling: %d seconds.", n);
         UserConfigParams::m_no_start_screen = true;
         ProfileWorld::setProfileModeTime((float)n);
         race_manager->setNumLaps(999999); // profile end depends on time
@@ -1320,7 +1320,7 @@ int handleCmdLine()
 
         if (request->isSuccess())
         {
-            Log::info("Main", "Logged in from command line.");
+            loginfo("Main", "Logged in from command line.");
         }
     }
 
@@ -1620,7 +1620,7 @@ int main(int argc, char *argv[] )
                 }
                 catch (std::runtime_error& e)
                 {
-                    Log::warn("Addons", "Exception thrown when initializing addons manager : %s", e.what());
+                    logwarn("Addons", "Exception thrown when initializing addons manager : %s", e.what());
                 }
             }
         }
@@ -1642,7 +1642,7 @@ int main(int argc, char *argv[] )
                     /*from queue*/ true);
                 GUIEngine::DialogQueue::get()->pushDialog(dialog);
             }
-            Log::warn("OpenGL", "Driver is too old!");
+            logwarn("OpenGL", "Driver is too old!");
         }
 #ifndef SERVER_ONLY
         else if (!CVS->isGLSL())
@@ -1661,7 +1661,7 @@ int main(int argc, char *argv[] )
                     /*from queue*/ true);
                 GUIEngine::DialogQueue::get()->pushDialog(dialog);
             }
-            Log::warn("OpenGL", "OpenGL version is too old!");
+            logwarn("OpenGL", "OpenGL version is too old!");
         }
 #endif
         // Note that on the very first run of STK internet status is set to
@@ -1773,8 +1773,8 @@ int main(int argc, char *argv[] )
     }  // try
     catch (std::exception &e)
     {
-        Log::error("main", "Exception caught : %s.",e.what());
-        Log::error("main", "Aborting SuperTuxKart.");
+        logerror("main", "Exception caught : %s.",e.what());
+        logerror("main", "Aborting SuperTuxKart.");
     }
 
     /* Program closing...*/
@@ -1816,12 +1816,24 @@ int main(int argc, char *argv[] )
 
 // ============================================================================
 #ifdef WIN32
+#ifdef UNICODE
+int APIENTRY _tWinMain(HINSTANCE hInstance,
+	HINSTANCE hPrevInstance,
+	LPTSTR    lpCmdLine,
+	int       nCmdShow)
+{
+	UNREFERENCED_PARAMETER(hPrevInstance);
+	UNREFERENCED_PARAMETER(lpCmdLine);
+	return main(__argc, __argv);
+}
+#else
 //routine for running under windows
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
                      LPTSTR lpCmdLine, int nCmdShow)
 {
     return main(__argc, __argv);
 }
+#endif
 #endif
 
 //=============================================================================
@@ -1872,19 +1884,19 @@ static void cleanSuperTuxKart()
 
     if(!NewsManager::get()->waitForReadyToDeleted(2.0f))
     {
-        Log::info("Thread", "News manager not stopping, exiting anyway.");
+        loginfo("Thread", "News manager not stopping, exiting anyway.");
     }
     NewsManager::deallocate();
 
     if(!Online::RequestManager::get()->waitForReadyToDeleted(5.0f))
     {
-        Log::info("Thread", "Request Manager not aborting in time, aborting.");
+        loginfo("Thread", "Request Manager not aborting in time, aborting.");
     }
     Online::RequestManager::deallocate();
 
     if (!SFXManager::get()->waitForReadyToDeleted(2.0f))
     {
-        Log::info("Thread", "SFXManager not stopping, exiting anyway.");
+        loginfo("Thread", "SFXManager not stopping, exiting anyway.");
     }
     SFXManager::destroy();
 
@@ -1931,16 +1943,16 @@ static void cleanUserConfig()
 //=============================================================================
 void runUnitTests()
 {
-    Log::info("UnitTest", "Starting unit testing");
-    Log::info("UnitTest", "=====================");
-    Log::info("UnitTest", "GraphicsRestrictions");
+    loginfo("UnitTest", "Starting unit testing");
+    loginfo("UnitTest", "=====================");
+    loginfo("UnitTest", "GraphicsRestrictions");
     GraphicsRestrictions::unitTesting();
-    Log::info("UnitTest", "NetworkString");
+    loginfo("UnitTest", "NetworkString");
     NetworkString::unitTesting();
-    Log::info("UnitTest", "TransportAddress");
+    loginfo("UnitTest", "TransportAddress");
     TransportAddress::unitTesting();
 
-    Log::info("UnitTest", "Easter detection");
+    loginfo("UnitTest", "Easter detection");
     // Test easter mode: in 2015 Easter is 5th of April - check with 0 days
     // before and after
     int saved_easter_mode = UserConfigParams::m_easter_ear_mode;
@@ -1972,16 +1984,16 @@ void runUnitTests()
     UserConfigParams::m_easter_ear_mode = saved_easter_mode;
 
 
-    Log::info("UnitTest", "Kart characteristics");
+    loginfo("UnitTest", "Kart characteristics");
     CombinedCharacteristic::unitTesting();
 
-    Log::info("UnitTest", "Arena Graph");
+    loginfo("UnitTest", "Arena Graph");
     ArenaGraph::unitTesting();
 
-    Log::info("UnitTest", "Fonts for translation");
+    loginfo("UnitTest", "Fonts for translation");
     font_manager->unitTesting();
 
-    Log::info("UnitTest", "=====================");
-    Log::info("UnitTest", "Testing successful   ");
-    Log::info("UnitTest", "=====================");
+    loginfo("UnitTest", "=====================");
+    loginfo("UnitTest", "Testing successful   ");
+    loginfo("UnitTest", "=====================");
 }   // runUnitTests

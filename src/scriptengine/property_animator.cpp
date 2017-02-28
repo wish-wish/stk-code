@@ -85,7 +85,7 @@ bool AnimatedProperty::update(double dt)
         }
 
         default:
-            Log::error("PropertyAnimator", "Unknown properry %i", (int)m_property);
+            logerror("PropertyAnimator", "Unknown properry %i", (int)m_property);
             break;
     }
 

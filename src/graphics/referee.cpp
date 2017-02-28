@@ -49,11 +49,11 @@ void Referee::init()
     XMLNode *node = file_manager->createXMLTree(filename);
     if(!node)
     {
-        Log::fatal("referee", "Can't read XML file referee.xml, aborting.");
+        logfatal("referee", "Can't read XML file referee.xml, aborting.");
     }
     if(node->getName()!="referee")
     {
-        Log::fatal("referee", "The file referee.xml does not contain a referee"
+        logfatal("referee", "The file referee.xml does not contain a referee"
                "node, aborting.");
     }
     std::string model_filename;
@@ -64,7 +64,7 @@ void Referee::init()
                                                         model_filename)      );
     if(!m_st_referee_mesh)
     {
-        Log::fatal("referee", "Can't find referee model '%s', aborting.",
+        logfatal("referee", "Can't find referee model '%s', aborting.",
                model_filename.c_str());
     }
 

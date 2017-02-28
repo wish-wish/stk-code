@@ -120,7 +120,7 @@ void OnlineProfileBase::init()
             m_header->setText(_("%s's profile", m_visiting_profile->getUserName()), false);
         }
         else
-            Log::error("OnlineProfileBase", "No visting profile");
+            logerror("OnlineProfileBase", "No visting profile");
     }
     else   // no tabs, so must be local player achievements:
     {

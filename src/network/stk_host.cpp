@@ -254,7 +254,7 @@ STKHost::STKHost(uint32_t server_id, uint32_t host_id)
                             /*max_in_bandwidth*/0, /*max_out_bandwidth*/0, &ea);
     if (!m_network)
     {
-        Log::fatal ("STKHost", "An error occurred while trying to create "
+        logfatal ("STKHost", "An error occurred while trying to create "
                                "an ENet client host.");
     }
 
@@ -284,7 +284,7 @@ STKHost::STKHost(const irr::core::stringw &server_name)
                            /*max_out_bandwidth*/ 0, &addr);
     if (!m_network)
     {
-        Log::fatal("STKHost", "An error occurred while trying to create an "
+        logfatal("STKHost", "An error occurred while trying to create an "
                               "ENet server host.");
     }
 
@@ -314,11 +314,11 @@ void STKHost::init()
     // ============================
     if (enet_initialize() != 0)
     {
-        Log::error("STKHost", "Could not initialize enet.");
+        logerror("STKHost", "Could not initialize enet.");
         return;
     }
 
-    Log::info("STKHost", "Host initialized.");
+    loginfo("STKHost", "Host initialized.");
     Network::openLog();  // Open packet log file
     ProtocolManager::getInstance<ProtocolManager>();
 
@@ -424,7 +424,7 @@ void STKHost::abort()
 void STKHost::setErrorMessage(const irr::core::stringw &message)
 {
     irr::core::stringc s(message.c_str());
-    Log::error("STKHost", "%s", s.c_str());
+    logerror("STKHost", "%s", s.c_str());
     m_error_message = message;
 }   // setErrorMessage
 
@@ -449,11 +449,11 @@ bool STKHost::connect(const TransportAddress& address)
 
     if (peer == NULL)
     {
-        Log::error("STKHost", "Could not try to connect to server.");
+        logerror("STKHost", "Could not try to connect to server.");
         return false;
     }
     TransportAddress a(peer->address);
-    Log::verbose("STKPeer", "Connecting to %s", a.toString().c_str());
+    logverbose("STKPeer", "Connecting to %s", a.toString().c_str());
     return true;
 }   // connect
 
@@ -551,24 +551,24 @@ void* STKHost::mainLoop(void* self)
             // Create an STKEvent with the event data. This will also
             // create the peer if it doesn't exist already
             Event* stk_event = new Event(&event);
-            Log::verbose("STKHost", "Event of type %d received",
+            logverbose("STKHost", "Event of type %d received",
                          (int)(stk_event->getType()));
             STKPeer* peer = stk_event->getPeer();
             if (stk_event->getType() == EVENT_TYPE_CONNECTED)
             {
-                Log::info("STKHost", "A client has just connected. There are "
+                loginfo("STKHost", "A client has just connected. There are "
                           "now %lu peers.", myself->m_peers.size());
-                Log::debug("STKHost", "Addresses are : %lx, %lx",
+                logdebug("STKHost", "Addresses are : %lx, %lx",
                            stk_event->getPeer(), peer);
             }   // EVENT_TYPE_CONNECTED
             else if (stk_event->getType() == EVENT_TYPE_MESSAGE)
             {
                 Network::logPacket(stk_event->data(), true);
                 TransportAddress stk_addr(peer->getAddress());
-                Log::verbose("NetworkManager",
+                logverbose("NetworkManager",
                              "Message, Sender : %s, message:",
                              stk_addr.toString(/*show port*/false).c_str());
-                Log::verbose("NetworkManager", "%s",
+                logverbose("NetworkManager", "%s",
                              stk_event->data().getLogMessage().c_str());
             }   // if message event
 
@@ -580,7 +580,7 @@ void* STKHost::mainLoop(void* self)
 
     free(myself->m_listening_thread);
     myself->m_listening_thread = NULL;
-    Log::info("STKHost", "Listening has been stopped");
+    loginfo("STKHost", "Listening has been stopped");
     return NULL;
 }   // mainLoop
 
@@ -607,7 +607,7 @@ void STKHost::handleDirectSocketRequest()
 
     if (command == "stk-server")
     {
-        Log::verbose("STKHost", "Received LAN server query");
+        logverbose("STKHost", "Received LAN server query");
         std::string name = 
             StringUtils::wideToUtf8(NetworkConfig::get()->getServerName());
         // Avoid buffer overflows
@@ -634,16 +634,16 @@ void STKHost::handleDirectSocketRequest()
         // a LAN address (192.168*, ..., and 127.*).
         if (NetworkConfig::get()->isLAN() && !sender.isLAN())
         {
-            Log::error("STKHost", "Client trying to connect from '%s'",
+            logerror("STKHost", "Client trying to connect from '%s'",
                        sender.toString().c_str());
-            Log::error("STKHost", "which is outside of LAN - rejected.");
+            logerror("STKHost", "which is outside of LAN - rejected.");
             return;
         }
         Protocol *c = new ConnectToPeer(sender);
         c->requestStart();
     }
     else
-        Log::info("STKHost", "Received unknown command '%s'",
+        loginfo("STKHost", "Received unknown command '%s'",
                   std::string(buffer, len).c_str());
 
 }   // handleDirectSocketRequest
@@ -688,7 +688,7 @@ STKPeer* STKHost::getPeer(ENetPeer *enet_peer)
     // Make sure that a client only adds one other peer (=the server).
     if(NetworkConfig::get()->isClient() && m_peers.size()>0)
     {
-        Log::error("STKHost",
+        logerror("STKHost",
                    "Client is adding more than one server, ignored for now.");
     }
 
@@ -696,7 +696,7 @@ STKPeer* STKHost::getPeer(ENetPeer *enet_peer)
     //FIXME Should we check #clients here? It might be easier to only
     // handle this at connect time, not in all getPeer calls.
     STKPeer *peer = new STKPeer(enet_peer);
-    Log::debug("getPeer", 
+    logdebug("getPeer", 
                "Creating a new peer, address are STKPeer:%p, Peer:%p",
                peer, enet_peer);
 
@@ -730,7 +730,7 @@ void STKHost::removePeer(const STKPeer* peer)
         return;
 
     TransportAddress addr(peer->getAddress());
-    Log::debug("STKHost", "Disconnected host: %s", addr.toString().c_str());
+    logdebug("STKHost", "Disconnected host: %s", addr.toString().c_str());
             
     // remove the peer:
     bool removed = false;
@@ -740,22 +740,22 @@ void STKHost::removePeer(const STKPeer* peer)
         {
             delete m_peers[i];
             m_peers.erase(m_peers.begin() + i, m_peers.begin() + i + 1);
-            Log::verbose("NetworkManager",
+            logverbose("NetworkManager",
                 "The peer has been removed from the Network Manager.");
             removed = true;
         }
         else if (m_peers[i]->isSamePeer(peer))
         {
-            Log::fatal("NetworkManager",
+            logfatal("NetworkManager",
                        "Multiple peers match the disconnected one.");
         }
     }   // for i < m_peers.size()
 
     if (!removed)
-        Log::warn("NetworkManager", "The peer that has been disconnected was "
+        logwarn("NetworkManager", "The peer that has been disconnected was "
                                     "not registered by the Network Manager.");
 
-    Log::info("NetworkManager",
+    loginfo("NetworkManager",
               "Somebody is now disconnected. There are now %lu peers.",
               m_peers.size());
 }   // removePeer
@@ -768,7 +768,7 @@ uint16_t STKHost::getPort() const
     socklen_t len = sizeof(sin);
     ENetHost *host = m_network->getENetHost();
     if (getsockname(host->socket, (struct sockaddr *)&sin, &len) == -1)
-        Log::error("STKHost", "Error while using getsockname().");
+        logerror("STKHost", "Error while using getsockname().");
     else
         return ntohs(sin.sin_port);
     return 0;

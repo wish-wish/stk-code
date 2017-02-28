@@ -156,7 +156,7 @@ void ModelViewWidget::update(float delta)
             distance_with_negative_rotation = (int)(m_angle - m_rotation_target);
         }
 
-        //Log::info("ModelViewWidget", "distance_with_positive_rotation = %d; "
+        //loginfo("ModelViewWidget", "distance_with_positive_rotation = %d; "
         //    "distance_with_negative_rotation = %d; angle = %f", distance_with_positive_rotation,
         //    distance_with_negative_rotation, angle);
 
@@ -272,7 +272,7 @@ void ModelViewWidget::setupRTTScene()
             node->setAnimationSpeed(m_model_animation_speed[n]);
             node->updateAbsolutePosition();
             node->setScale(m_model_scale[n].toIrrVector());
-            //Log::info("ModelViewWidget", "Set frame %d", m_model_frames[n]);
+            //loginfo("ModelViewWidget", "Set frame %d", m_model_frames[n]);
         }
     }
 

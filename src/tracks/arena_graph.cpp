@@ -91,7 +91,7 @@ void ArenaGraph::loadNavmesh(const std::string &navmesh)
     XMLNode *xml = file_manager->createXMLTree(navmesh);
     if (xml->getName() != "navmesh")
     {
-        Log::error("ArenaGraph", "NavMesh is invalid.");
+        logerror("ArenaGraph", "NavMesh is invalid.");
         delete xml;
         return;
     }
@@ -107,7 +107,7 @@ void ArenaGraph::loadNavmesh(const std::string &navmesh)
                 const XMLNode *xml_node_node = xml_node->getNode(i);
                 if (!(xml_node_node->getName() == "vertex"))
                 {
-                    Log::error("ArenaGraph", "Unsupported type '%s' found"
+                    logerror("ArenaGraph", "Unsupported type '%s' found"
                         "in '%s' - ignored.",
                         xml_node_node->getName().c_str(), navmesh.c_str());
                     continue;
@@ -130,7 +130,7 @@ void ArenaGraph::loadNavmesh(const std::string &navmesh)
                 const XMLNode *xml_node_node = xml_node->getNode(i);
                 if (xml_node_node->getName() != "face")
                 {
-                    Log::error("ArenaGraph", "Unsupported type '%s'"
+                    logerror("ArenaGraph", "Unsupported type '%s'"
                         " found in '%s' - ignored.",
                         xml_node_node->getName().c_str(), navmesh.c_str());
                     continue;
@@ -143,7 +143,7 @@ void ArenaGraph::loadNavmesh(const std::string &navmesh)
                 xml_node_node->get("adjacents", &adjacent_quad_index);
                 if (quad_index.size() != 4)
                 {
-                    Log::error("ArenaGraph", "A Node in navmesh is not made"
+                    logerror("ArenaGraph", "A Node in navmesh is not made"
                         " of quad, will only use the first 4 vertices");
                 }
 
@@ -378,7 +378,7 @@ void ArenaGraph::unitTesting()
     double s = StkTime::getRealTime();
     ArenaGraph* ag = new ArenaGraph(navmesh_file_name);
     double e = StkTime::getRealTime();
-    Log::error("Time", "Dijkstra       %lf", e-s);
+    logerror("Time", "Dijkstra       %lf", e-s);
 
     // Save the Dijkstra results
     std::vector< std::vector< float > > distance_matrix = ag->m_distance_matrix;
@@ -389,7 +389,7 @@ void ArenaGraph::unitTesting()
     s = StkTime::getRealTime();
     ag->computeFloydWarshall();
     e = StkTime::getRealTime();
-    Log::error("Time", "Floyd-Warshall %lf", e-s);
+    logerror("Time", "Floyd-Warshall %lf", e-s);
 
     int error_count = 0;
     for(unsigned int i=0; i<ag->m_distance_matrix.size(); i++)
@@ -398,7 +398,7 @@ void ArenaGraph::unitTesting()
         {
             if(ag->m_distance_matrix[i][j] - distance_matrix[i][j] > 0.001f)
             {
-                Log::error("ArenaGraph",
+                logerror("ArenaGraph",
                            "Incorrect distance %d, %d: Dijkstra: %f F.W.: %f",
                            i, j, distance_matrix[i][j], ag->m_distance_matrix[i][j]);
                 error_count++;
@@ -419,17 +419,17 @@ void ArenaGraph::unitTesting()
                 std::vector<int16_t> floyd_path = getPathFromTo(i, j, ag->m_parent_node);
                 if(dijkstra_path.size()!=floyd_path.size())
                 {
-                    Log::error("ArenaGraph",
+                    logerror("ArenaGraph",
                                "Incorrect path length %d, %d: Dijkstra: %d F.W.: %d",
                                i, j, parent_node[i][j], ag->m_parent_node[i][j]);
                     continue;
                 }
-                Log::error("ArenaGraph", "Path problems from %d to %d:",
+                logerror("ArenaGraph", "Path problems from %d to %d:",
                            i, j);
                 for (unsigned k = 0; k < dijkstra_path.size(); k++)
                 {
                     if(dijkstra_path[k]!=floyd_path[k])
-                        Log::error("ArenaGraph", "%d/%d dijkstra: %d floyd %d",
+                        logerror("ArenaGraph", "%d/%d dijkstra: %d floyd %d",
                             k, dijkstra_path.size(), dijkstra_path[k],
                             floyd_path[k]);
                 }    // for k<dijkstra_path.size()

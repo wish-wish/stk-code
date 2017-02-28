@@ -55,7 +55,7 @@ void NetworkConsole::run()
     m_thread_keyboard = new pthread_t;
     pthread_create(m_thread_keyboard, NULL, mainLoop, this);
 
-    Log::info("NetworkConsole", "Ready.");
+    loginfo("NetworkConsole", "Ready.");
 }   // run
 
 // ----------------------------------------------------------------------------
@@ -160,7 +160,7 @@ void* NetworkConsole::mainLoop(void* data)
         }
         else
         {
-            Log::info("Console", "Unknown command '%s'.", str.c_str());
+            loginfo("Console", "Unknown command '%s'.", str.c_str());
         }
     }   // while !stop
 

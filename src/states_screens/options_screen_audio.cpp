@@ -152,7 +152,7 @@ void OptionsScreenAudio::eventCallback(Widget* widget, const std::string& name, 
         CheckBoxWidget* w = dynamic_cast<CheckBoxWidget*>(widget);
 
         UserConfigParams::m_music = w->getState();
-        Log::info("OptionsScreenAudio", "Music is now %s", ((bool) UserConfigParams::m_music) ? "on" : "off");
+        loginfo("OptionsScreenAudio", "Music is now %s", ((bool) UserConfigParams::m_music) ? "on" : "off");
 
         if(w->getState() == false)
             music_manager->stopMusic();

@@ -781,7 +781,7 @@ PostProcessing::PostProcessing(IVideoDriver* video_driver)
     m_areamap = new STKTexture(img, "AreaMap33");
     if (m_areamap->getOpenGLTextureName() == 0)
     {
-        Log::fatal("postprocessing", "Failed to load the areamap");
+        logfatal("postprocessing", "Failed to load the areamap");
         return;
     }
     STKTexManager::getInstance()->addTexture(m_areamap);

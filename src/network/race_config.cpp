@@ -240,14 +240,14 @@ RaceConfig::RaceConfig()
 //-----------------------------------------------------------------------------
 void RaceConfig::setPlayerMajorVote(uint8_t player_id, uint32_t major)
 {
-    Log::info("RaceConfig", "Player %d voted for major %d", player_id, major);
+    loginfo("RaceConfig", "Player %d voted for major %d", player_id, major);
     m_votes[player_id].voteMajor(major);
 }   // setPlayerMajorVote
 
 //-----------------------------------------------------------------------------
 void RaceConfig::setPlayerRaceCountVote(uint8_t player_id, uint8_t count)
 {
-    Log::info("RaceConfig", "Player %d voted for %d races in GP",
+    loginfo("RaceConfig", "Player %d voted for %d races in GP",
               player_id, count);
     m_votes[player_id].voteRaceCount(count);
 }   // setPlayerRaceCountVote
@@ -255,7 +255,7 @@ void RaceConfig::setPlayerRaceCountVote(uint8_t player_id, uint8_t count)
 //-----------------------------------------------------------------------------
 void RaceConfig::setPlayerMinorVote(uint8_t player_id, uint32_t minor)
 {
-    Log::info("RaceConfig", "Player %d voted for minor %d", player_id, minor);
+    loginfo("RaceConfig", "Player %d voted for minor %d", player_id, minor);
     m_votes[player_id].voteMinor(minor);
 }   // setPlayerMinorVote
 
@@ -263,7 +263,7 @@ void RaceConfig::setPlayerMinorVote(uint8_t player_id, uint32_t minor)
 void RaceConfig::setPlayerTrackVote(uint8_t player_id, 
                                     const std::string &track, uint8_t track_nb)
 {
-    Log::info("RaceConfig", "Player %d voted for track %s",
+    loginfo("RaceConfig", "Player %d voted for track %s",
               player_id, track.c_str());
     m_votes[player_id].voteTrack(track, track_nb);
 }   // setPlayerTrackVote
@@ -273,10 +273,10 @@ void RaceConfig::setPlayerReversedVote(uint8_t player_id, bool reversed,
                                        uint8_t track_nb)
 {
     if (reversed)
-        Log::info("RaceConfig", "Player %d voted map %d to be reversed",
+        loginfo("RaceConfig", "Player %d voted map %d to be reversed",
                   player_id, track_nb);
     else
-        Log::info("RaceConfig", "Player %d voted map %d NOT to be reversed",
+        loginfo("RaceConfig", "Player %d voted map %d NOT to be reversed",
                   player_id, track_nb);
     m_votes[player_id].voteReversed(reversed, track_nb);
 }   // setPlayerReversedVote
@@ -285,7 +285,7 @@ void RaceConfig::setPlayerReversedVote(uint8_t player_id, bool reversed,
 void RaceConfig::setPlayerLapsVote(uint8_t player_id, uint8_t lap_count,
                                    uint8_t track_nb)
 {
-    Log::info("RaceConfig", "Player %d voted map %d to have %d laps",
+    loginfo("RaceConfig", "Player %d voted map %d to have %d laps",
               player_id, track_nb, lap_count);
     m_votes[player_id].voteLaps(lap_count, track_nb);
 }   // setPlayerLapsVote
@@ -353,7 +353,7 @@ void RaceConfig::computeRaceMode()
         m_races_count = 1;
     }
 
-    Log::info("RaceConfig", "Major mode will be %d with %d races. Minor is %d",
+    loginfo("RaceConfig", "Major mode will be %d with %d races. Minor is %d",
               m_major_mode, m_races_count, m_minor_mode);
 }   // computeRaceMode
 
@@ -410,11 +410,11 @@ void RaceConfig::computeNextTrack()
         m_tracks[j].laps = getHighestInHistogram<int>(&laps_histogram,
                                                    UserConfigParams::m_num_laps); 
         if (m_tracks[j].reversed)
-            Log::info("RaceConfig",
+            loginfo("RaceConfig",
                       "Race %d will be on %s with %d laps and reversed",
                        j, m_tracks[j].track.c_str(), m_tracks[j].laps);
         else
-            Log::info("RaceConfig", "Race %d will be on %s with %d laps", 
+            loginfo("RaceConfig", "Race %d will be on %s with %d laps", 
                       j, m_tracks[j].track.c_str(), m_tracks[j].laps);
     }
 }   // computeNextTrack
